@@ -1,0 +1,62 @@
+{% comment %}
+  tasks.liquid — "Tasks" section with checkboxes.
+
+  Required variables:
+    tasks               array of {title, done, priority, due_date, sort_order} — the
+                        dashboard.json "tasks" key, in display order.
+    today               reference date as an ISO string "YYYY-MM-DD" (dashboard.json
+                        meta.reference_date) — used to flag tasks that are due
+                        (due_date <= today and not done), matching src/dashboard.py's
+                        `_is_due` semantics. ISO date strings compare correctly as plain
+                        strings, so no date-math filter is needed.
+
+  Device-specific variables (parent template must pass these in):
+    max_tasks            max rows to render (DeviceProfile.max_tasks).
+    checkbox_size        px width/height of the checkbox square (DeviceProfile.checkbox_size).
+    font_size_medium     px size for the section title ("Tasks").
+    font_size_small      px size for each task row.
+    line_height          px row height (DeviceProfile.line_height).
+    padding              px internal padding.
+    title                (optional) section title text, defaults to "Tasks".
+
+  Usage:
+    {% render 'partials/tasks', tasks: tasks, today: meta.reference_date,
+       max_tasks: profile.max_tasks, checkbox_size: profile.checkbox_size,
+       font_size_medium: profile.font_size_medium, font_size_small: profile.font_size_small,
+       line_height: profile.line_height, padding: profile.padding %}
+{% endcomment %}
+{% assign due_count = 0 %}
+{% for task in tasks %}
+  {% unless task.done %}
+    {% if task.due_date and task.due_date <= today %}
+      {% assign due_count = due_count | plus: 1 %}
+    {% endif %}
+  {% endunless %}
+{% endfor %}
+<div style="padding:{{ padding }}px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
+  <div style="font-size:{{ font_size_medium }}px; color:#000000; margin-bottom:{{ padding }}px;">
+    <span style="font-weight:bold;">{{ title | default: "Tasks" }}</span>{% if due_count > 0 %} - {{ due_count }} due (!){% endif %}
+  </div>
+  <div style="flex:1 1 auto; overflow:hidden;">
+    {% for task in tasks limit: max_tasks %}
+      {% assign is_due = false %}
+      {% unless task.done %}
+        {% if task.due_date and task.due_date <= today %}
+          {% assign is_due = true %}
+        {% endif %}
+      {% endunless %}
+      <div style="display:flex; align-items:center; gap:{{ padding }}px; height:{{ line_height }}px;">
+        <div style="flex:0 0 auto; width:{{ checkbox_size }}px; height:{{ checkbox_size }}px; border:2px solid #555555; box-sizing:border-box; position:relative;">
+          {% if task.done %}
+            <div style="position:absolute; top:1px; left:1px; right:1px; bottom:1px; border-top:2px solid #555555; transform:rotate(45deg); transform-origin:center;"></div>
+          {% endif %}
+        </div>
+        <div style="flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:{{ font_size_small }}px; color:#000000; {% if is_due %}font-weight:bold;{% endif %}">
+          {{ task.title }}{% if is_due %} (!){% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div style="font-size:{{ font_size_small }}px; color:#000000;">No tasks</div>
+    {% endfor %}
+  </div>
+</div>

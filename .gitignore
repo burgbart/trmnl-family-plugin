@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Environment
+.env
+.venv/
+venv/
+
+# Generated outputs
+output/
+preview.html
+
+# Claude Code local settings
+.claude/
+
+# IDE
+.vscode/
+.idea/
+.specstory/
+.cursorindexingignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Raw contact exports (PII) — only the extracted *_sync.json files are committed
+data/*.vcf

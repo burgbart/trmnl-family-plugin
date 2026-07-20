@@ -1,0 +1,55 @@
+name: Generate dashboard JSON
+
+on:
+  # Manual only for now — no schedule trigger. Re-add a `schedule:` block
+  # (e.g. hourly, 06:00-23:00 Europe/Amsterdam -> cron "0 4-21 * * *" UTC)
+  # once automatic runs are wanted again.
+  workflow_dispatch: {}
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Collect data and write dashboard.json
+        env:
+          WEATHER_LATITUDE: ${{ vars.WEATHER_LATITUDE }}
+          WEATHER_LONGITUDE: ${{ vars.WEATHER_LONGITUDE }}
+          CITY: ${{ vars.CITY }}
+          TIMEZONE: ${{ vars.TIMEZONE }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_CALENDAR_IDS: ${{ vars.GOOGLE_CALENDAR_IDS }}
+          CALENDAR_ATTENDEE_EMAILS: ${{ vars.CALENDAR_ATTENDEE_EMAILS }}
+          CALENDAR_MAIN_CALENDAR_ID: ${{ vars.CALENDAR_MAIN_CALENDAR_ID }}
+          TICKTICK_ACCESS_TOKEN: ${{ secrets.TICKTICK_ACCESS_TOKEN }}
+          TICKTICK_LIST_ID: ${{ vars.TICKTICK_LIST_ID }}
+        run: python collect_unified_data.py --output output/dashboard.json
+
+      - name: Render preview.html
+        run: python export_preview.py --input output/dashboard.json --output output/preview.html
+
+      - name: Upload dashboard.json to Cloudflare R2
+        env:
+          CLOUDFLARE_R2_ENDPOINT: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+          CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+          CLOUDFLARE_R2_BUCKET_NAME: ${{ vars.CLOUDFLARE_R2_BUCKET_NAME }}
+          CLOUDFLARE_R2_PUBLIC_URL: ${{ vars.CLOUDFLARE_R2_PUBLIC_URL }}
+        run: python -m src.upload output/dashboard.json
+
+      - name: Upload preview.html as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview
+          path: output/preview.html
+          retention-days: 7

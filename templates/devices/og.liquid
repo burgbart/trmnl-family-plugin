@@ -1,0 +1,173 @@
+{% comment %}
+  devices/og.liquid — TRMNL OG (800x480) full-page device template.
+
+  Composes the four shared partials (templates/partials/{weather,calendar,
+  tasks,birthdays}.liquid) into the fixed-pixel layout documented in
+  plan/DESIGN_REFERENCE.md ("TRMNL OG (800x480)" subsection):
+
+    1. Header       (10,10)-(790,100)  day/date (left) + weather (right)
+    2. Calendar     (10,110)-(490,470) 60% width, "Upcoming" events
+    3. Tasks        (500,110)-(790,300) 40% width, 62% of below-header height
+    4. Anniversaries(500,310)-(790,470) remaining space, birthdays
+
+  Expected top-level render context (see templates/CONTRACT.md): the parsed
+  dashboard.json dict — meta, weather, events, tasks, birthdays.
+
+  Font paths assume the rendering pipeline resolves relative to the repo
+  root (matching src/config.py's `_ASSETS_DIR = Path(__file__).parent.parent
+  / "assets"` convention, i.e. assets/ sits at the repo root next to
+  templates/). Task 2.1's src/liquid_render.py should confirm/adjust this if
+  the actual render call resolves relative paths differently (e.g. by
+  passing a base href or absolute file:// URLs to the HTML->PNG step).
+{% endcomment %}
+<style>
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Regular.ttf") format("truetype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: "TRMNL21";
+    src: url("../../assets/TRMNL21-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 800px;
+    height: 480px;
+    background: #AAAAAA; /* LIGHT_GRAY page background */
+    font-family: "TRMNL16", Arial, Helvetica, sans-serif;
+    color: #000000;
+  }
+
+  .page {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    overflow: hidden;
+  }
+
+  .box {
+    position: absolute;
+    background: #FFFFFF;
+    border: 2px solid #555555; /* DARK_GRAY */
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* 1. Header: (10,10)-(790,100) => 780x90 */
+  .header {
+    left: 10px;
+    top: 10px;
+    width: 780px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .header .day-date {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header .day-name {
+    font-family: "TRMNL21", "TRMNL16", Arial, sans-serif;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 1.1;
+  }
+
+  .header .date-line {
+    font-size: 18px;
+    line-height: 1.1;
+  }
+
+  .header .weather {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  /* 2. Calendar/Upcoming: (10,110)-(490,470) => 480x360, 60% width */
+  .calendar {
+    left: 10px;
+    top: 110px;
+    width: 480px;
+    height: 360px;
+  }
+
+  .calendar-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .synced {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 13px;
+    color: #000000;
+  }
+
+  /* 3. Tasks: (500,110)-(790,300) => 290x190, 40% width, 62% of below-header height */
+  .tasks {
+    left: 500px;
+    top: 110px;
+    width: 290px;
+    height: 190px;
+  }
+
+  /* 4. Anniversaries: (500,310)-(790,470) => 290x160, remaining space */
+  .birthdays {
+    left: 500px;
+    top: 310px;
+    width: 290px;
+    height: 160px;
+  }
+</style>
+<div class="page">
+  <div class="box header">
+    <div class="day-date">
+      <div class="day-name">{{ meta.reference_date | date: "%A" }}</div>
+      <div class="date-line">{{ meta.reference_date | date: "%d %B" }}</div>
+    </div>
+    <div class="weather">
+      {% render 'partials/weather', weather: weather, font_size_large: 34,
+         font_size_tiny: 13, icon_size: 40, padding: 10 %}
+    </div>
+  </div>
+
+  <div class="box calendar">
+    <div class="calendar-inner">
+      {% render 'partials/calendar', events: events, today: meta.reference_date,
+         max_events: 10, font_size_medium: 18, font_size_small: 16,
+         line_height: 28, padding: 10 %}
+      <div class="synced">Synced {{ meta.generated_at | date: "%H:%M" }} {{ meta.generated_at | date: "%d/%m" }}</div>
+    </div>
+  </div>
+
+  <div class="box tasks">
+    {% render 'partials/tasks', tasks: tasks, today: meta.reference_date,
+       max_tasks: 6, checkbox_size: 12, font_size_medium: 18,
+       font_size_small: 16, line_height: 28, padding: 10 %}
+  </div>
+
+  <div class="box birthdays">
+    {% render 'partials/birthdays', birthdays: birthdays, today: meta.reference_date,
+       max_birthdays: 4, font_size_medium: 18, font_size_small: 16,
+       line_height: 28, padding: 10 %}
+  </div>
+</div>

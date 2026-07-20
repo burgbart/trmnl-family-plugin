@@ -1,0 +1,152 @@
+{% comment %}
+  devices/x.liquid — TRMNL X (1872x1404) full-page dashboard template.
+
+  Composes the four shared partials (templates/partials/{weather,calendar,tasks,birthdays}.liquid)
+  into the four-section layout described in plan/DESIGN_REFERENCE.md, using TRMNL_X's own
+  DeviceProfile ratios (src/config.py::X_PROFILE) rather than a uniform scale-up of og.liquid.
+
+  Box geometry below is computed directly from src/dashboard.py's _header_box/_calendar_box/
+  _tasks_box/_birthdays_box functions (the authoritative source — more precise than
+  DESIGN_REFERENCE.md's rounded prose numbers), evaluated for X_PROFILE's actual values:
+    width=1872 height=1404 padding=24 header_height=180
+    calendar_width_ratio=0.58 tasks_height_ratio=0.62
+
+    header_box    = (24, 24)   -> (1848, 204)    i.e. left=24   top=24   w=1824 h=180
+    calendar_box  = (24, 228)  -> (1085, 1380)   i.e. left=24   top=228  w=1061 h=1152
+    tasks_box     = (1109, 228)-> (1848, 870)    i.e. left=1109 top=228  w=739  h=642
+    birthdays_box = (1109, 894)-> (1848, 1380)   i.e. left=1109 top=894  w=739  h=486
+
+  (cal_x2 = int(1872 * 0.58) = 1085; tasks_y2 = int(1404 * 0.62) = 870.)
+
+  Top-level render context is the parsed dashboard.json dict (see templates/CONTRACT.md):
+  meta, weather, events, tasks, birthdays are referenced directly, no wrapper "profile" object
+  is passed in — this template inlines X_PROFILE's literal numbers per the contract's guidance
+  that device templates own layout/sizing.
+
+  Font paths: assumes this file is loaded from a `templates/` root via
+  FileSystemLoader('templates', ext='.liquid'), and that the rendering pipeline (task 2.1)
+  serves/copies the page such that `../assets/...` resolves relative to this template's own
+  location (templates/devices/x.liquid -> ../../assets). Adjust in task 2.1 if the actual
+  render pipeline serves from a different working directory. Falls back to sans-serif if
+  the font files fail to load.
+{% endcomment %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TRMNL X Dashboard</title>
+<style>
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Regular.ttf") format("truetype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: "TRMNL21";
+    src: url("../../assets/TRMNL21-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1872px;
+    height: 1404px;
+    overflow: hidden;
+    background: #AAAAAA;
+    font-family: "TRMNL16", Arial, Helvetica, sans-serif;
+  }
+  .page {
+    position: relative;
+    width: 1872px;
+    height: 1404px;
+    background: #AAAAAA;
+  }
+  .box {
+    position: absolute;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 24px;
+  }
+  .header-daydate {
+    font-family: "TRMNL21", "TRMNL16", Arial, sans-serif;
+    font-weight: bold;
+    font-size: 64px;
+    color: #000000;
+    line-height: 1.05;
+  }
+  .header-date {
+    font-family: "TRMNL16", Arial, sans-serif;
+    font-weight: normal;
+    font-size: 36px;
+    color: #000000;
+    margin-top: 4px;
+  }
+  .header-weather {
+    flex: 0 0 auto;
+    max-width: 640px;
+  }
+  .synced {
+    position: absolute;
+    right: 24px;
+    bottom: 12px;
+    font-size: 24px;
+    color: #000000;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  {% comment %} 1. Header: day/date (left) + weather (right) {% endcomment %}
+  <div class="box" style="left:24px; top:24px; width:1824px; height:180px;">
+    <div class="header-inner">
+      <div>
+        <div class="header-daydate">{{ meta.reference_date | date: "%A" }}</div>
+        <div class="header-date">{{ meta.reference_date | date: "%d %B" }}</div>
+      </div>
+      <div class="header-weather">
+        {% render 'partials/weather', weather: weather, font_size_large: 72,
+           font_size_tiny: 24, icon_size: 90, padding: 24 %}
+      </div>
+    </div>
+  </div>
+
+  {% comment %} 2. Calendar / Upcoming — left column, 58% width {% endcomment %}
+  <div class="box" style="left:24px; top:228px; width:1061px; height:1152px;">
+    {% render 'partials/calendar', events: events, today: meta.reference_date,
+       max_events: 8, font_size_medium: 36, font_size_small: 30,
+       line_height: 44, padding: 24 %}
+    <div class="synced">Synced {{ meta.generated_at | date: "%H:%M %d/%m" }}</div>
+  </div>
+
+  {% comment %} 3. Tasks — top-right, 62% of viewport height {% endcomment %}
+  <div class="box" style="left:1109px; top:228px; width:739px; height:642px;">
+    {% render 'partials/tasks', tasks: tasks, today: meta.reference_date,
+       max_tasks: 10, checkbox_size: 26, font_size_medium: 36, font_size_small: 30,
+       line_height: 44, padding: 24 %}
+  </div>
+
+  {% comment %} 4. Anniversaries / Birthdays — bottom-right, remaining space {% endcomment %}
+  <div class="box" style="left:1109px; top:894px; width:739px; height:486px;">
+    {% render 'partials/birthdays', birthdays: birthdays, today: meta.reference_date,
+       max_birthdays: 6, font_size_medium: 36, font_size_small: 30,
+       line_height: 44, padding: 24 %}
+  </div>
+
+</div>
+</body>
+</html>
