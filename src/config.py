@@ -83,7 +83,9 @@ class DeviceProfile:
     max_birthdays: int
     # Number of distinct grayscale levels the physical e-ink panel supports
     # (used by export_preview.py's CSS approximation, not by the Liquid
-    # templates themselves). OG is a 1-bit/2-level panel; X is 16-level.
+    # templates themselves). OG supports 2-bit/4-level grayscale (post
+    # firmware update — see https://help.trmnl.com/en/articles/12386214);
+    # X is 16-level (4-bit).
     grayscale_levels: int = 16
     # Liquid template filename, relative to templates/devices/. None means
     # no template exists yet (e.g. a future/stub device profile) — callers
@@ -98,10 +100,10 @@ class DeviceProfile:
         return f"devices/{self.template_filename}"
 
 
-# TRMNL OG — 800 x 480 px e-ink panel rendered as 8-bit "L". The panel is
-# natively 1-bit, but a 4-level grayscale CSS approximation (see
-# OG_GRAYSCALE_LEVELS below) matches the original PNG-era design more
-# closely than a hard 2-level threshold.
+# TRMNL OG — 800 x 480 px e-ink panel rendered as 8-bit "L". The panel
+# natively supports 2-bit/4-level grayscale (post firmware update), and
+# OG_GRAYSCALE_LEVELS below defaults to that for the local preview's CSS
+# approximation.
 OG_PROFILE = DeviceProfile(
     name="og",
     width=800,
