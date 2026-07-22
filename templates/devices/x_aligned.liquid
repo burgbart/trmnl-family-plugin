@@ -3,9 +3,11 @@
 
   The header is constrained to the left column and aligns with the right edge
   of the Upcoming section. Tasks starts at the very top of the right column,
-  making the two main columns equal in height. Weather is placed inside the
-  left-column header, beside the day/date block, so the right column remains
-  dedicated to data sections.
+  making the two main columns equal in height.
+
+  Uses the original simple weather partial in the header.
+  Upcoming, Tasks and Anniversaries panels are tightened slightly so more
+  rows fit the large panels.
 
   Layout:
     1. Header        (24,24)-(1085,204)    day/date (left) + weather (right)
@@ -96,6 +98,7 @@
 </style>
 </head>
 <body>
+
 <div class="page">
 
   {% comment %} 1. Header: constrained to left column, day/date + weather {% endcomment %}
@@ -106,8 +109,8 @@
         <div class="header-date">{{ meta.reference_date | date: "%d %B" }}</div>
       </div>
       <div class="header-weather">
-        {% render 'partials/weather', weather: weather, font_size_large: 72,
-           font_size_tiny: 24, icon_size: 90, padding: 24 %}
+        {% render 'partials/weather', weather: weather,
+           font_size_large: 72, font_size_tiny: 24, icon_size: 90, padding: 24 %}
       </div>
     </div>
   </div>
@@ -115,23 +118,23 @@
   {% comment %} 2. Calendar / Upcoming — left column {% endcomment %}
   <div class="box" style="left:24px; top:228px; width:1061px; height:1152px;">
     {% render 'partials/calendar', events: events, error: errors.events, today: meta.reference_date,
-       max_events: 8, font_size_medium: 36, font_size_small: 30,
-       line_height: 44, padding: 24 %}
+       max_events: 24, font_size_medium: 36, font_size_small: 30,
+       line_height: 42, padding: 24 %}
     <div class="synced">Synced {{ meta.generated_at | date: "%H:%M %d/%m" }}</div>
   </div>
 
   {% comment %} 3. Tasks — top-right, starts at the page top {% endcomment %}
   <div class="box" style="left:1109px; top:24px; width:739px; height:841px;">
     {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
-       max_tasks: 14, checkbox_size: 26, font_size_medium: 36, font_size_small: 30,
-       line_height: 44, padding: 24 %}
+       max_tasks: 17, checkbox_size: 26, font_size_medium: 36, font_size_small: 30,
+       line_height: 42, padding: 24 %}
   </div>
 
   {% comment %} 4. Anniversaries / Birthdays — bottom-right, remaining space {% endcomment %}
   <div class="box" style="left:1109px; top:889px; width:739px; height:491px;">
     {% render 'partials/birthdays', birthdays: birthdays, error: errors.birthdays, today: meta.reference_date,
-       max_birthdays: 8, font_size_medium: 36, font_size_small: 30,
-       line_height: 44, padding: 24 %}
+       max_birthdays: 9, font_size_medium: 36, font_size_small: 30,
+       line_height: 42, padding: 24 %}
   </div>
 
 </div>

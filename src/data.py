@@ -6,11 +6,20 @@ Phase 3 will replace these with real API calls.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from typing import List, Optional
 
 from src.config import get_reference_date, get_reference_datetime
+
+
+@dataclass
+class WeatherForecast:
+    date: date
+    description: str
+    temperature_high: int
+    temperature_low: int
+    icon: str
 
 
 @dataclass
@@ -19,6 +28,8 @@ class Weather:
     temperature: int
     feels_like: int
     icon: str
+    forecast: list[WeatherForecast] = field(default_factory=list)
+    alert: str | None = None
 
 
 @dataclass
@@ -49,11 +60,36 @@ class Birthday:
 
 def fetch_weather() -> Weather:
     """Dummy weather for Amsterdam."""
+    today = get_reference_date()
     return Weather(
         description="Partly cloudy",
         temperature=21,
         feels_like=19,
         icon="partly-cloudy",
+        forecast=[
+            WeatherForecast(
+                date=today,
+                description="Rain",
+                temperature_high=20,
+                temperature_low=15,
+                icon="rain",
+            ),
+            WeatherForecast(
+                date=today + timedelta(days=1),
+                description="Sunny",
+                temperature_high=24,
+                temperature_low=16,
+                icon="sun",
+            ),
+            WeatherForecast(
+                date=today + timedelta(days=2),
+                description="Cloudy",
+                temperature_high=22,
+                temperature_low=17,
+                icon="cloud",
+            ),
+        ],
+        alert="Rain expected today",
     )
 
 

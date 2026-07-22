@@ -13,7 +13,31 @@
     "description": "Partly cloudy",
     "temperature": 21,
     "feels_like": 19,
-    "icon": "partly-cloudy"
+    "icon": "partly-cloudy",
+    "forecast": [
+      {
+        "date": "2026-07-21",
+        "description": "Rain",
+        "temperature_high": 20,
+        "temperature_low": 15,
+        "icon": "rain"
+      },
+      {
+        "date": "2026-07-22",
+        "description": "Sunny",
+        "temperature_high": 24,
+        "temperature_low": 16,
+        "icon": "sun"
+      },
+      {
+        "date": "2026-07-23",
+        "description": "Cloudy",
+        "temperature_high": 22,
+        "temperature_low": 17,
+        "icon": "cloud"
+      }
+    ],
+    "alert": "Rain expected today"
   },
   "events": [
     {

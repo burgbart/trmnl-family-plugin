@@ -130,17 +130,8 @@
   .panel {
     position: absolute;
     overflow: hidden;
-  }
-
-  .panel-light {
     background: #FFFFFF;
     border: 2px solid #555555;
-  }
-
-  .panel-dark {
-    background: #555555;
-    border: 2px solid #000000;
-    color: #FFFFFF;
   }
 
   /* Top row: date (left) + weather (right) */
@@ -186,12 +177,14 @@
     font-weight: bold;
     font-size: 30px;
     line-height: 1.1;
+    color: #000000;
   }
 
   .date-line {
     font-size: 18px;
     line-height: 1.1;
     margin-top: 4px;
+    color: #000000;
   }
 
   .synced {
@@ -199,7 +192,7 @@
     right: 10px;
     bottom: 6px;
     font-size: 12px;
-    color: #FFFFFF;
+    color: #555555;
   }
 &lt;/style&gt;
 
@@ -214,7 +207,7 @@
 
 &lt;div class=&quot;page&quot;&gt;
   
-  &lt;div class=&quot;panel panel-dark date-panel&quot;&gt;
+  &lt;div class=&quot;panel date-panel&quot;&gt;
     &lt;div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;&quot;&gt;
       &lt;div class=&quot;day-name&quot;&gt;Tuesday&lt;/div&gt;
       &lt;div class=&quot;date-line&quot;&gt;21 July&lt;/div&gt;
@@ -223,7 +216,7 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-light weather-panel&quot;&gt;
+  &lt;div class=&quot;panel weather-panel&quot;&gt;
     &lt;div style=&quot;height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;&quot;&gt;
       
       &lt;div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;&gt;
@@ -270,10 +263,10 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-light upcoming-panel&quot;&gt;
+  &lt;div class=&quot;panel upcoming-panel&quot;&gt;
     
 &lt;div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
-  &lt;div style=&quot;font-weight:bold; font-size:16px; color:#000000; margin-bottom:8px;&quot;&gt;
+  &lt;div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:8px;&quot;&gt;
     Upcoming
   &lt;/div&gt;
   &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
@@ -405,20 +398,6 @@
         &lt;/div&gt;
       &lt;/div&gt;
     
-      
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
-        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
-          
-            
-              Tue 28 Jul 09:00
-            
-          
-        &lt;/div&gt;
-        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
-          Car maintenance
-        &lt;/div&gt;
-      &lt;/div&gt;
-    
     
   &lt;/div&gt;
 &lt;/div&gt;
@@ -426,12 +405,12 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-light tasks-panel&quot;&gt;
+  &lt;div class=&quot;panel tasks-panel&quot;&gt;
     
 
 
 &lt;div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
-  &lt;div style=&quot;font-size:16px; color:#000000; margin-bottom:8px;&quot;&gt;
+  &lt;div style=&quot;font-size:17px; color:#000000; margin-bottom:8px;&quot;&gt;
     &lt;span style=&quot;font-weight:bold;&quot;&gt;Tasks&lt;/span&gt; - 2 due (!)
   &lt;/div&gt;
   &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
@@ -440,7 +419,7 @@
       
       
       &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
-        &lt;div style=&quot;flex:0 0 auto; width:12px; height:12px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
         &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;&gt;
@@ -451,7 +430,7 @@
       
       
       &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
-        &lt;div style=&quot;flex:0 0 auto; width:12px; height:12px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
         &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;&gt;
@@ -462,7 +441,7 @@
       
       
       &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
-        &lt;div style=&quot;flex:0 0 auto; width:12px; height:12px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
         &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;&gt;
@@ -473,7 +452,7 @@
       
       
       &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
-        &lt;div style=&quot;flex:0 0 auto; width:12px; height:12px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
         &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;&gt;
@@ -484,7 +463,7 @@
       
       
       &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
-        &lt;div style=&quot;flex:0 0 auto; width:12px; height:12px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
         &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;&gt;
@@ -499,43 +478,43 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-dark anniv-panel&quot;&gt;
+  &lt;div class=&quot;panel anniv-panel&quot;&gt;
     &lt;div style=&quot;padding:10px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
-      &lt;div style=&quot;font-weight:bold; font-size:18px; color:#FFFFFF; margin-bottom:6px;&quot;&gt;Anniversaries&lt;/div&gt;
+      &lt;div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:6px;&quot;&gt;Anniversaries&lt;/div&gt;
       &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
         
           &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:40px; overflow:hidden;&quot;&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:16px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Emma&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:4px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:4px;&quot;&gt;
                   
                     Fri 24 Jul
                   
                 &lt;/span&gt;
               &lt;/div&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:16px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Uncle Mark&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:4px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:4px;&quot;&gt;
                   
                     Sat 08 Aug
                   
                 &lt;/span&gt;
               &lt;/div&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:16px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Wedding anniversary&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:4px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:4px;&quot;&gt;
                   
                     Tue 01 Sep
                   
                 &lt;/span&gt;
               &lt;/div&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:16px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Grandma Sue&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:4px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:4px;&quot;&gt;
                   
                     Mon 14 Sep
                   
@@ -568,7 +547,7 @@
 &lt;html&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;title&gt;TRMNL X Dashboard — Creative&lt;/title&gt;
+&lt;title&gt;TRMNL X Dashboard — Creative Light&lt;/title&gt;
 &lt;style&gt;
   @font-face {
     font-family: &quot;TRMNL16&quot;;
@@ -609,17 +588,8 @@
   .panel {
     position: absolute;
     overflow: hidden;
-  }
-
-  .panel-light {
     background: #FFFFFF;
     border: 2px solid #555555;
-  }
-
-  .panel-dark {
-    background: #555555;
-    border: 2px solid #000000;
-    color: #FFFFFF;
   }
 
   /* Top row */
@@ -665,12 +635,14 @@
     font-weight: bold;
     font-size: 64px;
     line-height: 1.05;
+    color: #000000;
   }
 
   .date-line {
     font-size: 36px;
     line-height: 1.1;
     margin-top: 6px;
+    color: #000000;
   }
 
   .synced {
@@ -678,7 +650,7 @@
     right: 24px;
     bottom: 12px;
     font-size: 24px;
-    color: #FFFFFF;
+    color: #555555;
   }
 &lt;/style&gt;
 &lt;/head&gt;
@@ -695,7 +667,7 @@
 
 &lt;div class=&quot;page&quot;&gt;
   
-  &lt;div class=&quot;panel panel-dark date-panel&quot;&gt;
+  &lt;div class=&quot;panel date-panel&quot;&gt;
     &lt;div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:24px;&quot;&gt;
       &lt;div class=&quot;day-name&quot;&gt;Tuesday&lt;/div&gt;
       &lt;div class=&quot;date-line&quot;&gt;21 July&lt;/div&gt;
@@ -704,7 +676,7 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-light weather-panel&quot;&gt;
+  &lt;div class=&quot;panel weather-panel&quot;&gt;
     &lt;div style=&quot;height:100%; padding:20px; box-sizing:border-box; display:flex; gap:16px;&quot;&gt;
       
       &lt;div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;&gt;
@@ -751,17 +723,17 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-light upcoming-panel&quot;&gt;
+  &lt;div class=&quot;panel upcoming-panel&quot;&gt;
     
 &lt;div style=&quot;padding:20px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
-  &lt;div style=&quot;font-weight:bold; font-size:32px; color:#000000; margin-bottom:20px;&quot;&gt;
+  &lt;div style=&quot;font-weight:bold; font-size:34px; color:#000000; margin-bottom:20px;&quot;&gt;
     Upcoming
   &lt;/div&gt;
   &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
     
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -775,7 +747,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -789,7 +761,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -803,7 +775,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -817,7 +789,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -831,7 +803,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -845,7 +817,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -859,7 +831,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -873,7 +845,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -887,7 +859,7 @@
       &lt;/div&gt;
     
       
-      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:42px; font-size:28px; color:#000000;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
           
             
@@ -907,12 +879,12 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-light tasks-panel&quot;&gt;
+  &lt;div class=&quot;panel tasks-panel&quot;&gt;
     
 
 
 &lt;div style=&quot;padding:20px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
-  &lt;div style=&quot;font-size:32px; color:#000000; margin-bottom:20px;&quot;&gt;
+  &lt;div style=&quot;font-size:34px; color:#000000; margin-bottom:20px;&quot;&gt;
     &lt;span style=&quot;font-weight:bold;&quot;&gt;Tasks&lt;/span&gt; - 2 due (!)
   &lt;/div&gt;
   &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
@@ -920,7 +892,7 @@
     
       
       
-      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:42px;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
@@ -931,7 +903,7 @@
     
       
       
-      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:42px;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
@@ -942,7 +914,7 @@
     
       
       
-      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:42px;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
@@ -953,7 +925,7 @@
     
       
       
-      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:42px;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
@@ -964,7 +936,7 @@
     
       
       
-      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:42px;&quot;&gt;
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
         &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
           
         &lt;/div&gt;
@@ -980,43 +952,43 @@
   &lt;/div&gt;
 
   
-  &lt;div class=&quot;panel panel-dark anniv-panel&quot;&gt;
+  &lt;div class=&quot;panel anniv-panel&quot;&gt;
     &lt;div style=&quot;padding:24px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
-      &lt;div style=&quot;font-weight:bold; font-size:36px; color:#FFFFFF; margin-bottom:16px;&quot;&gt;Anniversaries&lt;/div&gt;
+      &lt;div style=&quot;font-weight:bold; font-size:34px; color:#000000; margin-bottom:16px;&quot;&gt;Anniversaries&lt;/div&gt;
       &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
         
           &lt;div style=&quot;display:flex; align-items:center; gap:40px; height:80px; overflow:hidden;&quot;&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Emma&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:8px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:8px;&quot;&gt;
                   
                     Fri 24 Jul
                   
                 &lt;/span&gt;
               &lt;/div&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Uncle Mark&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:8px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:8px;&quot;&gt;
                   
                     Sat 08 Aug
                   
                 &lt;/span&gt;
               &lt;/div&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Wedding anniversary&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:8px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:8px;&quot;&gt;
                   
                     Tue 01 Sep
                   
                 &lt;/span&gt;
               &lt;/div&gt;
             
-              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#FFFFFF;&quot;&gt;
+              &lt;div style=&quot;white-space:nowrap; font-size:30px; color:#000000;&quot;&gt;
                 &lt;span style=&quot;font-weight:bold;&quot;&gt;Grandma Sue&lt;/span&gt;
-                &lt;span style=&quot;color:#AAAAAA; margin-left:8px;&quot;&gt;
+                &lt;span style=&quot;color:#555555; margin-left:8px;&quot;&gt;
                   
                     Mon 14 Sep
                   

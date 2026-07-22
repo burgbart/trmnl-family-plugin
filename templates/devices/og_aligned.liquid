@@ -2,9 +2,10 @@
   devices/og_aligned.liquid — TRMNL OG (800x480) "aligned" layout.
 
   The header is constrained to the left column and shares its right edge with
-  the Upcoming section. This lets the Tasks panel start at the very top of the
-  right column, visually aligned with the top bar. Weather lives inside the
-  left-column header, to the right of the day/date block.
+  the Upcoming section. Tasks starts at the very top of the right column.
+
+  Uses the original simple weather partial in the header.
+  Upcoming and Tasks panels use tighter line-heights so more rows fit.
 
   Layout:
     1. Header        (10,10)-(490,100)   day/date (left) + weather (right)
@@ -133,6 +134,7 @@
     height: 165px;
   }
 </style>
+
 <div class="page">
   <div class="box header">
     <div class="day-date">
@@ -140,29 +142,29 @@
       <div class="date-line">{{ meta.reference_date | date: "%d %B" }}</div>
     </div>
     <div class="weather">
-      {% render 'partials/weather', weather: weather, font_size_large: 34,
-         font_size_tiny: 13, icon_size: 40, padding: 10 %}
+      {% render 'partials/weather', weather: weather,
+         font_size_large: 34, font_size_tiny: 13, icon_size: 40, padding: 10 %}
     </div>
   </div>
 
   <div class="box calendar">
     <div class="calendar-inner">
       {% render 'partials/calendar', events: events, error: errors.events, today: meta.reference_date,
-         max_events: 10, font_size_medium: 18, font_size_small: 16,
-         line_height: 28, padding: 10 %}
+         max_events: 12, font_size_medium: 18, font_size_small: 16,
+         line_height: 26, padding: 10 %}
       <div class="synced">Synced {{ meta.generated_at | date: "%H:%M" }} {{ meta.generated_at | date: "%d/%m" }}</div>
     </div>
   </div>
 
   <div class="box tasks">
     {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
-       max_tasks: 8, checkbox_size: 12, font_size_medium: 18,
-       font_size_small: 16, line_height: 28, padding: 10 %}
+       max_tasks: 9, checkbox_size: 12, font_size_medium: 18,
+       font_size_small: 16, line_height: 26, padding: 10 %}
   </div>
 
   <div class="box birthdays">
     {% render 'partials/birthdays', birthdays: birthdays, error: errors.birthdays, today: meta.reference_date,
        max_birthdays: 4, font_size_medium: 18, font_size_small: 16,
-       line_height: 28, padding: 10 %}
+       line_height: 26, padding: 10 %}
   </div>
 </div>

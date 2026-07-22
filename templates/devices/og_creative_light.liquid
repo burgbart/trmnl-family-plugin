@@ -1,14 +1,15 @@
 {% comment %}
-  devices/og_creative.liquid — TRMNL OG (800x480) creative dashboard layout.
+  devices/og_creative_light.liquid — TRMNL OG (800x480) creative dashboard layout, light variant.
 
-  A modular, high-contrast take on the dashboard:
-    * Top-left dark panel: day + date + synced time.
-    * Top-right white panel: current weather + alert + 3-day forecast.
-    * Middle-left white panel: Upcoming calendar events.
-    * Middle-right white panel: Tasks.
-    * Bottom full-width dark panel: Anniversaries as a horizontal ticker.
+  A modular, high-contrast-but-light take on the dashboard:
+    * Top-left light panel: day + date + synced time.
+    * Top-right light panel: current weather + alert + 3-day forecast.
+    * Middle-left light panel: Upcoming calendar events (maximized).
+    * Middle-right light panel: Tasks (maximized).
+    * Bottom full-width light panel: Anniversaries as a horizontal ticker.
 
   Uses only the four-level grayscale palette: #000000, #555555, #AAAAAA, #FFFFFF.
+  #555555 is used only for borders and text, never as a panel fill.
   Top-level render context: meta, weather, events, tasks, birthdays, errors.
 {% endcomment %}
 <style>
@@ -51,17 +52,8 @@
   .panel {
     position: absolute;
     overflow: hidden;
-  }
-
-  .panel-light {
     background: #FFFFFF;
     border: 2px solid #555555;
-  }
-
-  .panel-dark {
-    background: #555555;
-    border: 2px solid #000000;
-    color: #FFFFFF;
   }
 
   /* Top row: date (left) + weather (right) */
@@ -107,12 +99,14 @@
     font-weight: bold;
     font-size: 30px;
     line-height: 1.1;
+    color: #000000;
   }
 
   .date-line {
     font-size: 18px;
     line-height: 1.1;
     margin-top: 4px;
+    color: #000000;
   }
 
   .synced {
@@ -120,7 +114,7 @@
     right: 10px;
     bottom: 6px;
     font-size: 12px;
-    color: #FFFFFF;
+    color: #555555;
   }
 </style>
 
@@ -135,7 +129,7 @@
 
 <div class="page">
   {% comment %} Date header {% endcomment %}
-  <div class="panel panel-dark date-panel">
+  <div class="panel date-panel">
     <div style="display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;">
       <div class="day-name">{{ meta.reference_date | date: "%A" }}</div>
       <div class="date-line">{{ meta.reference_date | date: "%d %B" }}</div>
@@ -144,7 +138,7 @@
   </div>
 
   {% comment %} Weather: current left + 3-day forecast right {% endcomment %}
-  <div class="panel panel-light weather-panel">
+  <div class="panel weather-panel">
     <div style="height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;">
       {% comment %} Left: current weather (~45%) {% endcomment %}
       <div style="flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;">
@@ -175,35 +169,35 @@
   </div>
 
   {% comment %} Upcoming events {% endcomment %}
-  <div class="panel panel-light upcoming-panel">
+  <div class="panel upcoming-panel">
     {% render 'partials/calendar', events: events, error: errors.events, today: meta.reference_date,
-       max_events: 10, font_size_medium: 16, font_size_small: 15,
+       max_events: 9, font_size_medium: 17, font_size_small: 15,
        line_height: 22, padding: 8 %}
   </div>
 
   {% comment %} Tasks {% endcomment %}
-  <div class="panel panel-light tasks-panel">
+  <div class="panel tasks-panel">
     {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
-       max_tasks: 10, checkbox_size: 12, font_size_medium: 16,
+       max_tasks: 9, checkbox_size: 11, font_size_medium: 17,
        font_size_small: 15, line_height: 22, padding: 8 %}
   </div>
 
   {% comment %} Anniversaries ticker {% endcomment %}
-  <div class="panel panel-dark anniv-panel">
+  <div class="panel anniv-panel">
     <div style="padding:10px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
-      <div style="font-weight:bold; font-size:18px; color:#FFFFFF; margin-bottom:6px;">Anniversaries</div>
+      <div style="font-weight:bold; font-size:17px; color:#000000; margin-bottom:6px;">Anniversaries</div>
       <div style="flex:1 1 auto; overflow:hidden;">
         {% if errors.birthdays %}
-          <div style="font-size:16px; font-weight:bold; color:#FFFFFF;">(!) Not loaded</div>
-          <div style="font-size:14px; color:#FFFFFF; margin-top:4px;">{{ errors.birthdays }}</div>
+          <div style="font-size:15px; font-weight:bold; color:#000000;">(!) Not loaded</div>
+          <div style="font-size:13px; color:#555555; margin-top:4px;">{{ errors.birthdays }}</div>
         {% elsif birthdays.size == 0 %}
-          <div style="font-size:16px; color:#FFFFFF;">No upcoming dates</div>
+          <div style="font-size:15px; color:#555555;">No upcoming dates</div>
         {% else %}
           <div style="display:flex; align-items:center; gap:20px; height:40px; overflow:hidden;">
             {% for entry in birthdays limit: 4 %}
-              <div style="white-space:nowrap; font-size:16px; color:#FFFFFF;">
+              <div style="white-space:nowrap; font-size:15px; color:#000000;">
                 <span style="font-weight:bold;">{{ entry.name }}</span>
-                <span style="color:#AAAAAA; margin-left:4px;">
+                <span style="color:#555555; margin-left:4px;">
                   {% if entry.date == meta.reference_date %}
                     Today!
                   {% else %}
