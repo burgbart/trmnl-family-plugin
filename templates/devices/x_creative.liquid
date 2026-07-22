@@ -1,0 +1,196 @@
+{% comment %}
+  devices/x_creative.liquid — TRMNL X (1872x1404) creative dashboard layout.
+
+  Scales the OG creative mosaic to the larger TRMNL X canvas:
+    * Top-left dark panel: day + date + synced time.
+    * Top-right white panel: weather.
+    * Middle-left white panel: Upcoming calendar events.
+    * Middle-right white panel: Tasks.
+    * Bottom full-width dark panel: Anniversaries as a horizontal ticker.
+
+  Uses only the four-level grayscale palette: #000000, #555555, #AAAAAA, #FFFFFF.
+  Top-level render context: meta, weather, events, tasks, birthdays, errors.
+{% endcomment %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TRMNL X Dashboard — Creative</title>
+<style>
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Regular.ttf") format("truetype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: "TRMNL21";
+    src: url("../../assets/TRMNL21-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1872px;
+    height: 1404px;
+    background: #AAAAAA;
+    font-family: "TRMNL16", Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 1872px;
+    height: 1404px;
+    padding: 24px;
+  }
+
+  .panel {
+    position: absolute;
+    overflow: hidden;
+  }
+
+  .panel-light {
+    background: #FFFFFF;
+    border: 2px solid #555555;
+  }
+
+  .panel-dark {
+    background: #555555;
+    border: 2px solid #000000;
+    color: #FFFFFF;
+  }
+
+  /* Top row */
+  .date-panel {
+    left: 24px;
+    top: 24px;
+    width: 912px;
+    height: 180px;
+  }
+
+  .weather-panel {
+    left: 960px;
+    top: 24px;
+    width: 888px;
+    height: 180px;
+  }
+
+  /* Middle row */
+  .upcoming-panel {
+    left: 24px;
+    top: 228px;
+    width: 1098px;
+    height: 678px;
+  }
+
+  .tasks-panel {
+    left: 1146px;
+    top: 228px;
+    width: 702px;
+    height: 678px;
+  }
+
+  /* Bottom row */
+  .anniv-panel {
+    left: 24px;
+    top: 930px;
+    width: 1824px;
+    height: 450px;
+  }
+
+  .day-name {
+    font-family: "TRMNL21", "TRMNL16", Arial, sans-serif;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 1.05;
+  }
+
+  .date-line {
+    font-size: 36px;
+    line-height: 1.1;
+    margin-top: 6px;
+  }
+
+  .synced {
+    position: absolute;
+    right: 24px;
+    bottom: 12px;
+    font-size: 24px;
+    color: #FFFFFF;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  {% comment %} Date header {% endcomment %}
+  <div class="panel panel-dark date-panel">
+    <div style="display:flex; flex-direction:column; justify-content:center; height:100%; padding:24px;">
+      <div class="day-name">{{ meta.reference_date | date: "%A" }}</div>
+      <div class="date-line">{{ meta.reference_date | date: "%d %B" }}</div>
+    </div>
+    <div class="synced">Synced {{ meta.generated_at | date: "%H:%M %d/%m" }}</div>
+  </div>
+
+  {% comment %} Weather {% endcomment %}
+  <div class="panel panel-light weather-panel">
+    <div style="height:100%; padding:24px;">
+      {% render 'partials/weather', weather: weather, font_size_large: 72,
+         font_size_tiny: 24, icon_size: 90, padding: 24 %}
+    </div>
+  </div>
+
+  {% comment %} Upcoming events {% endcomment %}
+  <div class="panel panel-light upcoming-panel">
+    {% render 'partials/calendar', events: events, error: errors.events, today: meta.reference_date,
+       max_events: 10, font_size_medium: 36, font_size_small: 30,
+       line_height: 44, padding: 24 %}
+  </div>
+
+  {% comment %} Tasks {% endcomment %}
+  <div class="panel panel-light tasks-panel">
+    {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
+       max_tasks: 10, checkbox_size: 26, font_size_medium: 36,
+       font_size_small: 30, line_height: 44, padding: 24 %}
+  </div>
+
+  {% comment %} Anniversaries ticker {% endcomment %}
+  <div class="panel panel-dark anniv-panel">
+    <div style="padding:24px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
+      <div style="font-weight:bold; font-size:36px; color:#FFFFFF; margin-bottom:16px;">Anniversaries</div>
+      <div style="flex:1 1 auto; overflow:hidden;">
+        {% if errors.birthdays %}
+          <div style="font-size:30px; font-weight:bold; color:#FFFFFF;">(!) Not loaded</div>
+          <div style="font-size:24px; color:#FFFFFF; margin-top:12px;">{{ errors.birthdays }}</div>
+        {% elsif birthdays.size == 0 %}
+          <div style="font-size:30px; color:#FFFFFF;">No upcoming dates</div>
+        {% else %}
+          <div style="display:flex; align-items:center; gap:40px; height:80px; overflow:hidden;">
+            {% for entry in birthdays limit: 6 %}
+              <div style="white-space:nowrap; font-size:30px; color:#FFFFFF;">
+                <span style="font-weight:bold;">{{ entry.name }}</span>
+                <span style="color:#AAAAAA; margin-left:8px;">
+                  {% if entry.date == meta.reference_date %}
+                    Today!
+                  {% else %}
+                    {{ entry.date | date: "%a %d %b" }}
+                  {% endif %}
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

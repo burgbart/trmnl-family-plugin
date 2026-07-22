@@ -29,6 +29,16 @@ _DEFAULT_INPUT = Path("templates/dummy_dashboard.json")
 _DEFAULT_OUTPUT = Path("preview.html")
 
 
+def _parse_device_template(value: str) -> tuple[str, str]:
+    """Parse a --device-template value as "device_name:template_path"."""
+    if ":" not in value:
+        raise argparse.ArgumentTypeError(
+            "--device-template must be in the form device_name:template_path"
+        )
+    device_name, template_path = value.split(":", 1)
+    return device_name.strip(), template_path.strip()
+
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Render every device's Liquid template into one static preview.html."
@@ -42,6 +52,17 @@ def _parse_args() -> argparse.Namespace:
         "--output",
         default=str(_DEFAULT_OUTPUT),
         help=f"Path to write the static preview HTML (default: {_DEFAULT_OUTPUT}).",
+    )
+    parser.add_argument(
+        "--device-template",
+        dest="device_templates",
+        action="append",
+        type=_parse_device_template,
+        metavar="DEVICE:TEMPLATE",
+        help=(
+            "Override the Liquid template for a device, e.g. "
+            "og:devices/og_classic.liquid. Can be given multiple times."
+        ),
     )
     return parser.parse_args()
 
@@ -65,14 +86,22 @@ def _grayscale_filter_css(levels: int) -> str:
     return "grayscale(1)"
 
 
-def build_preview_html(data: dict, device_names: list[str] | None = None) -> str:
+def build_preview_html(
+    data: dict,
+    device_names: list[str] | None = None,
+    device_templates: dict[str, str] | None = None,
+) -> str:
     """Render every device with a template and compose the tabbed preview page.
 
     Args:
         data: Parsed dashboard-v2.json payload.
         device_names: Optional slugs (e.g. ["og"]) to restrict which device
             profiles are rendered. Defaults to every profile with a template.
+        device_templates: Optional mapping from device name to a custom
+            template path (relative to templates/) that overrides the
+            device's default template.
     """
+    device_templates = device_templates or {}
     devices = [p for p in _DEVICE_PROFILES.values() if p.template_filename is not None]
     if device_names is not None:
         devices = [p for p in devices if p.name in device_names]
@@ -82,7 +111,9 @@ def build_preview_html(data: dict, device_names: list[str] | None = None) -> str
     tabs: list[str] = []
     panels: list[str] = []
     for i, profile in enumerate(devices):
-        rendered_html = render(profile, data)
+        rendered_html = render(
+            profile, data, template_path=device_templates.get(profile.name)
+        )
         active = " active" if i == 0 else ""
         tabs.append(
             f'<button class="tab{active}" data-target="frame-{profile.name}" '
@@ -221,7 +252,8 @@ def main() -> None:
     output_path = Path(args.output)
 
     data = json.loads(input_path.read_text(encoding="utf-8"))
-    preview_html = build_preview_html(data)
+    device_templates = dict(args.device_templates) if args.device_templates else None
+    preview_html = build_preview_html(data, device_templates=device_templates)
 
     output_path.write_text(preview_html, encoding="utf-8")
     print(f"Wrote preview to {output_path} (from {input_path})")

@@ -1,0 +1,323 @@
+{% comment %}
+  devices/x_classic.liquid — TRMNL X (1872x1404) "classic" full-page template.
+
+  This is the X-scale version of the classic OG dashboard: a header with a
+  large day name and smaller date on the left and weather (text left, icon
+  right) on the right; an "Upcoming" section on the left using the original's
+  two-line event format (bold date/time line above the event title line); and
+  Tasks and Anniversaries stacked in the right column.
+
+  Expected top-level render context: the parsed dashboard-v2.json dict — meta,
+  weather, events, tasks, birthdays, errors (see templates/CONTRACT.md).
+{% endcomment %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TRMNL X Dashboard — Classic</title>
+<style>
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Regular.ttf") format("truetype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: "TRMNL21";
+    src: url("../../assets/TRMNL21-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1872px;
+    height: 1404px;
+    background: #AAAAAA;
+    font-family: "TRMNL16", Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 1872px;
+    height: 1404px;
+  }
+
+  .box {
+    position: absolute;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Header: (24,24)-(1848,204) => 1824x180 */
+  .header {
+    left: 24px;
+    top: 24px;
+    width: 1824px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+  }
+
+  .header .day-date {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header .day-name {
+    font-family: "TRMNL21", "TRMNL16", Arial, sans-serif;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 1.05;
+  }
+
+  .header .date-line {
+    font-size: 36px;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+
+  .header .weather {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 24px;
+  }
+
+  .header .weather-text {
+    text-align: right;
+    min-width: 0;
+  }
+
+  .header .weather-temp {
+    font-weight: bold;
+    font-size: 72px;
+    line-height: 1;
+  }
+
+  .header .weather-detail {
+    font-size: 24px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 480px;
+  }
+
+  .header .weather-icon {
+    flex: 0 0 auto;
+    width: 90px;
+    height: 90px;
+  }
+
+  /* Calendar/Upcoming: (24,228)-(1085,1380) => 1061x1152, ~58% width */
+  .calendar {
+    left: 24px;
+    top: 228px;
+    width: 1061px;
+    height: 1152px;
+  }
+
+  .calendar-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+  }
+
+  .calendar-title {
+    font-weight: bold;
+    font-size: 36px;
+    color: #000000;
+    margin-bottom: 24px;
+  }
+
+  .events {
+    position: relative;
+  }
+
+  .event-row {
+    height: 130px;
+    overflow: hidden;
+  }
+
+  .event-time {
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 44px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .event-title {
+    font-size: 36px;
+    line-height: 56px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .synced {
+    position: absolute;
+    right: 24px;
+    bottom: 12px;
+    font-size: 24px;
+    color: #000000;
+  }
+
+  /* Tasks: (1109,228)-(1848,870) => 739x642 */
+  .tasks {
+    left: 1109px;
+    top: 228px;
+    width: 739px;
+    height: 642px;
+  }
+
+  /* Anniversaries: (1109,894)-(1848,1380) => 739x486 */
+  .birthdays {
+    left: 1109px;
+    top: 894px;
+    width: 739px;
+    height: 486px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="box header">
+    <div class="day-date">
+      <div class="day-name">{{ meta.reference_date | date: "%A" }}</div>
+      <div class="date-line">{{ meta.reference_date | date: "%d %B" }}</div>
+    </div>
+    <div class="weather">
+      <div class="weather-text">
+        <div class="weather-temp">{{ weather.temperature }}&deg;C</div>
+        <div class="weather-detail">Feels {{ weather.feels_like }}&deg;C</div>
+        <div class="weather-detail">{{ weather.description }}</div>
+      </div>
+      <div class="weather-icon">
+        {% if weather.icon == "sun" %}
+          <svg viewBox="0 0 40 40" width="90" height="90" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="9" fill="none" stroke="#000000" stroke-width="2"/>
+            <g stroke="#000000" stroke-width="2">
+              <line x1="20" y1="1" x2="20" y2="7"/>
+              <line x1="20" y1="33" x2="20" y2="39"/>
+              <line x1="1" y1="20" x2="7" y2="20"/>
+              <line x1="33" y1="20" x2="39" y2="20"/>
+              <line x1="6.34" y1="6.34" x2="10.6" y2="10.6"/>
+              <line x1="29.4" y1="29.4" x2="33.66" y2="33.66"/>
+              <line x1="6.34" y1="33.66" x2="10.6" y2="29.4"/>
+              <line x1="29.4" y1="10.6" x2="33.66" y2="6.34"/>
+            </g>
+          </svg>
+        {% elsif weather.icon == "cloud" %}
+          <svg viewBox="0 0 40 40" width="90" height="90" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#000000" stroke-width="2">
+              <ellipse cx="14" cy="24" rx="9" ry="7"/>
+              <ellipse cx="24" cy="22" rx="10" ry="8"/>
+              <ellipse cx="20" cy="27" rx="12" ry="6"/>
+            </g>
+          </svg>
+        {% elsif weather.icon == "rain" %}
+          <svg viewBox="0 0 40 40" width="90" height="90" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#000000" stroke-width="2">
+              <ellipse cx="14" cy="16" rx="8" ry="6"/>
+              <ellipse cx="23" cy="14" rx="9" ry="7"/>
+              <ellipse cx="19" cy="19" rx="11" ry="5"/>
+            </g>
+            <g stroke="#000000" stroke-width="2">
+              <line x1="13" y1="28" x2="11" y2="36"/>
+              <line x1="20" y1="28" x2="18" y2="36"/>
+              <line x1="27" y1="28" x2="25" y2="36"/>
+            </g>
+          </svg>
+        {% else %}
+          <svg viewBox="0 0 40 40" width="90" height="90" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="14" r="7" fill="none" stroke="#000000" stroke-width="2"/>
+            <g stroke="#000000" stroke-width="2">
+              <line x1="26" y1="2" x2="26" y2="5"/>
+              <line x1="35" y1="14" x2="38" y2="14"/>
+              <line x1="32.5" y1="7.5" x2="34.5" y2="5.5"/>
+            </g>
+            <g fill="#ffffff" stroke="#000000" stroke-width="2">
+              <ellipse cx="13" cy="24" rx="9" ry="7"/>
+              <ellipse cx="22" cy="22" rx="10" ry="8"/>
+              <ellipse cx="18" cy="27" rx="12" ry="6"/>
+            </g>
+          </svg>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="box calendar">
+    <div class="calendar-inner">
+      <div class="calendar-title">Upcoming</div>
+      <div class="events">
+        {% if errors.events %}
+          <div style="font-size:36px; font-weight:bold; color:#000000;">(!) Not loaded</div>
+          <div style="font-size:36px; color:#000000; margin-top:12px;">{{ errors.events }}</div>
+        {% else %}
+          {% for event in events limit: 8 %}
+            {% assign event_date = event.start | slice: 0, 10 %}
+            <div class="event-row">
+              <div class="event-time">
+                {% if event.all_day %}
+                  {% if event_date == meta.reference_date %}
+                    Today &middot; All day
+                  {% elsif event.end and event.end != event.start %}
+                    {{ event.start | date: "%a %d %b" }}&ndash;{{ event.end | date: "%a %d %b" }}
+                  {% else %}
+                    {{ event.start | date: "%a %d %b" }} &middot; All day
+                  {% endif %}
+                {% else %}
+                  {% if event_date == meta.reference_date %}
+                    Today {{ event.start | date: "%H:%M" }}&ndash;{{ event.end | date: "%H:%M" }}
+                  {% else %}
+                    {{ event.start | date: "%a %d %b" }} {{ event.start | date: "%H:%M" }}&ndash;{{ event.end | date: "%H:%M" }}
+                  {% endif %}
+                {% endif %}
+              </div>
+              <div class="event-title">{{ event.title }}</div>
+            </div>
+          {% else %}
+            <div style="font-size:36px; color:#000000;">No upcoming events</div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="synced">Synced {{ meta.generated_at | date: "%H:%M" }} {{ meta.generated_at | date: "%d/%m" }}</div>
+    </div>
+  </div>
+
+  <div class="box tasks">
+    {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
+       max_tasks: 10, checkbox_size: 26, font_size_medium: 36,
+       font_size_small: 30, line_height: 44, padding: 24 %}
+  </div>
+
+  <div class="box birthdays">
+    {% render 'partials/birthdays', birthdays: birthdays, error: errors.birthdays, today: meta.reference_date,
+       max_birthdays: 6, font_size_medium: 36, font_size_small: 30,
+       line_height: 44, padding: 24 %}
+  </div>
+</div>
+</body>
+</html>

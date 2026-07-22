@@ -1,0 +1,168 @@
+{% comment %}
+  devices/og_aligned.liquid — TRMNL OG (800x480) "aligned" layout.
+
+  The header is constrained to the left column and shares its right edge with
+  the Upcoming section. This lets the Tasks panel start at the very top of the
+  right column, visually aligned with the top bar. Weather lives inside the
+  left-column header, to the right of the day/date block.
+
+  Layout:
+    1. Header        (10,10)-(490,100)   day/date (left) + weather (right)
+    2. Upcoming      (10,110)-(490,470)  full left column
+    3. Tasks         (500,10)-(790,295)  top-right, full-height start
+    4. Anniversaries (500,305)-(790,470) bottom-right
+
+  Top-level context: meta, weather, events, tasks, birthdays, errors.
+{% endcomment %}
+<style>
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Regular.ttf") format("truetype");
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: "TRMNL16";
+    src: url("../../assets/TRMNL16-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: "TRMNL21";
+    src: url("../../assets/TRMNL21-Bold.ttf") format("truetype");
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 800px;
+    height: 480px;
+    background: #AAAAAA;
+    font-family: "TRMNL16", Arial, Helvetica, sans-serif;
+    color: #000000;
+  }
+
+  .page {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    overflow: hidden;
+  }
+
+  .box {
+    position: absolute;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* 1. Header aligned to the left column only: (10,10)-(490,100) */
+  .header {
+    left: 10px;
+    top: 10px;
+    width: 480px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .header .day-date {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header .day-name {
+    font-family: "TRMNL21", "TRMNL16", Arial, sans-serif;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 1.1;
+  }
+
+  .header .date-line {
+    font-size: 18px;
+    line-height: 1.1;
+  }
+
+  .header .weather {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 220px;
+  }
+
+  /* 2. Upcoming: (10,110)-(490,470) => 480x360 */
+  .calendar {
+    left: 10px;
+    top: 110px;
+    width: 480px;
+    height: 360px;
+  }
+
+  .calendar-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .synced {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 13px;
+    color: #000000;
+  }
+
+  /* 3. Tasks: (500,10)-(790,295) => 290x285, starts at the top */
+  .tasks {
+    left: 500px;
+    top: 10px;
+    width: 290px;
+    height: 285px;
+  }
+
+  /* 4. Anniversaries: (500,305)-(790,470) => 290x165 */
+  .birthdays {
+    left: 500px;
+    top: 305px;
+    width: 290px;
+    height: 165px;
+  }
+</style>
+<div class="page">
+  <div class="box header">
+    <div class="day-date">
+      <div class="day-name">{{ meta.reference_date | date: "%A" }}</div>
+      <div class="date-line">{{ meta.reference_date | date: "%d %B" }}</div>
+    </div>
+    <div class="weather">
+      {% render 'partials/weather', weather: weather, font_size_large: 34,
+         font_size_tiny: 13, icon_size: 40, padding: 10 %}
+    </div>
+  </div>
+
+  <div class="box calendar">
+    <div class="calendar-inner">
+      {% render 'partials/calendar', events: events, error: errors.events, today: meta.reference_date,
+         max_events: 10, font_size_medium: 18, font_size_small: 16,
+         line_height: 28, padding: 10 %}
+      <div class="synced">Synced {{ meta.generated_at | date: "%H:%M" }} {{ meta.generated_at | date: "%d/%m" }}</div>
+    </div>
+  </div>
+
+  <div class="box tasks">
+    {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
+       max_tasks: 8, checkbox_size: 12, font_size_medium: 18,
+       font_size_small: 16, line_height: 28, padding: 10 %}
+  </div>
+
+  <div class="box birthdays">
+    {% render 'partials/birthdays', birthdays: birthdays, error: errors.birthdays, today: meta.reference_date,
+       max_birthdays: 4, font_size_medium: 18, font_size_small: 16,
+       line_height: 28, padding: 10 %}
+  </div>
+</div>
