@@ -194,6 +194,112 @@
     font-size: 12px;
     color: #555555;
   }
+
+  .date-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 10px;
+  }
+
+  /* Weather panel layout */
+  .weather-layout {
+    height: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 8px;
+  }
+
+  .weather-current {
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .weather-current-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .weather-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+  }
+
+  .weather-temperature {
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 1;
+    color: #000000;
+  }
+
+  .weather-feels-like {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    margin-left: 4px;
+  }
+
+  .weather-feels-like-label {
+    font-size: 11px;
+    color: #555555;
+    text-transform: lowercase;
+  }
+
+  .weather-feels-like-value {
+    font-size: 15px;
+    color: #000000;
+  }
+
+  .weather-description,
+  .weather-alert {
+    font-size: 14px;
+    line-height: 1.2;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .weather-alert {
+    margin-top: 2px;
+  }
+
+  .weather-forecast {
+    flex: 0 0 70%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .weather-forecast-day {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .weather-forecast-day-name,
+  .weather-forecast-temp {
+    font-size: 14px;
+    line-height: 1.1;
+    color: #000000;
+    white-space: nowrap;
+  }
+
+  .weather-forecast-icon {
+    width: 32px;
+    height: 32px;
+    margin: 4px 0;
+  }
 &lt;/style&gt;
 
 
@@ -208,7 +314,7 @@
 &lt;div class=&quot;page&quot;&gt;
   
   &lt;div class=&quot;panel date-panel&quot;&gt;
-    &lt;div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;&quot;&gt;
+    &lt;div class=&quot;date-content&quot;&gt;
       &lt;div class=&quot;day-name&quot;&gt;Tuesday&lt;/div&gt;
       &lt;div class=&quot;date-line&quot;&gt;21 July&lt;/div&gt;
     &lt;/div&gt;
@@ -217,49 +323,49 @@
 
   
   &lt;div class=&quot;panel weather-panel&quot;&gt;
-    &lt;div style=&quot;height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;&quot;&gt;
+    &lt;div class=&quot;weather-layout&quot;&gt;
       
-      &lt;div style=&quot;flex:0 0 30%; display:flex; flex-direction:column; justify-content:center;&quot;&gt;
-        &lt;div style=&quot;display:flex; align-items:center; gap:8px; margin-bottom:4px;&quot;&gt;
-          &lt;div style=&quot;width:32px; height:32px; flex:0 0 auto;&quot;&gt;
+      &lt;div class=&quot;weather-current&quot;&gt;
+        &lt;div class=&quot;weather-current-main&quot;&gt;
+          &lt;div class=&quot;weather-icon&quot;&gt;
             &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;circle cx=&quot;26&quot; cy=&quot;14&quot; r=&quot;7&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;26&quot; y1=&quot;2&quot; x2=&quot;26&quot; y2=&quot;5&quot;/&gt;&lt;line x1=&quot;35&quot; y1=&quot;14&quot; x2=&quot;38&quot; y2=&quot;14&quot;/&gt;&lt;line x1=&quot;32.5&quot; y1=&quot;7.5&quot; x2=&quot;34.5&quot; y2=&quot;5.5&quot;/&gt;&lt;/g&gt;&lt;g fill=&quot;#ffffff&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;13&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;22&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/&gt;&lt;ellipse cx=&quot;18&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
           &lt;/div&gt;
-          &lt;div style=&quot;font-weight:bold; font-size:26px; line-height:1; color:#000000;&quot;&gt;21&amp;deg;C&lt;/div&gt;
-          &lt;div style=&quot;display:flex; flex-direction:column; line-height:1; margin-left:4px;&quot;&gt;
-            &lt;div style=&quot;font-size:11px; color:#555555; text-transform:lowercase;&quot;&gt;real feel&lt;/div&gt;
-            &lt;div style=&quot;font-size:15px; color:#000000;&quot;&gt;19&amp;deg;C&lt;/div&gt;
+          &lt;div class=&quot;weather-temperature&quot;&gt;21&amp;deg;C&lt;/div&gt;
+          &lt;div class=&quot;weather-feels-like&quot;&gt;
+            &lt;div class=&quot;weather-feels-like-label&quot;&gt;real feel&lt;/div&gt;
+            &lt;div class=&quot;weather-feels-like-value&quot;&gt;19&amp;deg;C&lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
-        &lt;div style=&quot;font-size:14px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;Partly cloudy&lt;/div&gt;
+        &lt;div class=&quot;weather-description&quot;&gt;Partly cloudy&lt;/div&gt;
         
-          &lt;div style=&quot;font-size:14px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;&quot;&gt;Rain expected today&lt;/div&gt;
+          &lt;div class=&quot;weather-alert&quot;&gt;Rain expected today&lt;/div&gt;
         
       &lt;/div&gt;
       
-      &lt;div style=&quot;flex:0 0 70%; display:flex; gap:8px;&quot;&gt;
+      &lt;div class=&quot;weather-forecast&quot;&gt;
         
-          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
-            &lt;div style=&quot;font-size:14px; line-height:1.1; color:#000000; white-space:nowrap;&quot;&gt;Tue&lt;/div&gt;
-            &lt;div style=&quot;width:32px; height:32px; margin:4px 0;&quot;&gt;
+          &lt;div class=&quot;weather-forecast-day&quot;&gt;
+            &lt;div class=&quot;weather-forecast-day-name&quot;&gt;Tue&lt;/div&gt;
+            &lt;div class=&quot;weather-forecast-icon&quot;&gt;
               &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;14&quot; cy=&quot;16&quot; rx=&quot;8&quot; ry=&quot;6&quot;/&gt;&lt;ellipse cx=&quot;23&quot; cy=&quot;14&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;19&quot; cy=&quot;19&quot; rx=&quot;11&quot; ry=&quot;5&quot;/&gt;&lt;/g&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;13&quot; y1=&quot;28&quot; x2=&quot;11&quot; y2=&quot;36&quot;/&gt;&lt;line x1=&quot;20&quot; y1=&quot;28&quot; x2=&quot;18&quot; y2=&quot;36&quot;/&gt;&lt;line x1=&quot;27&quot; y1=&quot;28&quot; x2=&quot;25&quot; y2=&quot;36&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
             &lt;/div&gt;
-            &lt;div style=&quot;font-size:14px; line-height:1.1; color:#000000;&quot;&gt;20&amp;deg;/15&amp;deg;&lt;/div&gt;
+            &lt;div class=&quot;weather-forecast-temp&quot;&gt;20&amp;deg;/15&amp;deg;&lt;/div&gt;
           &lt;/div&gt;
         
-          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
-            &lt;div style=&quot;font-size:14px; line-height:1.1; color:#000000; white-space:nowrap;&quot;&gt;Wed&lt;/div&gt;
-            &lt;div style=&quot;width:32px; height:32px; margin:4px 0;&quot;&gt;
+          &lt;div class=&quot;weather-forecast-day&quot;&gt;
+            &lt;div class=&quot;weather-forecast-day-name&quot;&gt;Wed&lt;/div&gt;
+            &lt;div class=&quot;weather-forecast-icon&quot;&gt;
               &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;20&quot; y1=&quot;1&quot; x2=&quot;20&quot; y2=&quot;7&quot;/&gt;&lt;line x1=&quot;20&quot; y1=&quot;33&quot; x2=&quot;20&quot; y2=&quot;39&quot;/&gt;&lt;line x1=&quot;1&quot; y1=&quot;20&quot; x2=&quot;7&quot; y2=&quot;20&quot;/&gt;&lt;line x1=&quot;33&quot; y1=&quot;20&quot; x2=&quot;39&quot; y2=&quot;20&quot;/&gt;&lt;line x1=&quot;6.34&quot; y1=&quot;6.34&quot; x2=&quot;10.6&quot; y2=&quot;10.6&quot;/&gt;&lt;line x1=&quot;29.4&quot; y1=&quot;29.4&quot; x2=&quot;33.66&quot; y2=&quot;33.66&quot;/&gt;&lt;line x1=&quot;6.34&quot; y1=&quot;33.66&quot; x2=&quot;10.6&quot; y2=&quot;29.4&quot;/&gt;&lt;line x1=&quot;29.4&quot; y1=&quot;10.6&quot; x2=&quot;33.66&quot; y2=&quot;6.34&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
             &lt;/div&gt;
-            &lt;div style=&quot;font-size:14px; line-height:1.1; color:#000000;&quot;&gt;24&amp;deg;/16&amp;deg;&lt;/div&gt;
+            &lt;div class=&quot;weather-forecast-temp&quot;&gt;24&amp;deg;/16&amp;deg;&lt;/div&gt;
           &lt;/div&gt;
         
-          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
-            &lt;div style=&quot;font-size:14px; line-height:1.1; color:#000000; white-space:nowrap;&quot;&gt;Thu&lt;/div&gt;
-            &lt;div style=&quot;width:32px; height:32px; margin:4px 0;&quot;&gt;
+          &lt;div class=&quot;weather-forecast-day&quot;&gt;
+            &lt;div class=&quot;weather-forecast-day-name&quot;&gt;Thu&lt;/div&gt;
+            &lt;div class=&quot;weather-forecast-icon&quot;&gt;
               &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;14&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;24&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/&gt;&lt;ellipse cx=&quot;20&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
             &lt;/div&gt;
-            &lt;div style=&quot;font-size:14px; line-height:1.1; color:#000000;&quot;&gt;22&amp;deg;/17&amp;deg;&lt;/div&gt;
+            &lt;div class=&quot;weather-forecast-temp&quot;&gt;22&amp;deg;/17&amp;deg;&lt;/div&gt;
           &lt;/div&gt;
         
       &lt;/div&gt;
