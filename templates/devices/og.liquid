@@ -186,33 +186,51 @@
        font_size_small: 15, line_height: 22, padding: 8 %}
   </div>
 
-  {% comment %} Anniversaries: title left, 2 columns right, bottom-aligned {% endcomment %}
+  {% comment %} Anniversaries: 3 equal columns — title + 2 columns of 4 {% endcomment %}
   <div class="panel anniv-panel">
-    <div style="padding:10px; height:100%; box-sizing:border-box; display:flex; align-items:flex-end; gap:10px;">
-      <div style="font-weight:bold; font-size:17px; color:#000000; line-height:1; padding-bottom:2px;">Anniversaries</div>
-      <div style="flex:1 1 auto; overflow:hidden; height:100%;">
-        {% if errors.birthdays %}
+    <div style="padding:10px; height:100%; box-sizing:border-box; display:flex; gap:10px;">
+      <div style="flex:1 1 0;">
+        <div style="font-weight:bold; font-size:17px; color:#000000; line-height:1;">Anniversaries</div>
+      </div>
+      {% if errors.birthdays %}
+        <div style="flex:2 1 0;">
           <div style="font-size:15px; font-weight:bold; color:#000000;">(!) Not loaded</div>
           <div style="font-size:13px; color:#555555; margin-top:4px;">{{ errors.birthdays }}</div>
-        {% elsif birthdays.size == 0 %}
+        </div>
+      {% elsif birthdays.size == 0 %}
+        <div style="flex:2 1 0;">
           <div style="font-size:15px; color:#555555;">No upcoming dates</div>
-        {% else %}
-          <div style="display:flex; flex-wrap:wrap; align-content:flex-end; gap:2px 10px; height:100%;">
-            {% for entry in birthdays limit: 6 %}
-              <div style="flex:0 0 calc(50% - 5px); display:flex; align-items:baseline; gap:6px; font-size:13px; line-height:15px; color:#000000; white-space:nowrap; overflow:hidden;">
-                <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
-                <span style="color:#555555; flex:0 0 auto;">
-                  {% if entry.date == meta.reference_date %}
-                    Today!
-                  {% else %}
-                    {{ entry.date | date: "%a %d %b" }}
-                  {% endif %}
-                </span>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      </div>
+        </div>
+      {% else %}
+        <div style="flex:1 1 0; overflow:hidden;">
+          {% for entry in birthdays limit: 4 %}
+            <div style="display:flex; align-items:baseline; gap:6px; font-size:13px; line-height:15px; color:#000000; white-space:nowrap; overflow:hidden;">
+              <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
+              <span style="color:#555555; flex:0 0 auto;">
+                {% if entry.date == meta.reference_date %}
+                  Today!
+                {% else %}
+                  {{ entry.date | date: "%a %d %b" }}
+                {% endif %}
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+        <div style="flex:1 1 0; overflow:hidden;">
+          {% for entry in birthdays offset: 4 limit: 4 %}
+            <div style="display:flex; align-items:baseline; gap:6px; font-size:13px; line-height:15px; color:#000000; white-space:nowrap; overflow:hidden;">
+              <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
+              <span style="color:#555555; flex:0 0 auto;">
+                {% if entry.date == meta.reference_date %}
+                  Today!
+                {% else %}
+                  {{ entry.date | date: "%a %d %b" }}
+                {% endif %}
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
