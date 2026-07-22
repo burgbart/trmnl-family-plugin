@@ -1,9 +1,13 @@
 name: Generate dashboard JSON
 
 on:
-  # Manual only for now — no schedule trigger. Re-add a `schedule:` block
-  # (e.g. hourly, 06:00-23:00 Europe/Amsterdam -> cron "0 4-21 * * *" UTC)
-  # once automatic runs are wanted again.
+  # Hourly, but skip the 23:00-06:00 Europe/Amsterdam quiet hours.
+  # GitHub Actions cron is UTC-only, so this is pinned to CEST (UTC+2, summer
+  # time): 06:00-23:00 Amsterdam -> 04-21 UTC. During CET (winter, UTC+1) the
+  # quiet window will drift an hour early/late — adjust to "0 5-22 * * *" if
+  # that matters, or revisit for a DST-aware solution.
+  schedule:
+    - cron: "0 4-21 * * *"
   workflow_dispatch: {}
 
 jobs:
