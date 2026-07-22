@@ -187,7 +187,7 @@ class TestParseTerminalData:
 
 class TestLoadJson:
     def test_loads_local_json_file(self, tmp_path: Path):
-        json_path = tmp_path / "dashboard.json"
+        json_path = tmp_path / "dashboard-v2.json"
         sample = _make_sample_json()
         json_path.write_text(json.dumps(sample), encoding="utf-8")
         loaded = load_json(str(json_path))
@@ -201,4 +201,4 @@ class TestResolveInputPath:
     def test_defaults_to_local_file(self, monkeypatch):
         monkeypatch.delenv("DASHBOARD_JSON_URL", raising=False)
         monkeypatch.delenv("CLOUDFLARE_R2_PUBLIC_URL", raising=False)
-        assert resolve_input_path() == "output/dashboard.json"
+        assert resolve_input_path() == "output/dashboard-v2.json"

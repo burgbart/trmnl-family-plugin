@@ -209,3 +209,26 @@ def test_footer_uses_dim_for_days_beyond_7():
         if span.start <= start < span.end
     ]
     assert any("dim" in str(style) for style in span_styles)
+
+
+def test_render_shows_error_panels_when_sources_failed():
+    """When errors are present, the terminal dashboard renders error panels."""
+    data = TerminalData(
+        weather=Weather(description="Clear", temperature=0, feels_like=0, icon="sun"),
+        calendars=[],
+        task_lists=[],
+        birthdays=[],
+        errors={
+            "events": "Calendar not configured",
+            "tasks": "TickTick not configured",
+            "birthdays": "Calendar not configured",
+        },
+    )
+    console = Console(width=100, height=40, record=True)
+    layout = render(data, console)
+    with console.capture() as capture:
+        console.print(layout)
+    rendered = capture.get()
+    assert "(!) Not loaded" in rendered
+    assert "Calendar not configured" in rendered
+    assert "TickTick not configured" in rendered

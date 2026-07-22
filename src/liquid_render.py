@@ -1,4 +1,4 @@
-"""Render a device's Liquid template against parsed dashboard.json data.
+"""Render a device's Liquid template against parsed dashboard-v2.json data.
 
 Uses python-liquid with a `FileSystemLoader` pointed at the repo's
 `templates/` directory. The loader is constructed with `ext=".liquid"`, so
@@ -26,7 +26,7 @@ def render(device_profile: DeviceProfile | str, data: dict) -> str:
 
     `device_profile` may be a `DeviceProfile` instance or a device name
     string (e.g. "og"/"x"), which is resolved via `get_device_profile()`.
-    `data` is the parsed dashboard.json dict (meta/weather/events/tasks/
+    `data` is the parsed dashboard-v2.json dict (meta/weather/events/tasks/
     birthdays — see templates/CONTRACT.md) and is passed directly as the
     top-level Liquid render context; the device templates own all
     sizing/layout values themselves and don't expect them injected.

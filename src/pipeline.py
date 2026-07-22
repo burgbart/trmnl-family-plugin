@@ -1,7 +1,7 @@
 """Shared collect → render → [upload] pipeline.
 
 Both run_workflow_loop.py and server.py use this to run one full refresh cycle:
-fetch unified data, write dashboard.json, render the static Liquid preview.html,
+fetch unified data, write dashboard-v2.json, render the static Liquid preview.html,
 and optionally upload the JSON to Cloudflare R2.
 """
 
@@ -21,16 +21,16 @@ def run_pipeline(
     """Collect data, render the Liquid preview, and optionally upload to R2.
 
     Args:
-        output_dir: Directory to write ``dashboard.json`` and ``preview.html``.
+        output_dir: Directory to write ``dashboard-v2.json`` and ``preview.html``.
         devices:    Slugs of devices to include in the preview, e.g. ["og", "x"].
-        upload:     When True, upload dashboard.json to Cloudflare R2.
+        upload:     When True, upload dashboard-v2.json to Cloudflare R2.
 
     Returns:
         The :class:`~src.unified_fetcher.UnifiedData` from this run so callers
         can display or inspect it without re-parsing the written JSON.
     """
     from export_preview import build_preview_html
-    from src.config import CITY, get_reference_date
+    from src.config import CITY, DASHBOARD_JSON_FILENAME, get_reference_date
     from src.serialization import build_dashboard_payload
     from src.unified_fetcher import fetch_unified_data
 
@@ -46,10 +46,11 @@ def run_pipeline(
         city=CITY,
         reference_date=get_reference_date(),
         generated_at=generated_at,
+        errors=data.errors,
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    json_path = output_dir / "dashboard.json"
+    json_path = output_dir / DASHBOARD_JSON_FILENAME
     json_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
     preview_html = build_preview_html(payload, device_names=devices)

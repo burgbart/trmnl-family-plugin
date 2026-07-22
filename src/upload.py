@@ -14,6 +14,8 @@ from botocore.config import Config
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
+from src.config import DASHBOARD_JSON_FILENAME
+
 load_dotenv()
 
 
@@ -51,7 +53,7 @@ def upload_to_r2(
 
     Args:
         file_path: Local path to the file to upload.
-        key: Object key in the R2 bucket (e.g. "dashboard.json").
+        key: Object key in the R2 bucket (e.g. "dashboard-v2.json").
         bucket: R2 bucket name. Defaults to CLOUDFLARE_R2_BUCKET_NAME env var.
         content_type: MIME type for the uploaded object.
 
@@ -90,7 +92,7 @@ def upload_to_r2(
 
 def upload_json(
     file_path: str | Path,
-    key: str = "dashboard.json",
+    key: str = DASHBOARD_JSON_FILENAME,
     bucket: str | None = None,
 ) -> str:
     """Upload a JSON file to Cloudflare R2 and return the public URL.
@@ -110,6 +112,6 @@ def upload_json(
 if __name__ == "__main__":
     import sys
 
-    json_path = sys.argv[1] if len(sys.argv) > 1 else "output/dashboard.json"
+    json_path = sys.argv[1] if len(sys.argv) > 1 else f"output/{DASHBOARD_JSON_FILENAME}"
     url = upload_json(json_path)
     print(url)

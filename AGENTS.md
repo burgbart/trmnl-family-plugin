@@ -4,7 +4,7 @@ This file documents the project for AI coding agents. It reflects the actual sta
 
 ## Project overview
 
-`trmnl-home` collects household data (weather, calendar, tasks, birthdays) and publishes it as a single JSON file (`dashboard.json`). Rendering into an actual device image is **not** done by this repo — a [TRMNL private plugin](https://usetrmnl.com) polls the published JSON and renders it using Liquid templates (the same templating language Shopify/TRMNL use) that live in `templates/`. This repo also ships a local static-HTML preview (`export_preview.py` → `preview.html`) that renders the same Liquid templates via `python-liquid` so you can see the result without a physical device or a TRMNL account, plus a terminal dashboard that reads the same JSON.
+`trmnl-home` collects household data (weather, calendar, tasks, birthdays) and publishes it as a single JSON file (`dashboard-v2.json`). Rendering into an actual device image is **not** done by this repo — a [TRMNL private plugin](https://usetrmnl.com) polls the published JSON and renders it using Liquid templates (the same templating language Shopify/TRMNL use) that live in `templates/`. This repo also ships a local static-HTML preview (`export_preview.py` → `preview.html`) that renders the same Liquid templates via `python-liquid` so you can see the result without a physical device or a TRMNL account, plus a terminal dashboard that reads the same JSON.
 
 The dashboard displays:
 
@@ -13,15 +13,15 @@ The dashboard displays:
 - Tasks from a shared TickTick list
 - Upcoming anniversaries (birthdays and anniversary events) detected from Google Calendar events
 
-When API credentials are missing or a data source fails, the project falls back to **dummy data** so it can still be tested locally without secrets.
+When API credentials are missing or a data source fails, the dashboard renders an explicit **error state** (`(!) Not loaded`) for that section instead of silently showing fake data. The bundled dummy fixture (`templates/dummy_dashboard.json`) is still available for layout previews without credentials — pass it explicitly to `export_preview.py --input templates/dummy_dashboard.json`.
 
 This is the result of a rewrite (see `plan/PLAN.md`) away from an earlier Pillow/PNG-rendering architecture (`src/dashboard.py`, `run_local.py` — both deleted) toward the JSON+Liquid model described above. `plan/PLAN.md` and `plan/TASKS.md` are the authoritative record of what changed and why; consult them before assuming a PNG-era pattern still applies.
 
 The project supports three operational modes, all built on the same collect → JSON → [upload] flow:
 
-1. **GitHub Actions** — `.github/workflows/generate-dashboard.yml`, manually triggered (`workflow_dispatch`) for now — no schedule; collects data and publishes `dashboard.json` (+ `preview.html` as a workflow artifact) to Cloudflare R2.
+1. **GitHub Actions** — `.github/workflows/generate-dashboard.yml`, manually triggered (`workflow_dispatch`) for now — no schedule; collects data and publishes `dashboard-v2.json` (+ `preview.html` as a workflow artifact) to Cloudflare R2.
 2. **Local workflow loop** (`run_workflow_loop.py`) — runs the same collect → JSON → [upload] cycle on your own machine on a configurable interval.
-3. **Long-running server** (`server.py`) — always-on process with an HTTP endpoint serving `dashboard.json` and `preview.html` so a TRMNL device (or you, locally) can poll them.
+3. **Long-running server** (`server.py`) — always-on process with an HTTP endpoint serving `dashboard-v2.json` and `preview.html` so a TRMNL device (or you, locally) can poll them.
 
 ## Technology stack
 
@@ -40,7 +40,7 @@ The project supports three operational modes, all built on the same collect → 
 ├── .github/workflows/generate-dashboard.yml   # Scheduled CI workflow — collects data, publishes JSON
 ├── .venv/                                     # Python virtual environment
 ├── assets/*.ttf                               # TRMNL bitmap fonts, used by templates' @font-face rules
-├── output/dashboard.json                      # Latest collected data (local runs)
+├── output/dashboard-v2.json                      # Latest collected data (local runs)
 ├── plan/
 │   ├── PLAN.md                                # Current architecture plan (JSON + TRMNL Liquid plugin)
 │   ├── TASKS.md                                # Phase/task checklist
@@ -57,7 +57,7 @@ The project supports three operational modes, all built on the same collect → 
 │   ├── config.py                              # Environment-based configuration, DeviceProfile registry
 │   ├── data.py                                # Data classes + dummy data providers
 │   ├── fetcher.py                             # Simple aggregator (used by tests/older code)
-│   ├── json_loader.py                         # Loads and parses dashboard.json (URL or local)
+│   ├── json_loader.py                         # Loads and parses dashboard-v2.json (URL or local)
 │   ├── liquid_render.py                       # render(device_profile, data) -> HTML, via python-liquid
 │   ├── pipeline.py                            # Shared collect → JSON → [upload] cycle
 │   ├── serialization.py                       # JSON serialisation helpers
@@ -80,7 +80,7 @@ The project supports three operational modes, all built on the same collect → 
 │   ├── test_server.py                         # server.py HTTP handler + refresh tests
 │   ├── test_terminal_dashboard.py             # Terminal rendering + tab state tests
 │   └── test_upload.py                         # R2 upload helper tests
-├── collect_unified_data.py                    # CLI: collect unified data → dashboard.json
+├── collect_unified_data.py                    # CLI: collect unified data → dashboard-v2.json
 ├── export_preview.py                          # CLI: render all device templates → preview.html
 ├── run_workflow_loop.py                       # CLI: collect → JSON → [upload] loop
 ├── server.py                                  # CLI: long-running server (headless or terminal)
@@ -94,11 +94,11 @@ The project supports three operational modes, all built on the same collect → 
 ### Module responsibilities
 
 - `src/config.py` — Loads settings from environment variables (via `.env` if present). Defines `DeviceProfile`s for each supported device (dimensions, grayscale level count, Liquid template filename), a stub third-device profile proving the registry scales without code changes, location, API credentials, and dashboard limits.
-- `src/data.py` — Defines the core dataclasses (`Weather`, `CalendarEvent`, `Task`, `Birthday`) and provides dummy data generators used as fallbacks. `Birthday` includes a `kind` field (`birthday` or `anniversary`).
-- `src/liquid_render.py` — `render(device_profile, data)` renders a device's Liquid template (from `templates/devices/`) against a parsed `dashboard.json` dict, using `python-liquid` with a `FileSystemLoader(ext=".liquid")` so partials resolve by bare name inside `{% render %}` tags.
+- `src/data.py` — Defines the core dataclasses (`Weather`, `CalendarEvent`, `Task`, `Birthday`) and provides dummy data generators used for the explicit dummy fixture and low-level `fetch_*_or_dummy()` fallbacks. `Birthday` includes a `kind` field (`birthday` or `anniversary`).
+- `src/liquid_render.py` — `render(device_profile, data)` renders a device's Liquid template (from `templates/devices/`) against a parsed `dashboard-v2.json` dict, using `python-liquid` with a `FileSystemLoader(ext=".liquid")` so partials resolve by bare name inside `{% render %}` tags.
 - `src/unified_fetcher.py` — `fetch_unified_data()` fetches the union of dashboard + terminal sources once, deduplicates, and returns a `UnifiedData` object containing both aggregated and per-source (terminal) views. All callers that need to collect data use this instead of calling individual fetchers directly.
-- `src/pipeline.py` — `run_pipeline(output_dir, devices, upload=False)` runs one full collect → JSON → [upload] cycle: calls `fetch_unified_data()`, writes `dashboard.json`, renders `preview.html` via `export_preview.build_preview_html()`, and optionally uploads the JSON to R2. Used by `run_workflow_loop.py` and `server.py`.
-- `src/json_loader.py` — `load_json(path_or_url)` fetches `dashboard.json` from a URL or local path and deserialises it into dataclasses. `resolve_input_path()` determines the source (CLI arg → `DASHBOARD_JSON_URL` env var → Cloudflare public URL → `output/dashboard.json`).
+- `src/pipeline.py` — `run_pipeline(output_dir, devices, upload=False)` runs one full collect → JSON → [upload] cycle: calls `fetch_unified_data()`, writes `dashboard-v2.json`, renders `preview.html` via `export_preview.build_preview_html()`, and optionally uploads the JSON to R2. Used by `run_workflow_loop.py` and `server.py`.
+- `src/json_loader.py` — `load_json(path_or_url)` fetches `dashboard-v2.json` from a URL or local path and deserialises it into dataclasses. `resolve_input_path()` determines the source (CLI arg → `DASHBOARD_JSON_URL` env var → Cloudflare public URL → `output/dashboard-v2.json`).
 - `src/serialization.py` — `serialise()` recursively converts dataclasses/dates to JSON-safe types; `build_dashboard_payload()` builds the full JSON payload — the single source of truth for both the Liquid templates and the terminal dashboard.
 - `src/fetcher.py` — Legacy `fetch_all()` aggregator, still used by older tests. New code should use `src/unified_fetcher.py`.
 - `src/terminal_fetcher.py` — Defines `CalendarSource`, `TaskListSource`, and `TerminalData`; used by `unified_fetcher`. `fetch_terminal_data()` fetches directly from APIs (legacy path).
@@ -106,7 +106,7 @@ The project supports three operational modes, all built on the same collect → 
 - `src/weather.py` — Fetches current weather from Open-Meteo and maps WMO weather codes to short descriptions/icons.
 - `src/calendar.py` — Fetches upcoming events from Google Calendar using a service account. All datetimes are normalized to timezone-aware UTC to avoid naive/aware comparison errors. All-day events whose title contains a birthday keyword (`birthday`, `verjaardag`) or anniversary keyword (`anniversary`, `trouwdag`, `jubileum`) are treated as anniversaries: they are excluded from the main event list and shown only in the Anniversaries section. Timed events with one of these keywords in the title are treated as celebration parties and remain in the main event list. Celebrations are fetched with a wider 90-day lookahead and larger page size so they are not dropped behind busy calendars. The main event list can be filtered by attendee email (`CALENDAR_ATTENDEE_EMAILS`) and/or main calendar (`CALENDAR_MAIN_CALENDAR_ID`); when no filter is configured, all non-celebration events are shown. Anniversaries themselves are scoped by which calendar IDs are passed in (`GOOGLE_CALENDAR_IDS`/`TERMINAL_CALENDAR_IDS`), not by event creator/organizer — this lets shared calendars (e.g. a family calendar) hold events created by either household member.
 - `src/ticktick.py` — Fetches tasks from a TickTick shared list using the TickTick Developer API. Due tasks are moved to the top while preserving the user's custom sort order within each group.
-- `src/upload.py` — Cloudflare R2 upload helper for `dashboard.json` (`upload_json` / `upload_to_r2`).
+- `src/upload.py` — Cloudflare R2 upload helper for `dashboard-v2.json` (`upload_json` / `upload_to_r2`).
 - `export_preview.py` — `build_preview_html(payload, device_names)` renders every configured device profile that has a template via `src/liquid_render.py`, then wraps each in an `<iframe srcdoc="...">` inside one static `preview.html` with a JS tab toggle and a CSS `filter` approximation of each device's grayscale level count.
 
 ## Configuration
@@ -130,12 +130,12 @@ Create a `.env` file in the project root (see `.env.example`). Key variables:
 | `TERMINAL_CALENDAR_IDS` | Comma-separated calendar IDs for the terminal dashboard; falls back to `GOOGLE_CALENDAR_IDS` | — |
 | `TERMINAL_TICKTICK_LIST_IDS` | Comma-separated TickTick list IDs for the terminal dashboard; falls back to `TICKTICK_LIST_ID` | — |
 | `REFRESH_INTERVAL_SECONDS` | Seconds between automatic data/JSON refreshes in server mode | `60` |
-| `SERVER_PORT` | HTTP port for serving `dashboard.json`/`preview.html` in server mode | `8080` |
+| `SERVER_PORT` | HTTP port for serving `dashboard-v2.json`/`preview.html` in server mode | `8080` |
 | `SERVER_DEVICE` | Device(s) included in the rendered `preview.html` in server mode: `og`, `x`, or `both` | `both` |
 | `CLOUDFLARE_R2_ENDPOINT` | Cloudflare R2 S3 endpoint URL | — |
 | `CLOUDFLARE_R2_ACCESS_KEY_ID` | R2 API token access key ID | — |
 | `CLOUDFLARE_R2_SECRET_ACCESS_KEY` | R2 API token secret access key | — |
-| `CLOUDFLARE_R2_BUCKET_NAME` | R2 bucket that stores `dashboard.json` | — |
+| `CLOUDFLARE_R2_BUCKET_NAME` | R2 bucket that stores `dashboard-v2.json` | — |
 | `CLOUDFLARE_R2_PUBLIC_URL` | Public base URL for the bucket (custom domain or r2.dev) | — |
 
 ## Build and run commands
@@ -150,12 +150,12 @@ source .venv/Scripts/activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 
-# --- Data collection (writes output/dashboard.json) ---
-python collect_unified_data.py --output output/dashboard.json
+# --- Data collection (writes output/dashboard-v2.json) ---
+python collect_unified_data.py --output output/dashboard-v2.json
 
 # --- Local static preview (renders Liquid templates -> preview.html) ---
 python export_preview.py                                   # dummy fixture -> preview.html
-python export_preview.py --input output/dashboard.json     # real collected data
+python export_preview.py --input output/dashboard-v2.json     # real collected data
 
 # --- Local loop (collect + preview + optional upload on an interval) ---
 python run_workflow_loop.py                     # both devices, every 60 s
@@ -170,15 +170,15 @@ python server.py --port 9000 --interval 60
 
 # --- Interactive terminal dashboard (reads from Cloudflare or local JSON) ---
 python terminal_dashboard.py
-python terminal_dashboard.py --input output/dashboard.json
+python terminal_dashboard.py --input output/dashboard-v2.json
 python terminal_dashboard.py --env /path/to/.env.terminal
 
 # --- Tests ---
 pytest
 pytest --date 23-12-2026
 
-# --- Upload dashboard.json to R2 (requires R2 credentials in env) ---
-python -m src.upload output/dashboard.json
+# --- Upload dashboard-v2.json to R2 (requires R2 credentials in env) ---
+python -m src.upload output/dashboard-v2.json
 ```
 
 ## Testing instructions
@@ -198,7 +198,7 @@ Current test modules:
 - `tests/test_collect_unified_data.py` — `build_dashboard_payload` structure and serialisation.
 - `tests/test_pipeline.py` — `src/pipeline.run_pipeline` (JSON written, `preview.html` rendered, upload called).
 - `tests/test_run_workflow_loop.py` — Argument parsing and single-run behavior of `run_workflow_loop.py`.
-- `tests/test_server.py` — HTTP handler (serve/404 for `preview.html`/`dashboard.json`), arg parsing, and background refresh loop.
+- `tests/test_server.py` — HTTP handler (serve/404 for `preview.html`/`dashboard-v2.json`), arg parsing, and background refresh loop.
 - `tests/test_upload.py` — R2 upload helpers (JSON only).
 - `tests/test_fetcher.py` — `fetch_all` return types.
 
@@ -208,7 +208,7 @@ The project does not have integration tests for live Google Calendar or TickTick
 
 - Use `from __future__ import annotations` at the top of every Python file.
 - Prefer type hints; the codebase uses both `typing.Optional`/`List` and newer `X | Y` union syntax.
-- Data fetchers follow a consistent pattern: a real `fetch_*()` function plus a `fetch_*_or_dummy()` wrapper that catches exceptions and returns dummy data.
+- Data fetchers follow a consistent pattern: a real `fetch_*()` function plus a `fetch_*_or_dummy()` wrapper that catches exceptions and returns dummy data. The production pipeline (`src/unified_fetcher.fetch_unified_data()`) surfaces missing credentials and API failures as `errors` entries in the JSON payload rather than falling back to dummy data.
 - Use dataclasses in `src/data.py` as the common data model across modules.
 - Avoid adding new required environment variables; provide sensible defaults in `src/config.py`.
 - Liquid partials in `templates/partials/` are device-agnostic: they take sizing/spacing values as explicit `{% render %}` parameters rather than assuming a specific device's `DeviceProfile`. See `templates/CONTRACT.md` for the full variable contract before editing a partial or adding a new one.
@@ -217,17 +217,17 @@ The project does not have integration tests for live Google Calendar or TickTick
 
 The project supports three usage models, all built on the same collect → JSON → [upload] flow:
 
-**Data collection:** `collect_unified_data.py` (and `src/pipeline.run_pipeline()`) call `src/unified_fetcher.fetch_unified_data()`, which fetches all configured sources once (weather from Open-Meteo, events from Google Calendar, tasks from TickTick) in parallel and returns a `UnifiedData` object. The result is serialised via `src/serialization.build_dashboard_payload()` to `dashboard.json` and optionally uploaded to Cloudflare R2.
+**Data collection:** `collect_unified_data.py` (and `src/pipeline.run_pipeline()`) call `src/unified_fetcher.fetch_unified_data()`, which fetches all configured sources once (weather from Open-Meteo, events from Google Calendar, tasks from TickTick) in parallel and returns a `UnifiedData` object. The result is serialised via `src/serialization.build_dashboard_payload()` to `dashboard-v2.json` and optionally uploaded to Cloudflare R2.
 
-**Rendering:** rendering the actual device image happens **outside this repo**, inside a TRMNL private plugin configured with the Polling strategy against the published `dashboard.json` URL, using the Liquid markup in `templates/devices/`. Locally, `export_preview.py` renders the same templates via `src/liquid_render.render()` (python-liquid) into a static `preview.html` for visual iteration without a TRMNL account. The terminal dashboard is a separate, simpler consumer that reads the same JSON directly (no Liquid involved).
+**Rendering:** rendering the actual device image happens **outside this repo**, inside a TRMNL private plugin configured with the Polling strategy against the published `dashboard-v2.json` URL, using the Liquid markup in `templates/devices/`. Locally, `export_preview.py` renders the same templates via `src/liquid_render.render()` (python-liquid) into a static `preview.html` for visual iteration without a TRMNL account. The terminal dashboard is a separate, simpler consumer that reads the same JSON directly (no Liquid involved).
 
 ### Usage model 1: GitHub Actions (stateless, manual)
 
 `.github/workflows/generate-dashboard.yml` currently runs only on manual dispatch (no `schedule:` trigger — see the workflow file for how to re-add one):
 
-1. Calls `collect_unified_data.py --output output/dashboard.json` to write the JSON.
+1. Calls `collect_unified_data.py --output output/dashboard-v2.json` to write the JSON.
 2. Calls `export_preview.py` to render `preview.html` (uploaded as a workflow artifact for visual regression checking, not published to R2).
-3. Uploads `dashboard.json` to Cloudflare R2 via `python -m src.upload`.
+3. Uploads `dashboard-v2.json` to Cloudflare R2 via `python -m src.upload`.
 
 ### Usage model 2: Local workflow loop
 
@@ -242,15 +242,15 @@ The project supports three usage models, all built on the same collect → JSON 
 
 `server.py` is the always-on variant for self-hosted setups (Raspberry Pi, home server):
 
-- Starts headless: first refresh runs synchronously, then a background thread runs `src/pipeline.run_pipeline()` every `REFRESH_INTERVAL_SECONDS`, logging each cycle to stderr. The HTTP server (`http.server`, port `SERVER_PORT`) runs in its own daemon thread and serves `preview.html`/`dashboard.json` from the output directory.
+- Starts headless: first refresh runs synchronously, then a background thread runs `src/pipeline.run_pipeline()` every `REFRESH_INTERVAL_SECONDS`, logging each cycle to stderr. The HTTP server (`http.server`, port `SERVER_PORT`) runs in its own daemon thread and serves `preview.html`/`dashboard-v2.json` from the output directory.
 - When stdin is an interactive terminal, a key-listener thread watches for `t`/`q`: pressing `t` opens the Rich terminal UI (same view as `terminal_dashboard.py`) in the main console via `rich.live.Live`; the background refresh thread keeps updating it via `live.update()`. Pressing `q` inside the terminal view closes it and returns to headless logging; `q` from headless quits the server. On non-interactive stdin (e.g. a daemon/service with no tty) the key listener is skipped and the server stays purely headless.
 - `--no-http` disables the HTTP server.
-- The HTTP server only serves `preview.html` and `dashboard.json`. All other requests return 404.
+- The HTTP server only serves `preview.html` and `dashboard-v2.json`. All other requests return 404.
 - A real TRMNL device does **not** poll this server directly — it polls the published R2 URL via a TRMNL private plugin (see `plan/TRMNL_SETUP.md`). This server's HTTP endpoint exists for local/self-hosted preview and debugging.
 
 ### Interactive terminal dashboard
 
-`terminal_dashboard.py` is a lightweight consumer — it reads `dashboard.json` from a URL or local file (defaulting to `DASHBOARD_JSON_URL` → Cloudflare → `output/dashboard.json`). A background thread reloads the JSON every `TERMINAL_REFRESH_INTERVAL_SECONDS` (default 60 s) without blocking key handling or resetting the tab selection. The "last refreshed" timestamp is shown in the header.
+`terminal_dashboard.py` is a lightweight consumer — it reads `dashboard-v2.json` from a URL or local file (defaulting to `DASHBOARD_JSON_URL` → Cloudflare → `output/dashboard-v2.json`). A background thread reloads the JSON every `TERMINAL_REFRESH_INTERVAL_SECONDS` (default 60 s) without blocking key handling or resetting the tab selection. The "last refreshed" timestamp is shown in the header.
 
 ## Deployment / automation
 
@@ -261,9 +261,9 @@ The file `.github/workflows/generate-dashboard.yml` defines a workflow that:
 - Runs only on manual dispatch (`workflow_dispatch`) — no `schedule:` trigger is configured
 - Sets up Python and installs `requirements.txt`
 - Runs `collect_unified_data.py`, then `export_preview.py`
-- Uploads `output/dashboard.json` to Cloudflare R2, and `output/preview.html` as a workflow artifact
+- Uploads `output/dashboard-v2.json` to Cloudflare R2, and `output/preview.html` as a workflow artifact
 
-The R2 bucket contains exactly one object: `dashboard.json`. Each run overwrites it so the TRMNL plugin's poll URL stays stable.
+The R2 bucket contains exactly one object: `dashboard-v2.json`. Each run overwrites it so the TRMNL plugin's poll URL stays stable.
 
 ### Local / server variant
 
@@ -282,22 +282,22 @@ python server.py --upload
 
 ### TRMNL private plugin setup
 
-See `plan/TRMNL_SETUP.md` for the full stranger-friendly walkthrough: creating a TRMNL account, creating a private plugin with the Polling strategy pointed at your published `dashboard.json` URL, and pasting in `templates/devices/og.liquid` / `x.liquid`. This step has not yet been verified end-to-end against a real TRMNL account (`plan/TASKS.md` task 4.3) — treat the guide as the expected flow, not a confirmed one, until that's done.
+See `plan/TRMNL_SETUP.md` for the full stranger-friendly walkthrough: creating a TRMNL account, creating a private plugin with the Polling strategy pointed at your published `dashboard-v2.json` URL, and pasting in `templates/devices/og.liquid` / `x.liquid`. This step has not yet been verified end-to-end against a real TRMNL account (`plan/TASKS.md` task 4.3) — treat the guide as the expected flow, not a confirmed one, until that's done.
 
 ## Cloudflare R2 upload
 
-The GitHub Actions variant uploads `dashboard.json` to Cloudflare R2. Required repository secrets:
+The GitHub Actions variant uploads `dashboard-v2.json` to Cloudflare R2. Required repository secrets:
 
 - `CLOUDFLARE_R2_ENDPOINT` — `https://<account_id>.r2.cloudflarestorage.com`
 - `CLOUDFLARE_R2_ACCESS_KEY_ID` — R2 API token access key ID
 - `CLOUDFLARE_R2_SECRET_ACCESS_KEY` — R2 API token secret access key
-- `CLOUDFLARE_R2_BUCKET_NAME` — bucket that stores `dashboard.json`
+- `CLOUDFLARE_R2_BUCKET_NAME` — bucket that stores `dashboard-v2.json`
 - `CLOUDFLARE_R2_PUBLIC_URL` — public base URL (custom domain or r2.dev) used to build the poll URL TRMNL is configured against
 
 Upload logic lives in `src/upload.py`. The module can also be run locally for testing:
 
 ```bash
-python -m src.upload output/dashboard.json
+python -m src.upload output/dashboard-v2.json
 ```
 
 ## Security considerations
@@ -311,5 +311,5 @@ python -m src.upload output/dashboard.json
 
 - `README.md` now contains the human-facing project documentation. For agent-focused details, build steps, and conventions, use this file and the files in `plan/`.
 - `plan/PLAN.md` is the authoritative architecture record; `plan/TASKS.md` tracks phase-by-phase progress and notes any deviations from the original plan (e.g. tasks completed earlier/later than originally scheduled, or skipped with a reason). Check both before assuming an "Open item" listed there has been resolved.
-- The codebase intentionally supports running without any credentials. If you add a new data source, follow the `fetch_*_or_dummy` fallback pattern.
+- The codebase intentionally supports running without credentials by rendering explicit error states for unconfigured sources. If you add a new data source, follow the `fetch_*_or_dummy` fallback pattern for low-level fetchers, but surface missing credentials / failures through the `errors` object in `src/unified_fetcher.py`.
 - Rendering (device-specific layout, grayscale dithering) happens in `templates/*.liquid`, not in Python. If you add a new device profile in `src/config.py`, it needs a corresponding `templates/devices/<name>.liquid` template before `src/liquid_render.py`/`export_preview.py` can render it — profiles without a template (`template_filename=None`, see `STUB_PROFILE`) are valid and are skipped by both.

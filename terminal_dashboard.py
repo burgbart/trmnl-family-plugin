@@ -7,8 +7,8 @@ key handling or resetting the selected tab.
 
 Usage:
     python terminal_dashboard.py
-    python terminal_dashboard.py --input https://example.com/dashboard.json
-    python terminal_dashboard.py --input output/dashboard.json
+    python terminal_dashboard.py --input https://example.com/dashboard-v2.json
+    python terminal_dashboard.py --input output/dashboard-v2.json
     python terminal_dashboard.py --env /path/to/.env.terminal
     python terminal_dashboard.py --date 23-12-2026
 

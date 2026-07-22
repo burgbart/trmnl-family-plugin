@@ -39,8 +39,10 @@ def _make_payload() -> dict:
 def test_unified_output_structure():
     output = _make_payload()
 
-    for key in ("meta", "weather", "events", "tasks", "birthdays", "calendars", "task_lists"):
+    for key in ("meta", "errors", "weather", "events", "tasks", "birthdays", "calendars", "task_lists"):
         assert key in output, f"Missing key: {key}"
+
+    assert output["errors"] == {"events": None, "tasks": None, "birthdays": None}
 
     assert output["meta"]["city"] == "Amsterdam"
     assert output["meta"]["reference_date"] == "2026-07-16"
@@ -79,3 +81,23 @@ def test_unified_output_birthdays_have_kind_field():
     bday = output["birthdays"][0]
     assert bday["kind"] == "birthday"
     assert bday["date"] == "2026-07-20"
+
+
+def test_unified_output_includes_source_errors():
+    """Errors for individual sources are serialised into the payload."""
+    weather = Weather(description="Sunny", temperature=22, feels_like=20, icon="sun")
+    output = build_dashboard_payload(
+        weather=weather,
+        events=[],
+        tasks=[],
+        birthdays=[],
+        calendars=[],
+        task_lists=[],
+        city="Amsterdam",
+        reference_date=date(2026, 7, 16),
+        errors={"events": "Calendar not configured", "tasks": None, "birthdays": "Calendar not configured"},
+    )
+
+    assert output["errors"]["events"] == "Calendar not configured"
+    assert output["errors"]["tasks"] is None
+    assert output["errors"]["birthdays"] == "Calendar not configured"

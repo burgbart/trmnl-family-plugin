@@ -57,6 +57,7 @@ class TerminalData:
     task_lists: List[TaskListSource]
     birthdays: List[Birthday]
     generated_at: "datetime | None" = None
+    errors: dict[str, str | None] | None = None
 
 
 def _fetch_calendar_name(service, calendar_id: str) -> str:
@@ -177,7 +178,7 @@ def _fetch_terminal_birthdays(calendar_ids: List[str]) -> List[Birthday]:
 def fetch_terminal_data() -> TerminalData:
     """Fetch weather, calendar sources, task lists, and anniversaries.
 
-    Deprecated: terminal_dashboard.py and server.py now read from dashboard.json
+    Deprecated: terminal_dashboard.py and server.py now read from dashboard-v2.json
     via src.json_loader rather than calling this function. Kept because the
     CalendarSource / TaskListSource / TerminalData dataclasses defined in this
     module are still used throughout the codebase.

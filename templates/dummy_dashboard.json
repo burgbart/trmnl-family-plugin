@@ -1,8 +1,13 @@
 {
   "meta": {
-    "generated_at": "2026-07-20T22:00:34.775684+00:00",
+    "generated_at": "2026-07-21T15:03:40.110681+00:00",
     "reference_date": "2026-07-21",
     "city": "Amsterdam"
+  },
+  "errors": {
+    "events": null,
+    "tasks": null,
+    "birthdays": null
   },
   "weather": {
     "description": "Partly cloudy",

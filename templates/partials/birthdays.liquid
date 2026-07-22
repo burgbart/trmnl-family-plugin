@@ -2,11 +2,15 @@
   birthdays.liquid — "Anniversaries" / birthdays section.
 
   Required variables:
-    birthdays            array of {name, date, kind} — the dashboard.json "birthdays" key,
+    birthdays            array of {name, date, kind} — the dashboard-v2.json "birthdays" key,
                         in display order. kind is "birthday" or "anniversary".
-    today               reference date as an ISO string "YYYY-MM-DD" (dashboard.json
+    today               reference date as an ISO string "YYYY-MM-DD" (dashboard-v2.json
                         meta.reference_date) — used to show "Today!" instead of a
                         formatted date.
+
+  Optional variables:
+    error               Error message for the birthdays source. When present, an error view
+                        is rendered instead of the birthday list.
 
   Device-specific variables (parent template must pass these in):
     max_birthdays        max rows to render (DeviceProfile.max_birthdays).
@@ -22,7 +26,7 @@
   and omits the countdown — see templates/CONTRACT.md for the full rationale.
 
   Usage:
-    {% render 'partials/birthdays', birthdays: birthdays, today: meta.reference_date,
+    {% render 'partials/birthdays', birthdays: birthdays, error: errors.birthdays, today: meta.reference_date,
        max_birthdays: profile.max_birthdays, font_size_medium: profile.font_size_medium,
        font_size_small: profile.font_size_small, line_height: profile.line_height,
        padding: profile.padding %}
@@ -32,6 +36,10 @@
     {{ title | default: "Anniversaries" }}
   </div>
   <div style="flex:1 1 auto; overflow:hidden;">
+    {% if error %}
+    <div style="font-size:{{ font_size_small }}px; font-weight:bold; color:#000000;">(!) Not loaded</div>
+    <div style="font-size:{{ font_size_small }}px; color:#000000; margin-top:{{ padding | divided_by: 2 }}px;">{{ error }}</div>
+    {% else %}
     {% for entry in birthdays limit: max_birthdays %}
       <div style="display:flex; align-items:baseline; gap:{{ padding }}px; height:{{ line_height }}px; font-size:{{ font_size_small }}px; color:#000000;">
         <div style="flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
@@ -48,5 +56,6 @@
     {% else %}
       <div style="font-size:{{ font_size_small }}px; color:#000000;">No upcoming dates</div>
     {% endfor %}
+    {% endif %}
   </div>
 </div>

@@ -3,8 +3,8 @@
 This guide walks you through pointing a real TRMNL device at your own copy of
 this dashboard, from zero. It assumes you've already run
 `collect_unified_data.py` locally (or via GitHub Actions) and have a
-`dashboard.json` published somewhere with a stable public URL — for example
-`https://<CLOUDFLARE_R2_PUBLIC_URL>/dashboard.json`. See the main
+`dashboard-v2.json` published somewhere with a stable public URL — for example
+`https://<CLOUDFLARE_R2_PUBLIC_URL>/dashboard-v2.json`. See the main
 [README](../README.md) for how to get that URL.
 
 ## 1. Create a TRMNL account
@@ -23,15 +23,15 @@ data source and your own Liquid markup — exactly what this repo provides.
 1. In the TRMNL dashboard, go to **Plugins → Private Plugin → Add New**.
 2. Give it a name (e.g. "Family Dashboard").
 3. For **Strategy**, choose **Polling**. This tells TRMNL to fetch your
-   `dashboard.json` on its own schedule rather than you pushing data to it.
+   `dashboard-v2.json` on its own schedule rather than you pushing data to it.
 4. Set the **Polling URL** to your published JSON URL, e.g.:
    ```
-   https://<CLOUDFLARE_R2_PUBLIC_URL>/dashboard.json
+   https://<CLOUDFLARE_R2_PUBLIC_URL>/dashboard-v2.json
    ```
 5. Set the **Polling Verb** to `GET` and leave headers/body empty unless your
    hosting requires auth headers.
 6. Set a **Refresh Rate** — how often TRMNL re-fetches the JSON. This is
-   independent of how often *you* regenerate `dashboard.json` (see
+   independent of how often *you* regenerate `dashboard-v2.json` (see
    `REFRESH_INTERVAL_SECONDS` / the GitHub Actions cron); pick something
    equal to or slightly longer than your generation interval so TRMNL isn't
    polling faster than the data actually changes.
@@ -63,7 +63,7 @@ Confirm this against the real editor UI; update this section once verified
 ## 4. Verify the field names TRMNL exposes
 
 TRMNL polling plugins typically expose the fetched JSON directly as Liquid
-variables matching the JSON's top-level keys — so `dashboard.json`'s
+variables matching the JSON's top-level keys — so `dashboard-v2.json`'s
 `weather`, `events`, `tasks`, `birthdays`, `meta` keys should be usable the
 same way they are in `templates/CONTRACT.md` (e.g. `weather.temperature`,
 `events[0].title`). Some TRMNL plugin configurations instead require you to
@@ -85,7 +85,7 @@ names differ from the contract.
 - **Blank or error screen**: check the plugin's poll history/logs in the
   TRMNL dashboard — it usually shows the last fetched payload and any Liquid
   render errors.
-- **Data looks stale**: confirm your `dashboard.json` is actually being
+- **Data looks stale**: confirm your `dashboard-v2.json` is actually being
   regenerated (check `meta.generated_at`) and that TRMNL's refresh rate
   isn't longer than you expect.
 - **Layout looks wrong for your device**: double check you pasted the OG

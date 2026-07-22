@@ -3,12 +3,16 @@
 
   Required variables:
     tasks               array of {title, done, priority, due_date, sort_order} — the
-                        dashboard.json "tasks" key, in display order.
-    today               reference date as an ISO string "YYYY-MM-DD" (dashboard.json
+                        dashboard-v2.json "tasks" key, in display order.
+    today               reference date as an ISO string "YYYY-MM-DD" (dashboard-v2.json
                         meta.reference_date) — used to flag tasks that are due
                         (due_date <= today and not done), matching src/dashboard.py's
                         `_is_due` semantics. ISO date strings compare correctly as plain
                         strings, so no date-math filter is needed.
+
+  Optional variables:
+    error               Error message for the tasks source. When present, an error view
+                        is rendered instead of the task list.
 
   Device-specific variables (parent template must pass these in):
     max_tasks            max rows to render (DeviceProfile.max_tasks).
@@ -20,7 +24,7 @@
     title                (optional) section title text, defaults to "Tasks".
 
   Usage:
-    {% render 'partials/tasks', tasks: tasks, today: meta.reference_date,
+    {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
        max_tasks: profile.max_tasks, checkbox_size: profile.checkbox_size,
        font_size_medium: profile.font_size_medium, font_size_small: profile.font_size_small,
        line_height: profile.line_height, padding: profile.padding %}
@@ -38,6 +42,10 @@
     <span style="font-weight:bold;">{{ title | default: "Tasks" }}</span>{% if due_count > 0 %} - {{ due_count }} due (!){% endif %}
   </div>
   <div style="flex:1 1 auto; overflow:hidden;">
+    {% if error %}
+    <div style="font-size:{{ font_size_small }}px; font-weight:bold; color:#000000;">(!) Not loaded</div>
+    <div style="font-size:{{ font_size_small }}px; color:#000000; margin-top:{{ padding | divided_by: 2 }}px;">{{ error }}</div>
+    {% else %}
     {% for task in tasks limit: max_tasks %}
       {% assign is_due = false %}
       {% unless task.done %}
@@ -58,5 +66,6 @@
     {% else %}
       <div style="font-size:{{ font_size_small }}px; color:#000000;">No tasks</div>
     {% endfor %}
+    {% endif %}
   </div>
 </div>

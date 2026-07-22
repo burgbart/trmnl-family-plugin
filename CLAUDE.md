@@ -14,8 +14,8 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 
 # Collect unified data and generate dashboard PNGs
-python collect_unified_data.py --output output/dashboard.json
-python run_local.py                    # reads dashboard.json; generates both devices
+python collect_unified_data.py --output output/dashboard-v2.json
+python run_local.py                    # reads dashboard-v2.json; generates both devices
 python run_local.py --device og --date 23-12-2026
 
 # Interactive terminal dashboard
@@ -31,8 +31,8 @@ pytest --date 23-12-2026
 
 Data flows in two stages:
 
-1. `collect_unified_data.py` → `src/unified_fetcher.py` hits external APIs once per source, writes `dashboard.json`, and uploads it to Cloudflare R2.
-2. `run_local.py` and `terminal_dashboard.py` read `dashboard.json` via `src/json_loader.py` — they never call external APIs directly.
+1. `collect_unified_data.py` → `src/unified_fetcher.py` hits external APIs once per source, writes `dashboard-v2.json`, and uploads it to Cloudflare R2.
+2. `run_local.py` and `terminal_dashboard.py` read `dashboard-v2.json` via `src/json_loader.py` — they never call external APIs directly.
 
 `src/config.py` is imported at module level by most files; scripts that accept `--env` must call `load_dotenv(override=True)` before importing any project module. The `--date DD-MM-YYYY` flag on any entry point calls `set_reference_date()` to override "today" throughout the codebase.
 

@@ -32,6 +32,7 @@ def build_dashboard_payload(
     city: str,
     reference_date: date,
     generated_at: datetime | None = None,
+    errors: dict[str, str | None] | None = None,
 ) -> dict[str, Any]:
     """Build the unified dashboard JSON payload from the fetched data."""
     return {
@@ -40,6 +41,7 @@ def build_dashboard_payload(
             "reference_date": reference_date.isoformat(),
             "city": city,
         },
+        "errors": errors or {"events": None, "tasks": None, "birthdays": None},
         "weather": serialise(weather),
         "events": [serialise(event) for event in events],
         "tasks": [serialise(task) for task in tasks],

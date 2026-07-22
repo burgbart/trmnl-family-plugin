@@ -25,7 +25,7 @@ def _dummy_unified_data() -> UnifiedData:
 
 
 def test_run_pipeline_writes_json(tmp_path: Path) -> None:
-    """run_pipeline writes dashboard.json with the expected top-level keys."""
+    """run_pipeline writes dashboard-v2.json with the expected top-level keys."""
     dummy = _dummy_unified_data()
     with (
         patch("src.unified_fetcher.fetch_unified_data", return_value=dummy),
@@ -35,7 +35,7 @@ def test_run_pipeline_writes_json(tmp_path: Path) -> None:
 
         run_pipeline(tmp_path, ["og"], upload=False)
 
-    json_path = tmp_path / "dashboard.json"
+    json_path = tmp_path / "dashboard-v2.json"
     assert json_path.exists()
     data = json.loads(json_path.read_text(encoding="utf-8"))
     assert "meta" in data
@@ -92,12 +92,12 @@ def test_run_pipeline_creates_output_dir(tmp_path: Path) -> None:
         run_pipeline(nested, ["og"], upload=False)
 
     assert nested.is_dir()
-    assert (nested / "dashboard.json").exists()
+    assert (nested / "dashboard-v2.json").exists()
     assert (nested / "preview.html").exists()
 
 
 def test_run_pipeline_calls_upload_when_requested(tmp_path: Path) -> None:
-    """run_pipeline uploads dashboard.json (only) when upload=True."""
+    """run_pipeline uploads dashboard-v2.json (only) when upload=True."""
     dummy = _dummy_unified_data()
     with (
         patch("src.unified_fetcher.fetch_unified_data", return_value=dummy),

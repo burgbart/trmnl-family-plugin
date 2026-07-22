@@ -2,7 +2,7 @@
 
 Mimics the generate-dashboard.yml workflow on a local machine. Runs
 ``src.pipeline.run_pipeline`` on a configurable interval: collect unified data,
-write ``dashboard.json``, render the static Liquid ``preview.html``, and
+write ``dashboard-v2.json``, render the static Liquid ``preview.html``, and
 optionally upload the JSON to Cloudflare R2. Loops until Ctrl+C or SIGTERM;
 use ``--once`` for a single run.
 
@@ -57,13 +57,13 @@ def _parse_args() -> argparse.Namespace:
         "--output",
         type=Path,
         default=Path("output"),
-        help="Directory to write dashboard.json and preview.html (default: output).",
+        help="Directory to write dashboard-v2.json and preview.html (default: output).",
     )
     parser.add_argument(
         "--upload",
         action=argparse.BooleanOptionalAction,
         default=None,
-        help="Upload dashboard.json to Cloudflare R2 after each render. "
+        help="Upload dashboard-v2.json to Cloudflare R2 after each render. "
              "Defaults to on when R2 credentials are present.",
     )
     parser.add_argument(

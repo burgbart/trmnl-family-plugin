@@ -25,8 +25,8 @@ Depends on Phase 0. Internally parallelizable once the partial contracts
 (what variables each partial expects) are agreed in 1.1.
 
 - [x] 1.1 Define the JSON→Liquid variable contract: decide what shape
-      `dashboard.json` data is exposed as inside templates (reuse the
-      existing `dashboard.json` schema from `src/serialization.py` — don't
+      `dashboard-v2.json` data is exposed as inside templates (reuse the
+      existing `dashboard-v2.json` schema from `src/serialization.py` — don't
       invent a new one). Write shared Liquid partials for each section:
       `templates/partials/weather.liquid`, `calendar.liquid`, `tasks.liquid`,
       `birthdays.liquid`. Contract documented in `templates/CONTRACT.md`.
@@ -34,7 +34,7 @@ Depends on Phase 0. Internally parallelizable once the partial contracts
       1-bit look) composing the Phase 1.1 partials.
 - [x] 1.3 **[∥ with 1.2]** Build `templates/devices/x.liquid` (1872×1404,
       16-level grayscale look) composing the same partials.
-- [x] 1.4 Prepare a dummy `dashboard.json` fixture (reuse
+- [x] 1.4 Prepare a dummy `dashboard-v2.json` fixture (reuse
       `src/data.py` dummy generators via `src/serialization.py`, don't
       hand-write a second fixture) for local template testing.
       (`templates/build_dummy_fixture.py` → `templates/dummy_dashboard.json`)
@@ -90,13 +90,13 @@ Depends on Phase 2 being verified. 3.1/3.2 touch different files from 3.3 and
 can run in parallel with it.
 
 - [x] 3.1 **[∥ with 3.2, 3.3]** Update `server.py`: background refresh loop
-      calls `fetch_unified_data()` → write `dashboard.json` → run
+      calls `fetch_unified_data()` → write `dashboard-v2.json` → run
       `export_preview.py` logic → upload JSON (no PNG step). HTTP handler
-      serves `/`, `/preview.html`, `/dashboard.json` only.
+      serves `/`, `/preview.html`, `/dashboard-v2.json` only.
 - [x] 3.2 **[∥ with 3.1, 3.3]** Update `run_workflow_loop.py` the same way
       for the one-shot/cron use case.
 - [x] 3.3 **[∥ with 3.1, 3.2]** Verify `terminal_dashboard.py` still works
-      unchanged against the (unchanged) `dashboard.json` schema — it doesn't
+      unchanged against the (unchanged) `dashboard-v2.json` schema — it doesn't
       touch templates at all, this is a regression check, not new code.
       (Confirmed via `pytest tests/test_terminal_dashboard.py` — unchanged,
       all passing.)
@@ -119,7 +119,7 @@ can run in parallel with it.
 - [x] 4.2 **[∥ with 4.1]** Write a public-repo-friendly setup guide (README
       section or `plan/TRMNL_SETUP.md`) covering, from scratch: creating a
       TRMNL account, creating a private plugin, choosing the **Polling**
-      strategy, pointing it at your own published `dashboard.json` URL, and
+      strategy, pointing it at your own published `dashboard-v2.json` URL, and
       pasting in `templates/devices/og.liquid` / `x.liquid`. Written for a
       stranger cloning the repo, not just future-us.
       (`plan/TRMNL_SETUP.md` — flagged as unverified pending 4.3.)

@@ -45,11 +45,11 @@ class TestHttpHandler:
             httpd.shutdown()
 
     def test_serves_json_with_json_content_type(self, tmp_path: Path) -> None:
-        (tmp_path / "dashboard.json").write_bytes(b'{"meta":{}}')
+        (tmp_path / "dashboard-v2.json").write_bytes(b'{"meta":{}}')
         httpd, port = _start_test_server(tmp_path)
         try:
             with urllib.request.urlopen(
-                f"http://127.0.0.1:{port}/dashboard.json"
+                f"http://127.0.0.1:{port}/dashboard-v2.json"
             ) as resp:
                 body = resp.read()
                 assert b"meta" in body

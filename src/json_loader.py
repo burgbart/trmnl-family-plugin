@@ -15,7 +15,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from src.config import DASHBOARD_JSON_URL
+from src.config import DASHBOARD_JSON_FILENAME, DASHBOARD_JSON_URL
 from src.data import Birthday, CalendarEvent, Task, Weather
 from src.terminal_fetcher import CalendarSource, TaskListSource, TerminalData
 
@@ -64,8 +64,8 @@ def resolve_input_path(cli_input: str | None = None) -> str:
     Resolution order:
     1. Explicit ``cli_input`` argument.
     2. ``DASHBOARD_JSON_URL`` environment variable.
-    3. ``CLOUDFLARE_R2_PUBLIC_URL`` + ``/dashboard.json``.
-    4. Local ``output/dashboard.json`` fallback for local development.
+    3. ``CLOUDFLARE_R2_PUBLIC_URL`` + ``/dashboard-v2.json``.
+    4. Local ``output/dashboard-v2.json`` fallback for local development.
     """
     if cli_input:
         return cli_input
@@ -73,8 +73,8 @@ def resolve_input_path(cli_input: str | None = None) -> str:
         return DASHBOARD_JSON_URL
     public_url_base = os.getenv("CLOUDFLARE_R2_PUBLIC_URL", "").rstrip("/")
     if public_url_base:
-        return f"{public_url_base}/dashboard.json"
-    return "output/dashboard.json"
+        return f"{public_url_base}/{DASHBOARD_JSON_FILENAME}"
+    return f"output/{DASHBOARD_JSON_FILENAME}"
 
 
 def parse_weather(data: dict) -> Weather:
@@ -158,10 +158,12 @@ def parse_terminal_data(data: dict) -> TerminalData:
     task_lists = [parse_task_list_source(source) for source in data.get("task_lists", [])]
     birthdays = [parse_birthday(bday) for bday in data.get("birthdays", [])]
     generated_at = _parse_datetime(data.get("meta", {}).get("generated_at"))
+    errors = data.get("errors")
     return TerminalData(
         weather=weather,
         calendars=calendars,
         task_lists=task_lists,
         birthdays=birthdays,
         generated_at=generated_at,
+        errors=errors,
     )

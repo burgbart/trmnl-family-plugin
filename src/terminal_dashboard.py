@@ -256,8 +256,13 @@ def _build_header(
     return text
 
 
-def _build_footer(birthdays: List[Birthday]) -> Text:
+def _build_footer(
+    birthdays: List[Birthday], birthdays_error: str | None = None
+) -> Text:
     text = Text("Anniversaries  ", style="bold bright_white")
+    if birthdays_error:
+        text.append(f"(!) Not loaded: {birthdays_error}", style="red")
+        return text
     if not birthdays:
         text.append("None upcoming", style="dim")
         return text
@@ -277,6 +282,14 @@ def _build_footer(birthdays: List[Birthday]) -> Text:
     return text
 
 
+def _build_error_panel(message: str) -> Panel:
+    """Render a simple error panel for a failed data source."""
+    text = Text()
+    text.append("(!) Not loaded\n", style="bold red")
+    text.append(message, style="red")
+    return Panel(text, border_style="red")
+
+
 def render(
     data: TerminalData,
     console: Console | None = None,
@@ -291,13 +304,23 @@ def render(
     # Reserve space for header, footer, borders and padding.
     max_rows = max(height - 12, 5)
 
-    calendars = data.calendars or [CalendarSource("none", "No calendars", [])]
-    task_lists = data.task_lists or [TaskListSource("none", "No tasks", [])]
+    errors = data.errors or {}
 
     header = _build_header(data, last_refreshed=last_refreshed)
-    events_panel = _build_merged_events_panel(calendars, max_rows)
-    tasks_panel = _build_merged_tasks_panel(task_lists, max_rows)
-    footer = _build_footer(data.birthdays)
+
+    if errors.get("events"):
+        events_panel = _build_error_panel(errors["events"])
+    else:
+        calendars = data.calendars or [CalendarSource("none", "No calendars", [])]
+        events_panel = _build_merged_events_panel(calendars, max_rows)
+
+    if errors.get("tasks"):
+        tasks_panel = _build_error_panel(errors["tasks"])
+    else:
+        task_lists = data.task_lists or [TaskListSource("none", "No tasks", [])]
+        tasks_panel = _build_merged_tasks_panel(task_lists, max_rows)
+
+    footer = _build_footer(data.birthdays, birthdays_error=errors.get("birthdays"))
 
     layout = Layout(name="root")
     layout.split_column(
@@ -306,8 +329,8 @@ def render(
         Layout(Panel(footer, border_style="bright_magenta"), size=3),
     )
     layout["main"].split_row(
-        Layout(Panel(events_panel, border_style="blue"), ratio=1),
-        Layout(Panel(tasks_panel, border_style="green"), ratio=1),
+        Layout(Panel(events_panel, border_style="blue" if not errors.get("events") else "red"), ratio=1),
+        Layout(Panel(tasks_panel, border_style="green" if not errors.get("tasks") else "red"), ratio=1),
     )
 
     return layout

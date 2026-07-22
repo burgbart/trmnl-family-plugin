@@ -18,7 +18,7 @@
 
   (cal_x2 = int(1872 * 0.58) = 1085; tasks_y2 = int(1404 * 0.62) = 870.)
 
-  Top-level render context is the parsed dashboard.json dict (see templates/CONTRACT.md):
+  Top-level render context is the parsed dashboard-v2.json dict (see templates/CONTRACT.md):
   meta, weather, events, tasks, birthdays are referenced directly, no wrapper "profile" object
   is passed in — this template inlines X_PROFILE's literal numbers per the contract's guidance
   that device templates own layout/sizing.
@@ -127,7 +127,7 @@
 
   {% comment %} 2. Calendar / Upcoming — left column, 58% width {% endcomment %}
   <div class="box" style="left:24px; top:228px; width:1061px; height:1152px;">
-    {% render 'partials/calendar', events: events, today: meta.reference_date,
+    {% render 'partials/calendar', events: events, error: errors.events, today: meta.reference_date,
        max_events: 8, font_size_medium: 36, font_size_small: 30,
        line_height: 44, padding: 24 %}
     <div class="synced">Synced {{ meta.generated_at | date: "%H:%M %d/%m" }}</div>
@@ -135,14 +135,14 @@
 
   {% comment %} 3. Tasks — top-right, 62% of viewport height {% endcomment %}
   <div class="box" style="left:1109px; top:228px; width:739px; height:642px;">
-    {% render 'partials/tasks', tasks: tasks, today: meta.reference_date,
+    {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
        max_tasks: 10, checkbox_size: 26, font_size_medium: 36, font_size_small: 30,
        line_height: 44, padding: 24 %}
   </div>
 
   {% comment %} 4. Anniversaries / Birthdays — bottom-right, remaining space {% endcomment %}
   <div class="box" style="left:1109px; top:894px; width:739px; height:486px;">
-    {% render 'partials/birthdays', birthdays: birthdays, today: meta.reference_date,
+    {% render 'partials/birthdays', birthdays: birthdays, error: errors.birthdays, today: meta.reference_date,
        max_birthdays: 6, font_size_medium: 36, font_size_small: 30,
        line_height: 44, padding: 24 %}
   </div>

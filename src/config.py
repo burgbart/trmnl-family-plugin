@@ -265,6 +265,10 @@ TERMINAL_MAX_BIRTHDAYS = 10
 # explicit --input is provided.
 DASHBOARD_JSON_URL = os.getenv("DASHBOARD_JSON_URL")
 
+# Output JSON filename produced by the pipeline, served by the server, and
+# uploaded to Cloudflare R2. Centralised so all consumers stay in sync.
+DASHBOARD_JSON_FILENAME = "dashboard-v2.json"
+
 # Server/continuous publisher settings.
 # Seconds between automatic data/PNG refreshes. Default is 600 (10 minutes).
 REFRESH_INTERVAL_SECONDS = int(os.getenv("REFRESH_INTERVAL_SECONDS", "600"))

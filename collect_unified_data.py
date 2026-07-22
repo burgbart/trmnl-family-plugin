@@ -2,7 +2,7 @@
 
 This script fetches weather, calendar events, tasks, and anniversaries once and
 serialises everything into a single JSON file. The JSON is intended to be
-uploaded to Cloudflare R2 so that the PNG renderer and terminal dashboard can
+uploaded to Cloudflare R2 so that the TRMNL plugin and terminal dashboard can
 read from it instead of fetching data themselves.
 """
 

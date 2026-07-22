@@ -3,19 +3,22 @@
 This document defines the exact variable names the shared partials in
 `templates/partials/` expect, and how a parent device template (`og.liquid` /
 `x.liquid`, built in tasks 1.2/1.3 — not part of this doc) is expected to
-supply them. It reuses the `dashboard.json` schema verbatim (see
+supply them. It reuses the `dashboard-v2.json` schema verbatim (see
 `src/serialization.py::build_dashboard_payload()` / `src/data.py`) — no field
 was renamed or restructured.
 
 ## Top-level render context
 
-For local rendering, the parsed `dashboard.json` dict is passed as the
+For local rendering, the parsed `dashboard-v2.json` dict is passed as the
 top-level Liquid render context, so a device template can reference:
 
 ```
 meta.generated_at        ISO datetime string
 meta.reference_date      ISO date string "YYYY-MM-DD"
 meta.city                str
+errors.events            str | null   error message when calendar data failed; null when OK
+errors.tasks             str | null   error message when task data failed; null when OK
+errors.birthdays         str | null   error message when anniversary data failed; null when OK
 weather.description      str
 weather.temperature      int
 weather.feels_like       int
@@ -83,11 +86,14 @@ there.)
 | `icon_size` | device template's choice (not a `DeviceProfile` field) | icon square px |
 | `padding` | `DeviceProfile.padding` | gap between icon and text, block padding |
 
+Weather requires no credentials, so it has no error state.
+
 ### `partials/calendar.liquid`
 
 | Variable | Source | Notes |
 |---|---|---|
 | `events` | `events` (array) | pre-sorted/pre-filtered by the caller |
+| `error` | `errors.events` | when non-null, renders an error view instead of the list |
 | `today` | `meta.reference_date` | ISO date string, used to detect "Today" |
 | `max_events` | `DeviceProfile.max_events` | row cutoff (`limit:` in the `for` loop) |
 | `font_size_medium` | `DeviceProfile.font_size_medium` | section title |
@@ -101,6 +107,7 @@ there.)
 | Variable | Source | Notes |
 |---|---|---|
 | `tasks` | `tasks` (array) | pre-sorted by the caller |
+| `error` | `errors.tasks` | when non-null, renders an error view instead of the list |
 | `today` | `meta.reference_date` | ISO date string; `due_date <= today` (plain string compare, since ISO dates sort lexically) mirrors `src/dashboard.py::_is_due` |
 | `max_tasks` | `DeviceProfile.max_tasks` | row cutoff |
 | `checkbox_size` | `DeviceProfile.checkbox_size` | checkbox square px |
@@ -119,6 +126,7 @@ precompute either.
 | Variable | Source | Notes |
 |---|---|---|
 | `birthdays` | `birthdays` (array) | pre-sorted by the caller |
+| `error` | `errors.birthdays` | when non-null, renders an error view instead of the list |
 | `today` | `meta.reference_date` | ISO date string; shows "Today!" on match |
 | `max_birthdays` | `DeviceProfile.max_birthdays` | row cutoff |
 | `font_size_medium` | `DeviceProfile.font_size_medium` | section title |

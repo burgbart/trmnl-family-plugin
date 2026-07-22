@@ -18,7 +18,7 @@ pixel-layout code, and lets TRMNL handle device-specific rendering concerns
 ## End state
 
 1. **Data collection** (mostly unchanged): weather, calendar, tasks →
-   `dashboard.json`, published to Cloudflare R2. This is the only artifact
+   `dashboard-v2.json`, published to Cloudflare R2. This is the only artifact
    TRMNL needs.
 2. **TRMNL private plugin** (new, external to this repo's runtime): configured
    with the **Polling** strategy against the public R2 JSON URL, and Liquid
@@ -31,7 +31,7 @@ pixel-layout code, and lets TRMNL handle device-specific rendering concerns
    between them. No live server-side Liquid rendering per request — the
    export is a build step, the server just serves the resulting file.
 4. **Server** (simplified, stdlib `http.server`, no new framework): serves
-   `dashboard.json` and `preview.html`, runs the refresh loop, and can drop
+   `dashboard-v2.json` and `preview.html`, runs the refresh loop, and can drop
    into the existing Rich terminal dashboard on demand (`t` key), same as
    today.
 5. **GitHub Actions** (simplified): collects data and publishes JSON only —
@@ -42,7 +42,7 @@ pixel-layout code, and lets TRMNL handle device-specific rendering concerns
 
 ## Key decisions (from clarifying questions)
 
-- **Delivery to TRMNL**: Polling. TRMNL pulls `dashboard.json` from our public
+- **Delivery to TRMNL**: Polling. TRMNL pulls `dashboard-v2.json` from our public
   R2 URL on its own interval. No webhook push code needed.
 - **Liquid source of truth**: this repo (`templates/`). TRMNL's plugin editor
   is just where we paste the current version; the repo is authoritative and
@@ -64,15 +64,15 @@ pixel-layout code, and lets TRMNL handle device-specific rendering concerns
 ## Target architecture
 
 ```
-collect_unified_data.py  → src/unified_fetcher.py → dashboard.json → R2 (unchanged)
+collect_unified_data.py  → src/unified_fetcher.py → dashboard-v2.json → R2 (unchanged)
 templates/
   ├── partials/*.liquid          # shared sections: weather, calendar, tasks, birthdays
   ├── devices/og.liquid          # trmnl-og full template (includes partials)
   └── devices/x.liquid           # trmnl-x full template (includes partials)
 src/liquid_render.py             # render(device_profile, data) -> HTML string, via python-liquid
 export_preview.py                # CLI: renders all device profiles -> preview.html (static, JS-toggle)
-server.py                        # stdlib http.server: /dashboard.json, /preview.html, refresh loop, terminal UI
-terminal_dashboard.py            # unchanged (rich-based, reads dashboard.json)
+server.py                        # stdlib http.server: /dashboard-v2.json, /preview.html, refresh loop, terminal UI
+terminal_dashboard.py            # unchanged (rich-based, reads dashboard-v2.json)
 .github/workflows/generate-dashboard.yml  # collect + publish JSON only
 ```
 

@@ -36,7 +36,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--input",
         default=str(_DEFAULT_INPUT),
-        help=f"Path to a dashboard.json file (default: {_DEFAULT_INPUT}).",
+        help=f"Path to a dashboard-v2.json file (default: {_DEFAULT_INPUT}).",
     )
     parser.add_argument(
         "--output",
@@ -69,7 +69,7 @@ def build_preview_html(data: dict, device_names: list[str] | None = None) -> str
     """Render every device with a template and compose the tabbed preview page.
 
     Args:
-        data: Parsed dashboard.json payload.
+        data: Parsed dashboard-v2.json payload.
         device_names: Optional slugs (e.g. ["og"]) to restrict which device
             profiles are rendered. Defaults to every profile with a template.
     """

@@ -11,7 +11,7 @@
     4. Anniversaries(500,310)-(790,470) remaining space, birthdays
 
   Expected top-level render context (see templates/CONTRACT.md): the parsed
-  dashboard.json dict — meta, weather, events, tasks, birthdays.
+  dashboard-v2.json dict — meta, weather, events, tasks, birthdays.
 
   Font paths assume the rendering pipeline resolves relative to the repo
   root (matching src/config.py's `_ASSETS_DIR = Path(__file__).parent.parent
@@ -152,7 +152,7 @@
 
   <div class="box calendar">
     <div class="calendar-inner">
-      {% render 'partials/calendar', events: events, today: meta.reference_date,
+      {% render 'partials/calendar', events: events, error: errors.events, today: meta.reference_date,
          max_events: 10, font_size_medium: 18, font_size_small: 16,
          line_height: 28, padding: 10 %}
       <div class="synced">Synced {{ meta.generated_at | date: "%H:%M" }} {{ meta.generated_at | date: "%d/%m" }}</div>
@@ -160,13 +160,13 @@
   </div>
 
   <div class="box tasks">
-    {% render 'partials/tasks', tasks: tasks, today: meta.reference_date,
+    {% render 'partials/tasks', tasks: tasks, error: errors.tasks, today: meta.reference_date,
        max_tasks: 6, checkbox_size: 12, font_size_medium: 18,
        font_size_small: 16, line_height: 28, padding: 10 %}
   </div>
 
   <div class="box birthdays">
-    {% render 'partials/birthdays', birthdays: birthdays, today: meta.reference_date,
+    {% render 'partials/birthdays', birthdays: birthdays, error: errors.birthdays, today: meta.reference_date,
        max_birthdays: 4, font_size_medium: 18, font_size_small: 16,
        line_height: 28, padding: 10 %}
   </div>

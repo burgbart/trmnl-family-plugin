@@ -31,6 +31,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from src.config import DASHBOARD_JSON_FILENAME
+
 
 def _load_env_file(path: Path | None) -> None:
     if path is None:
@@ -73,20 +75,20 @@ def _parse_args() -> argparse.Namespace:
         "--upload",
         action=argparse.BooleanOptionalAction,
         default=None,
-        help="Upload dashboard.json to Cloudflare R2 after each refresh. "
+        help="Upload dashboard-v2.json to Cloudflare R2 after each refresh. "
              "Defaults to on when R2 credentials are present.",
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=Path("output"),
-        help="Directory to write dashboard.json and preview.html (default: output).",
+        help="Directory to write dashboard-v2.json and preview.html (default: output).",
     )
     return parser.parse_args()
 
 
 # Only these file names may be served over HTTP.
-_ALLOWED_FILES = frozenset(["preview.html", "dashboard.json"])
+_ALLOWED_FILES = frozenset(["preview.html", DASHBOARD_JSON_FILENAME])
 
 
 def _make_handler_class(output_dir: Path):

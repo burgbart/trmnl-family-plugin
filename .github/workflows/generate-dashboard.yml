@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Collect data and write dashboard.json
+      - name: Collect data and write dashboard-v2.json
         env:
           WEATHER_LATITUDE: ${{ vars.WEATHER_LATITUDE }}
           WEATHER_LONGITUDE: ${{ vars.WEATHER_LONGITUDE }}
@@ -33,19 +33,19 @@ jobs:
           CALENDAR_MAIN_CALENDAR_ID: ${{ vars.CALENDAR_MAIN_CALENDAR_ID }}
           TICKTICK_ACCESS_TOKEN: ${{ secrets.TICKTICK_ACCESS_TOKEN }}
           TICKTICK_LIST_ID: ${{ vars.TICKTICK_LIST_ID }}
-        run: python collect_unified_data.py --output output/dashboard.json
+        run: python collect_unified_data.py --output output/dashboard-v2.json
 
       - name: Render preview.html
-        run: python export_preview.py --input output/dashboard.json --output output/preview.html
+        run: python export_preview.py --input output/dashboard-v2.json --output output/preview.html
 
-      - name: Upload dashboard.json to Cloudflare R2
+      - name: Upload dashboard-v2.json to Cloudflare R2
         env:
           CLOUDFLARE_R2_ENDPOINT: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
           CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
           CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
           CLOUDFLARE_R2_BUCKET_NAME: ${{ vars.CLOUDFLARE_R2_BUCKET_NAME }}
           CLOUDFLARE_R2_PUBLIC_URL: ${{ vars.CLOUDFLARE_R2_PUBLIC_URL }}
-        run: python -m src.upload output/dashboard.json
+        run: python -m src.upload output/dashboard-v2.json
 
       - name: Upload preview.html as workflow artifact
         uses: actions/upload-artifact@v4

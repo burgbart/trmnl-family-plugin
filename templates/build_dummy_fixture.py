@@ -1,4 +1,4 @@
-"""Build a dummy dashboard.json fixture for local Liquid template testing."""
+"""Build a dummy dashboard-v2.json fixture for local Liquid template testing."""
 
 from __future__ import annotations
 
