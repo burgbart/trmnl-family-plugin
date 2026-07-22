@@ -159,6 +159,13 @@ def fetch_tasks() -> List[Task]:
         Task(title="Schedule car service", priority=1, due_date=today + timedelta(days=2)),
         Task(title="Water plants"),
         Task(title="Book weekend trip"),
+        Task(title="Replace hallway lightbulb", due_date=today + timedelta(days=1)),
+        Task(title="Pick up dry cleaning"),
+        Task(title="Renew library books", priority=1, due_date=today + timedelta(days=3)),
+        Task(title="Sort recycling"),
+        Task(title="Call dentist for checkup"),
+        Task(title="Organize garage shelf"),
+        Task(title="Buy birthday gift for Emma", priority=1, due_date=today + timedelta(days=3)),
     ]
 
 

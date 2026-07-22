@@ -156,6 +156,55 @@
       "priority": 0,
       "due_date": null,
       "sort_order": 0
+    },
+    {
+      "title": "Replace hallway lightbulb",
+      "done": false,
+      "priority": 0,
+      "due_date": "2026-07-22",
+      "sort_order": 0
+    },
+    {
+      "title": "Pick up dry cleaning",
+      "done": false,
+      "priority": 0,
+      "due_date": null,
+      "sort_order": 0
+    },
+    {
+      "title": "Renew library books",
+      "done": false,
+      "priority": 1,
+      "due_date": "2026-07-24",
+      "sort_order": 0
+    },
+    {
+      "title": "Sort recycling",
+      "done": false,
+      "priority": 0,
+      "due_date": null,
+      "sort_order": 0
+    },
+    {
+      "title": "Call dentist for checkup",
+      "done": false,
+      "priority": 0,
+      "due_date": null,
+      "sort_order": 0
+    },
+    {
+      "title": "Organize garage shelf",
+      "done": false,
+      "priority": 0,
+      "due_date": null,
+      "sort_order": 0
+    },
+    {
+      "title": "Buy birthday gift for Emma",
+      "done": false,
+      "priority": 1,
+      "due_date": "2026-07-24",
+      "sort_order": 0
     }
   ],
   "birthdays": [
