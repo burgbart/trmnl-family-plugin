@@ -61,7 +61,7 @@ def _parse_args() -> argparse.Namespace:
         metavar="DEVICE:TEMPLATE",
         help=(
             "Override the Liquid template for a device, e.g. "
-            "og:devices/og_classic.liquid. Can be given multiple times."
+            "og:devices/my_custom_og.liquid. Can be given multiple times."
         ),
     )
     return parser.parse_args()

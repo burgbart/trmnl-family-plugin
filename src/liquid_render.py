@@ -39,7 +39,7 @@ def render(
     device profile. This is useful for quickly testing a new design without
     registering a new profile. The path is resolved the same way as profile
     templates (relative to the `templates/` directory, e.g.
-    "devices/og_classic.liquid").
+    "devices/my_custom_og.liquid").
     """
     if isinstance(device_profile, str):
         device_profile = get_device_profile(device_profile)
