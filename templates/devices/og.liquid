@@ -186,18 +186,18 @@
        font_size_small: 15, line_height: 22, padding: 8 %}
   </div>
 
-  {% comment %} Anniversaries: 2 columns, max 6 {% endcomment %}
+  {% comment %} Anniversaries: title left, 2 columns right, bottom-aligned {% endcomment %}
   <div class="panel anniv-panel">
-    <div style="padding:10px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
-      <div style="font-weight:bold; font-size:17px; color:#000000; margin-bottom:4px;">Anniversaries</div>
-      <div style="flex:1 1 auto; overflow:hidden;">
+    <div style="padding:10px; height:100%; box-sizing:border-box; display:flex; align-items:flex-end; gap:10px;">
+      <div style="font-weight:bold; font-size:17px; color:#000000; line-height:1; padding-bottom:2px;">Anniversaries</div>
+      <div style="flex:1 1 auto; overflow:hidden; height:100%;">
         {% if errors.birthdays %}
           <div style="font-size:15px; font-weight:bold; color:#000000;">(!) Not loaded</div>
           <div style="font-size:13px; color:#555555; margin-top:4px;">{{ errors.birthdays }}</div>
         {% elsif birthdays.size == 0 %}
           <div style="font-size:15px; color:#555555;">No upcoming dates</div>
         {% else %}
-          <div style="display:flex; flex-wrap:wrap; align-content:flex-start; gap:2px 10px; height:100%;">
+          <div style="display:flex; flex-wrap:wrap; align-content:flex-end; gap:2px 10px; height:100%;">
             {% for entry in birthdays limit: 6 %}
               <div style="flex:0 0 calc(50% - 5px); display:flex; align-items:baseline; gap:6px; font-size:13px; line-height:15px; color:#000000; white-space:nowrap; overflow:hidden;">
                 <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
