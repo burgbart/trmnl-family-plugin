@@ -88,6 +88,20 @@ def fetch_weather() -> Weather:
                 temperature_low=17,
                 icon="cloud",
             ),
+            WeatherForecast(
+                date=today + timedelta(days=3),
+                description="Partly cloudy",
+                temperature_high=23,
+                temperature_low=16,
+                icon="partly-cloudy",
+            ),
+            WeatherForecast(
+                date=today + timedelta(days=4),
+                description="Clear sky",
+                temperature_high=25,
+                temperature_low=18,
+                icon="sun",
+            ),
         ],
         alert="Rain expected today",
     )

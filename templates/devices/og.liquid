@@ -141,7 +141,7 @@
   }
 
   .weather-current {
-    flex: 0 0 30%;
+    flex: 0 0 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -199,7 +199,7 @@
   }
 
   .weather-forecast {
-    flex: 0 0 70%;
+    flex: 0 0 58%;
     display: flex;
     gap: 2px;
   }
@@ -216,16 +216,182 @@
 
   .weather-forecast-day-name,
   .weather-forecast-temp {
-    font-size: 14px;
+    font-size: 11px;
     line-height: 1.1;
     color: #000000;
     white-space: nowrap;
   }
 
   .weather-forecast-icon {
-    width: 32px;
-    height: 32px;
+    width: 22px;
+    height: 22px;
     margin: 2px 0;
+  }
+
+  /* Shared panel body: Upcoming + Tasks inner wrapper */
+  .panel-body {
+    padding: 8px;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-title {
+    font-size: 17px;
+    color: #000000;
+    margin-bottom: 8px;
+  }
+
+  .section-title--bold {
+    font-weight: bold;
+  }
+
+  .section-title-label {
+    font-weight: bold;
+  }
+
+  .section-body {
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+
+  .error-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #000000;
+  }
+
+  .error-detail {
+    font-size: 15px;
+    color: #000000;
+    margin-top: 4px;
+  }
+
+  .error-detail-small {
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .empty-message {
+    font-size: 15px;
+    color: #000000;
+  }
+
+  /* Upcoming events */
+  .event-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    height: 22px;
+    font-size: 15px;
+    color: #000000;
+  }
+
+  .event-time {
+    flex: 0 0 auto;
+    min-width: 16ch;
+    white-space: nowrap;
+  }
+
+  .event-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Tasks */
+  .task-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 22px;
+  }
+
+  .task-checkbox {
+    flex: 0 0 auto;
+    width: 11px;
+    height: 11px;
+    border: 2px solid #555555;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .task-checkbox-mark {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    border-top: 2px solid #555555;
+    transform: rotate(45deg);
+    transform-origin: center;
+  }
+
+  .task-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    color: #000000;
+  }
+
+  .task-title--due {
+    font-weight: bold;
+  }
+
+  /* Anniversaries */
+  .anniv-inner {
+    padding: 10px;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    gap: 10px;
+  }
+
+  .anniv-title-col {
+    flex: 1 1 0;
+  }
+
+  .anniv-title {
+    font-weight: bold;
+    font-size: 17px;
+    color: #000000;
+    line-height: 1;
+  }
+
+  .anniv-status-col {
+    flex: 2 1 0;
+  }
+
+  .anniv-col {
+    flex: 1 1 0;
+    overflow: hidden;
+  }
+
+  .anniv-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 15px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .anniv-name {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .anniv-date {
+    flex: 0 0 auto;
   }
 
   /* Local shim for TRMNL Framework's bg--/text-- utility classes (defined
@@ -258,7 +424,7 @@
   {% comment %} Weather: current left + 3-day forecast right {% endcomment %}
   <div class="panel weather-panel">
     <div class="weather-layout">
-      {% comment %} Left: current weather (~30%) {% endcomment %}
+      {% comment %} Left: current weather (~40%) {% endcomment %}
       <div class="weather-current">
         <div class="weather-current-main">
           <div class="weather-icon">
@@ -275,11 +441,11 @@
           <div class="weather-alert">{{ weather.alert }}</div>
         {% endif %}
       </div>
-      {% comment %} Right: 3-day forecast (~70%) {% endcomment %}
+      {% comment %} Right: 5-day forecast, today first (~58%) {% endcomment %}
       <div class="weather-forecast">
-        {% for day in weather.forecast limit: 3 %}
+        {% for day in weather.forecast limit: 5 %}
           <div class="weather-forecast-day">
-            <div class="weather-forecast-day-name">{{ day.date | date: "%a" }}</div>
+            <div class="weather-forecast-day-name">{% if day.date == meta.reference_date %}Today{% else %}{{ day.date | date: "%a" }}{% endif %}</div>
             <div class="weather-forecast-icon">
               {% if day.icon == "sun" %}{{ icon_sun_32 }}{% elsif day.icon == "cloud" %}{{ icon_cloud_32 }}{% elsif day.icon == "rain" %}{{ icon_rain_32 }}{% else %}{{ icon_partly_32 }}{% endif %}
             </div>
@@ -292,19 +458,19 @@
 
   {% comment %} Upcoming events {% endcomment %}
   <div class="panel upcoming-panel">
-    <div style="padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
-      <div style="font-weight:bold; font-size:17px; color:#000000; margin-bottom:8px;">
+    <div class="panel-body">
+      <div class="section-title section-title--bold">
         Upcoming
       </div>
-      <div style="flex:1 1 auto; overflow:hidden;">
+      <div class="section-body">
         {% if errors.events %}
-        <div style="font-size:15px; font-weight:bold; color:#000000;">(!) Not loaded</div>
-        <div style="font-size:15px; color:#000000; margin-top:4px;">{{ errors.events }}</div>
+        <div class="error-title">(!) Not loaded</div>
+        <div class="error-detail">{{ errors.events }}</div>
         {% else %}
         {% for event in events limit: 9 %}
           {% assign event_date = event.start | slice: 0, 10 %}
-          <div style="display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;">
-            <div style="flex:0 0 auto; min-width:16ch; white-space:nowrap;">
+          <div class="event-row">
+            <div class="event-time">
               {% if event.all_day %}
                 {% if event_date == meta.reference_date %}
                   Today &middot; All day
@@ -321,12 +487,12 @@
                 {% endif %}
               {% endif %}
             </div>
-            <div style="flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+            <div class="event-title">
               {{ event.title }}
             </div>
           </div>
         {% else %}
-          <div style="font-size:15px; color:#000000;">No upcoming events</div>
+          <div class="empty-message">No upcoming events</div>
         {% endfor %}
         {% endif %}
       </div>
@@ -343,14 +509,14 @@
         {% endif %}
       {% endunless %}
     {% endfor %}
-    <div style="padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
-      <div style="font-size:17px; color:#000000; margin-bottom:8px;">
-        <span style="font-weight:bold;">Tasks</span>{% if due_count > 0 %} - {{ due_count }} due (!){% endif %}
+    <div class="panel-body">
+      <div class="section-title">
+        <span class="section-title-label">Tasks</span>{% if due_count > 0 %} - {{ due_count }} due (!){% endif %}
       </div>
-      <div style="flex:1 1 auto; overflow:hidden;">
+      <div class="section-body">
         {% if errors.tasks %}
-        <div style="font-size:15px; font-weight:bold; color:#000000;">(!) Not loaded</div>
-        <div style="font-size:15px; color:#000000; margin-top:4px;">{{ errors.tasks }}</div>
+        <div class="error-title">(!) Not loaded</div>
+        <div class="error-detail">{{ errors.tasks }}</div>
         {% else %}
         {% for task in tasks limit: 9 %}
           {% assign is_due = false %}
@@ -359,18 +525,18 @@
               {% assign is_due = true %}
             {% endif %}
           {% endunless %}
-          <div style="display:flex; align-items:center; gap:8px; height:22px;">
-            <div style="flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;">
+          <div class="task-row">
+            <div class="task-checkbox">
               {% if task.done %}
-                <div style="position:absolute; top:1px; left:1px; right:1px; bottom:1px; border-top:2px solid #555555; transform:rotate(45deg); transform-origin:center;"></div>
+                <div class="task-checkbox-mark"></div>
               {% endif %}
             </div>
-            <div style="flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; {% if is_due %}font-weight:bold;{% endif %}">
+            <div class="task-title{% if is_due %} task-title--due{% endif %}">
               {{ task.title }}{% if is_due %} (!){% endif %}
             </div>
           </div>
         {% else %}
-          <div style="font-size:15px; color:#000000;">No tasks</div>
+          <div class="empty-message">No tasks</div>
         {% endfor %}
         {% endif %}
       </div>
@@ -379,25 +545,25 @@
 
   {% comment %} Anniversaries: 3 equal columns — title + 2 columns of 4 {% endcomment %}
   <div class="panel anniv-panel">
-    <div style="padding:10px; height:100%; box-sizing:border-box; display:flex; gap:10px;">
-      <div style="flex:1 1 0;">
-        <div style="font-weight:bold; font-size:17px; color:#000000; line-height:1;">Anniversaries</div>
+    <div class="anniv-inner">
+      <div class="anniv-title-col">
+        <div class="anniv-title">Anniversaries</div>
       </div>
       {% if errors.birthdays %}
-        <div style="flex:2 1 0;">
-          <div style="font-size:15px; font-weight:bold; color:#000000;">(!) Not loaded</div>
-          <div class="text--gray-30" style="font-size:13px; margin-top:4px;">{{ errors.birthdays }}</div>
+        <div class="anniv-status-col">
+          <div class="error-title">(!) Not loaded</div>
+          <div class="error-detail-small text--gray-30">{{ errors.birthdays }}</div>
         </div>
       {% elsif birthdays.size == 0 %}
-        <div style="flex:2 1 0;">
-          <div class="text--gray-30" style="font-size:15px;">No upcoming dates</div>
+        <div class="anniv-status-col">
+          <div class="empty-message text--gray-30">No upcoming dates</div>
         </div>
       {% else %}
-        <div style="flex:1 1 0; overflow:hidden;">
+        <div class="anniv-col">
           {% for entry in birthdays limit: 4 %}
-            <div style="display:flex; align-items:baseline; gap:6px; font-size:13px; line-height:15px; color:#000000; white-space:nowrap; overflow:hidden;">
-              <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
-              <span class="text--gray-30" style="flex:0 0 auto;">
+            <div class="anniv-row">
+              <span class="anniv-name">{{ entry.name }}</span>
+              <span class="anniv-date text--gray-30">
                 {% if entry.date == meta.reference_date %}
                   Today!
                 {% else %}
@@ -407,11 +573,11 @@
             </div>
           {% endfor %}
         </div>
-        <div style="flex:1 1 0; overflow:hidden;">
+        <div class="anniv-col">
           {% for entry in birthdays offset: 4 limit: 4 %}
-            <div style="display:flex; align-items:baseline; gap:6px; font-size:13px; line-height:15px; color:#000000; white-space:nowrap; overflow:hidden;">
-              <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
-              <span class="text--gray-30" style="flex:0 0 auto;">
+            <div class="anniv-row">
+              <span class="anniv-name">{{ entry.name }}</span>
+              <span class="anniv-date text--gray-30">
                 {% if entry.date == meta.reference_date %}
                   Today!
                 {% else %}

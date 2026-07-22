@@ -45,7 +45,7 @@ WEATHER_CODES = {
 
 
 def fetch_weather() -> Weather:
-    """Fetch current weather and a 3-day forecast from Open-Meteo."""
+    """Fetch current weather and a 5-day forecast (today + 4 upcoming) from Open-Meteo."""
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
         "latitude": LATITUDE,
@@ -53,7 +53,7 @@ def fetch_weather() -> Weather:
         "current": "temperature_2m,apparent_temperature,weather_code",
         "daily": "weather_code,temperature_2m_max,temperature_2m_min",
         "timezone": "auto",
-        "forecast_days": 4,
+        "forecast_days": 5,
     }
 
     response = requests.get(url, params=params, timeout=20)
@@ -73,7 +73,7 @@ def fetch_weather() -> Weather:
     codes = daily.get("weather_code", [])
     highs = daily.get("temperature_2m_max", [])
     lows = daily.get("temperature_2m_min", [])
-    for i in range(1, min(4, len(dates))):
+    for i in range(0, min(5, len(dates))):
         day_code = codes[i] if i < len(codes) else 0
         day_desc, day_icon = WEATHER_CODES.get(day_code, ("Unknown", "cloud"))
         forecast.append(
