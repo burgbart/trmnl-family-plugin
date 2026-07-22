@@ -174,4 +174,11 @@ def fetch_birthdays() -> List[Birthday]:
             kind="anniversary",
         ),
         Birthday(name="Grandma Sue", date=today + timedelta(days=55)),
+        Birthday(name="Dad", date=today + timedelta(days=63)),
+        Birthday(
+            name="First date anniversary",
+            date=today + timedelta(days=76),
+            kind="anniversary",
+        ),
+        Birthday(name="Cousin Lisa", date=today + timedelta(days=89)),
     ]

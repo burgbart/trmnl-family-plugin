@@ -1,0 +1,1096 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TRMNL Dashboard Preview</title>
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+    background: #1e1e1e;
+    color: #eee;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    background: #2c2c2c;
+    color: #ddd;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .tab:hover {
+    background: #3a3a3a;
+  }
+  .tab.active {
+    background: #4a90d9;
+    border-color: #4a90d9;
+    color: #fff;
+  }
+  .tab-dims {
+    opacity: 0.7;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .panel {
+    display: none;
+  }
+  .panel.active {
+    display: block;
+  }
+  .frame-meta {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 8px;
+  }
+  .frame-scale-wrap {
+    background: #000;
+    display: inline-block;
+    padding: 1px;
+    max-width: 100%;
+    overflow: auto;
+  }
+  .device-frame {
+    display: block;
+    border: none;
+  }
+</style>
+</head>
+<body>
+  <h1>TRMNL Dashboard Preview</h1>
+  <div class="tabs">
+      <button class="tab active" data-target="frame-og" type="button">OG <span class="tab-dims">800×480</span></button>
+      <button class="tab" data-target="frame-x" type="button">X <span class="tab-dims">1872×1404</span></button>
+  </div>
+  
+      <div class="panel active" id="panel-og">
+        <div class="frame-meta">
+          OG &mdash; 800&times;480px,
+          4-level grayscale approximation
+        </div>
+        <div class="frame-scale-wrap">
+          <iframe
+            id="frame-og"
+            class="device-frame"
+            style="width:800px; height:480px; filter:grayscale(1) contrast(2.2);"
+            srcdoc="
+&lt;style&gt;
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Regular.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: &quot;TRMNL21&quot;;
+    src: url(&quot;../../assets/TRMNL21-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 800px;
+    height: 480px;
+    background: #AAAAAA;
+    font-family: &quot;TRMNL16&quot;, Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    padding: 10px;
+  }
+
+  .panel {
+    position: absolute;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+  }
+
+  /* Top row: date (left) + weather (right) */
+  .date-panel {
+    left: 10px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  .weather-panel {
+    left: 405px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  /* Middle row: upcoming (left) + tasks (right) */
+  .upcoming-panel {
+    left: 10px;
+    top: 120px;
+    width: 500px;
+    height: 250px;
+  }
+
+  .tasks-panel {
+    left: 520px;
+    top: 120px;
+    width: 270px;
+    height: 250px;
+  }
+
+  /* Bottom row: anniversaries rows */
+  .anniv-panel {
+    left: 10px;
+    top: 380px;
+    width: 780px;
+    height: 90px;
+  }
+
+  .day-name {
+    font-family: &quot;TRMNL21&quot;, &quot;TRMNL16&quot;, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 1.1;
+    color: #000000;
+  }
+
+  .date-line {
+    font-size: 18px;
+    line-height: 1.1;
+    margin-top: 4px;
+    color: #000000;
+  }
+
+  .synced {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 12px;
+    color: #555555;
+  }
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+
+&lt;div class=&quot;page&quot;&gt;
+  
+  &lt;div class=&quot;panel date-panel&quot;&gt;
+    &lt;div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;&quot;&gt;
+      &lt;div class=&quot;day-name&quot;&gt;Tuesday&lt;/div&gt;
+      &lt;div class=&quot;date-line&quot;&gt;21 July&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;synced&quot;&gt;Synced 15:03 21/07&lt;/div&gt;
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel weather-panel&quot;&gt;
+    &lt;div style=&quot;height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;&quot;&gt;
+      
+      &lt;div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;&gt;
+        &lt;div style=&quot;display:flex; align-items:center; gap:8px; margin-bottom:4px;&quot;&gt;
+          &lt;div style=&quot;width:32px; height:32px; flex:0 0 auto;&quot;&gt;
+            &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;circle cx=&quot;26&quot; cy=&quot;14&quot; r=&quot;7&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;26&quot; y1=&quot;2&quot; x2=&quot;26&quot; y2=&quot;5&quot;/&gt;&lt;line x1=&quot;35&quot; y1=&quot;14&quot; x2=&quot;38&quot; y2=&quot;14&quot;/&gt;&lt;line x1=&quot;32.5&quot; y1=&quot;7.5&quot; x2=&quot;34.5&quot; y2=&quot;5.5&quot;/&gt;&lt;/g&gt;&lt;g fill=&quot;#ffffff&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;13&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;22&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/&gt;&lt;ellipse cx=&quot;18&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div style=&quot;font-weight:bold; font-size:26px; line-height:1; color:#000000;&quot;&gt;21&amp;deg;C&lt;/div&gt;
+          &lt;div style=&quot;display:flex; flex-direction:column; line-height:1; margin-left:4px;&quot;&gt;
+            &lt;div style=&quot;font-size:9px; color:#555555; text-transform:lowercase;&quot;&gt;real feel&lt;/div&gt;
+            &lt;div style=&quot;font-size:13px; color:#000000;&quot;&gt;19&amp;deg;C&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;Partly cloudy&lt;/div&gt;
+        
+          &lt;div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;&quot;&gt;Rain expected today&lt;/div&gt;
+        
+      &lt;/div&gt;
+      
+      &lt;div style=&quot;flex:0 0 55%; display:flex; gap:4px;&quot;&gt;
+        
+          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
+            &lt;div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;&gt;Tue&lt;/div&gt;
+            &lt;div style=&quot;width:16px; height:16px; margin:2px 0;&quot;&gt;
+              &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;14&quot; cy=&quot;16&quot; rx=&quot;8&quot; ry=&quot;6&quot;/&gt;&lt;ellipse cx=&quot;23&quot; cy=&quot;14&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;19&quot; cy=&quot;19&quot; rx=&quot;11&quot; ry=&quot;5&quot;/&gt;&lt;/g&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;13&quot; y1=&quot;28&quot; x2=&quot;11&quot; y2=&quot;36&quot;/&gt;&lt;line x1=&quot;20&quot; y1=&quot;28&quot; x2=&quot;18&quot; y2=&quot;36&quot;/&gt;&lt;line x1=&quot;27&quot; y1=&quot;28&quot; x2=&quot;25&quot; y2=&quot;36&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;&gt;20&amp;deg;/15&amp;deg;&lt;/div&gt;
+          &lt;/div&gt;
+        
+          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
+            &lt;div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;&gt;Wed&lt;/div&gt;
+            &lt;div style=&quot;width:16px; height:16px; margin:2px 0;&quot;&gt;
+              &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;20&quot; y1=&quot;1&quot; x2=&quot;20&quot; y2=&quot;7&quot;/&gt;&lt;line x1=&quot;20&quot; y1=&quot;33&quot; x2=&quot;20&quot; y2=&quot;39&quot;/&gt;&lt;line x1=&quot;1&quot; y1=&quot;20&quot; x2=&quot;7&quot; y2=&quot;20&quot;/&gt;&lt;line x1=&quot;33&quot; y1=&quot;20&quot; x2=&quot;39&quot; y2=&quot;20&quot;/&gt;&lt;line x1=&quot;6.34&quot; y1=&quot;6.34&quot; x2=&quot;10.6&quot; y2=&quot;10.6&quot;/&gt;&lt;line x1=&quot;29.4&quot; y1=&quot;29.4&quot; x2=&quot;33.66&quot; y2=&quot;33.66&quot;/&gt;&lt;line x1=&quot;6.34&quot; y1=&quot;33.66&quot; x2=&quot;10.6&quot; y2=&quot;29.4&quot;/&gt;&lt;line x1=&quot;29.4&quot; y1=&quot;10.6&quot; x2=&quot;33.66&quot; y2=&quot;6.34&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;&gt;24&amp;deg;/16&amp;deg;&lt;/div&gt;
+          &lt;/div&gt;
+        
+          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
+            &lt;div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;&gt;Thu&lt;/div&gt;
+            &lt;div style=&quot;width:16px; height:16px; margin:2px 0;&quot;&gt;
+              &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;14&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;24&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/&gt;&lt;ellipse cx=&quot;20&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;&gt;22&amp;deg;/17&amp;deg;&lt;/div&gt;
+          &lt;/div&gt;
+        
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel upcoming-panel&quot;&gt;
+    
+&lt;div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
+  &lt;div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:8px;&quot;&gt;
+    Upcoming
+  &lt;/div&gt;
+  &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
+    
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Today 09:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Dentist — Anna
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Today 15:30
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          School pickup
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Today 18:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Dinner at parents
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Wed 22 Jul 10:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Grocery run
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Thu 23 Jul 17:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Football practice
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Fri 24 Jul 16:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Piano lesson
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Sat 25 Jul 19:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Parent-teacher meeting
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Sun 26 Jul 10:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Swimming lessons
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Mon 27 Jul 11:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Family bike ride
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+    
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel tasks-panel&quot;&gt;
+    
+
+
+&lt;div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
+  &lt;div style=&quot;font-size:17px; color:#000000; margin-bottom:8px;&quot;&gt;
+    &lt;span style=&quot;font-weight:bold;&quot;&gt;Tasks&lt;/span&gt; - 2 due (!)
+  &lt;/div&gt;
+  &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
+    
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;&gt;
+          Buy milk &amp; eggs (!)
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;&gt;
+          Call plumber (!)
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;&gt;
+          Schedule car service
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;&gt;
+          Water plants
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;&gt;
+          Book weekend trip
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+    
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel anniv-panel&quot;&gt;
+    &lt;div style=&quot;padding:10px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
+      &lt;div style=&quot;font-weight:bold; font-size:15px; color:#000000; margin-bottom:4px;&quot;&gt;Anniversaries&lt;/div&gt;
+      &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
+        
+          &lt;div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%;&quot;&gt;
+            &lt;div style=&quot;display:flex; align-items:center; justify-content:space-between; height:50%; overflow:hidden;&quot;&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;&gt;
+                  Emma
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;&gt;
+                  Uncle Mark
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;&gt;
+                  Wedding anniversary
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;&gt;
+                  Grandma Sue
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;&gt;
+                  Dad
+                &lt;/div&gt;
+              
+            &lt;/div&gt;
+            &lt;div style=&quot;display:flex; align-items:center; justify-content:space-between; height:50%; overflow:hidden;&quot;&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;&gt;
+                  
+                    Fri 24 Jul
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;&gt;
+                  
+                    Sat 08 Aug
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;&gt;
+                  
+                    Tue 01 Sep
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;&gt;
+                  
+                    Mon 14 Sep
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;&gt;
+                  
+                    Tue 22 Sep
+                  
+                &lt;/div&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+"
+            scrolling="no"
+          ></iframe>
+        </div>
+      </div>
+      <div class="panel" id="panel-x">
+        <div class="frame-meta">
+          X &mdash; 1872&times;1404px,
+          16-level grayscale approximation
+        </div>
+        <div class="frame-scale-wrap">
+          <iframe
+            id="frame-x"
+            class="device-frame"
+            style="width:1872px; height:1404px; filter:grayscale(1);"
+            srcdoc="
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;title&gt;TRMNL X Dashboard — Creative Light (Anniv Rows)&lt;/title&gt;
+&lt;style&gt;
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Regular.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: &quot;TRMNL21&quot;;
+    src: url(&quot;../../assets/TRMNL21-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1872px;
+    height: 1404px;
+    background: #AAAAAA;
+    font-family: &quot;TRMNL16&quot;, Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 1872px;
+    height: 1404px;
+    padding: 24px;
+  }
+
+  .panel {
+    position: absolute;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+  }
+
+  /* Top row */
+  .date-panel {
+    left: 24px;
+    top: 24px;
+    width: 912px;
+    height: 180px;
+  }
+
+  .weather-panel {
+    left: 960px;
+    top: 24px;
+    width: 888px;
+    height: 180px;
+  }
+
+  /* Middle row */
+  .upcoming-panel {
+    left: 24px;
+    top: 228px;
+    width: 1098px;
+    height: 678px;
+  }
+
+  .tasks-panel {
+    left: 1146px;
+    top: 228px;
+    width: 702px;
+    height: 678px;
+  }
+
+  /* Bottom row */
+  .anniv-panel {
+    left: 24px;
+    top: 930px;
+    width: 1824px;
+    height: 450px;
+  }
+
+  .day-name {
+    font-family: &quot;TRMNL21&quot;, &quot;TRMNL16&quot;, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 1.05;
+    color: #000000;
+  }
+
+  .date-line {
+    font-size: 36px;
+    line-height: 1.1;
+    margin-top: 6px;
+    color: #000000;
+  }
+
+  .synced {
+    position: absolute;
+    right: 24px;
+    bottom: 12px;
+    font-size: 24px;
+    color: #555555;
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+
+
+
+
+
+
+
+
+
+&lt;div class=&quot;page&quot;&gt;
+  
+  &lt;div class=&quot;panel date-panel&quot;&gt;
+    &lt;div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:24px;&quot;&gt;
+      &lt;div class=&quot;day-name&quot;&gt;Tuesday&lt;/div&gt;
+      &lt;div class=&quot;date-line&quot;&gt;21 July&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;synced&quot;&gt;Synced 15:03 21/07&lt;/div&gt;
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel weather-panel&quot;&gt;
+    &lt;div style=&quot;height:100%; padding:20px; box-sizing:border-box; display:flex; gap:16px;&quot;&gt;
+      
+      &lt;div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;&gt;
+        &lt;div style=&quot;display:flex; align-items:center; gap:16px; margin-bottom:8px;&quot;&gt;
+          &lt;div style=&quot;width:64px; height:64px; flex:0 0 auto;&quot;&gt;
+            &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;64&quot; height=&quot;64&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;circle cx=&quot;26&quot; cy=&quot;14&quot; r=&quot;7&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;26&quot; y1=&quot;2&quot; x2=&quot;26&quot; y2=&quot;5&quot;/&gt;&lt;line x1=&quot;35&quot; y1=&quot;14&quot; x2=&quot;38&quot; y2=&quot;14&quot;/&gt;&lt;line x1=&quot;32.5&quot; y1=&quot;7.5&quot; x2=&quot;34.5&quot; y2=&quot;5.5&quot;/&gt;&lt;/g&gt;&lt;g fill=&quot;#ffffff&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;13&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;22&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/&gt;&lt;ellipse cx=&quot;18&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div style=&quot;font-weight:bold; font-size:56px; line-height:1; color:#000000;&quot;&gt;21&amp;deg;C&lt;/div&gt;
+          &lt;div style=&quot;display:flex; flex-direction:column; line-height:1; margin-left:8px;&quot;&gt;
+            &lt;div style=&quot;font-size:16px; color:#555555; text-transform:lowercase;&quot;&gt;real feel&lt;/div&gt;
+            &lt;div style=&quot;font-size:22px; color:#000000;&quot;&gt;19&amp;deg;C&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div style=&quot;font-size:22px; line-height:1.3; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;Partly cloudy&lt;/div&gt;
+        
+          &lt;div style=&quot;font-size:22px; line-height:1.3; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:4px;&quot;&gt;Rain expected today&lt;/div&gt;
+        
+      &lt;/div&gt;
+      
+      &lt;div style=&quot;flex:0 0 55%; display:flex; gap:12px;&quot;&gt;
+        
+          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
+            &lt;div style=&quot;font-size:20px; line-height:1.2; color:#000000; white-space:nowrap;&quot;&gt;Tue&lt;/div&gt;
+            &lt;div style=&quot;width:40px; height:40px; margin:6px 0;&quot;&gt;
+              &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;40&quot; height=&quot;40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;14&quot; cy=&quot;16&quot; rx=&quot;8&quot; ry=&quot;6&quot;/&gt;&lt;ellipse cx=&quot;23&quot; cy=&quot;14&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;19&quot; cy=&quot;19&quot; rx=&quot;11&quot; ry=&quot;5&quot;/&gt;&lt;/g&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;13&quot; y1=&quot;28&quot; x2=&quot;11&quot; y2=&quot;36&quot;/&gt;&lt;line x1=&quot;20&quot; y1=&quot;28&quot; x2=&quot;18&quot; y2=&quot;36&quot;/&gt;&lt;line x1=&quot;27&quot; y1=&quot;28&quot; x2=&quot;25&quot; y2=&quot;36&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;div style=&quot;font-size:22px; line-height:1.2; color:#000000;&quot;&gt;20&amp;deg;/15&amp;deg;&lt;/div&gt;
+          &lt;/div&gt;
+        
+          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
+            &lt;div style=&quot;font-size:20px; line-height:1.2; color:#000000; white-space:nowrap;&quot;&gt;Wed&lt;/div&gt;
+            &lt;div style=&quot;width:40px; height:40px; margin:6px 0;&quot;&gt;
+              &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;40&quot; height=&quot;40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/&gt;&lt;g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;line x1=&quot;20&quot; y1=&quot;1&quot; x2=&quot;20&quot; y2=&quot;7&quot;/&gt;&lt;line x1=&quot;20&quot; y1=&quot;33&quot; x2=&quot;20&quot; y2=&quot;39&quot;/&gt;&lt;line x1=&quot;1&quot; y1=&quot;20&quot; x2=&quot;7&quot; y2=&quot;20&quot;/&gt;&lt;line x1=&quot;33&quot; y1=&quot;20&quot; x2=&quot;39&quot; y2=&quot;20&quot;/&gt;&lt;line x1=&quot;6.34&quot; y1=&quot;6.34&quot; x2=&quot;10.6&quot; y2=&quot;10.6&quot;/&gt;&lt;line x1=&quot;29.4&quot; y1=&quot;29.4&quot; x2=&quot;33.66&quot; y2=&quot;33.66&quot;/&gt;&lt;line x1=&quot;6.34&quot; y1=&quot;33.66&quot; x2=&quot;10.6&quot; y2=&quot;29.4&quot;/&gt;&lt;line x1=&quot;29.4&quot; y1=&quot;10.6&quot; x2=&quot;33.66&quot; y2=&quot;6.34&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;div style=&quot;font-size:22px; line-height:1.2; color:#000000;&quot;&gt;24&amp;deg;/16&amp;deg;&lt;/div&gt;
+          &lt;/div&gt;
+        
+          &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;&gt;
+            &lt;div style=&quot;font-size:20px; line-height:1.2; color:#000000; white-space:nowrap;&quot;&gt;Thu&lt;/div&gt;
+            &lt;div style=&quot;width:40px; height:40px; margin:6px 0;&quot;&gt;
+              &lt;svg viewBox=&quot;0 0 40 40&quot; width=&quot;40&quot; height=&quot;40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;&gt;&lt;ellipse cx=&quot;14&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/&gt;&lt;ellipse cx=&quot;24&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/&gt;&lt;ellipse cx=&quot;20&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/&gt;&lt;/g&gt;&lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;div style=&quot;font-size:22px; line-height:1.2; color:#000000;&quot;&gt;22&amp;deg;/17&amp;deg;&lt;/div&gt;
+          &lt;/div&gt;
+        
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel upcoming-panel&quot;&gt;
+    
+&lt;div style=&quot;padding:20px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
+  &lt;div style=&quot;font-weight:bold; font-size:34px; color:#000000; margin-bottom:20px;&quot;&gt;
+    Upcoming
+  &lt;/div&gt;
+  &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
+    
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Today 09:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Dentist — Anna
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Today 15:30
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          School pickup
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Today 18:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Dinner at parents
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Wed 22 Jul 10:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Grocery run
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Thu 23 Jul 17:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Football practice
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Fri 24 Jul 16:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Piano lesson
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Sat 25 Jul 19:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Parent-teacher meeting
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Sun 26 Jul 10:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Swimming lessons
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Mon 27 Jul 11:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Family bike ride
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      &lt;div style=&quot;display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;&gt;
+          
+            
+              Tue 28 Jul 09:00
+            
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;&gt;
+          Car maintenance
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+    
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel tasks-panel&quot;&gt;
+    
+
+
+&lt;div style=&quot;padding:20px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
+  &lt;div style=&quot;font-size:34px; color:#000000; margin-bottom:20px;&quot;&gt;
+    &lt;span style=&quot;font-weight:bold;&quot;&gt;Tasks&lt;/span&gt; - 2 due (!)
+  &lt;/div&gt;
+  &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
+    
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:28px; color:#000000; font-weight:bold;&quot;&gt;
+          Buy milk &amp; eggs (!)
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:28px; color:#000000; font-weight:bold;&quot;&gt;
+          Call plumber (!)
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:28px; color:#000000; &quot;&gt;
+          Schedule car service
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:28px; color:#000000; &quot;&gt;
+          Water plants
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+      
+      
+      &lt;div style=&quot;display:flex; align-items:center; gap:20px; height:34px;&quot;&gt;
+        &lt;div style=&quot;flex:0 0 auto; width:24px; height:24px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;&gt;
+          
+        &lt;/div&gt;
+        &lt;div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:28px; color:#000000; &quot;&gt;
+          Book weekend trip
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+    
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;/div&gt;
+
+  
+  &lt;div class=&quot;panel anniv-panel&quot;&gt;
+    &lt;div style=&quot;padding:24px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;&gt;
+      &lt;div style=&quot;font-weight:bold; font-size:34px; color:#000000; margin-bottom:12px;&quot;&gt;Anniversaries&lt;/div&gt;
+      &lt;div style=&quot;flex:1 1 auto; overflow:hidden;&quot;&gt;
+        
+          &lt;div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%;&quot;&gt;
+            &lt;div style=&quot;display:flex; align-items:center; justify-content:space-between; height:50%; overflow:hidden;&quot;&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:30px; color:#000000; padding:0 8px;&quot;&gt;
+                  Emma
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:30px; color:#000000; padding:0 8px;&quot;&gt;
+                  Uncle Mark
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:30px; color:#000000; padding:0 8px;&quot;&gt;
+                  Wedding anniversary
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:30px; color:#000000; padding:0 8px;&quot;&gt;
+                  Grandma Sue
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:30px; color:#000000; padding:0 8px;&quot;&gt;
+                  Dad
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:30px; color:#000000; padding:0 8px;&quot;&gt;
+                  First date anniversary
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:30px; color:#000000; padding:0 8px;&quot;&gt;
+                  Cousin Lisa
+                &lt;/div&gt;
+              
+            &lt;/div&gt;
+            &lt;div style=&quot;display:flex; align-items:center; justify-content:space-between; height:50%; overflow:hidden;&quot;&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:24px; color:#555555; padding:0 8px;&quot;&gt;
+                  
+                    Fri 24 Jul
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:24px; color:#555555; padding:0 8px;&quot;&gt;
+                  
+                    Sat 08 Aug
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:24px; color:#555555; padding:0 8px;&quot;&gt;
+                  
+                    Tue 01 Sep
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:24px; color:#555555; padding:0 8px;&quot;&gt;
+                  
+                    Mon 14 Sep
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:24px; color:#555555; padding:0 8px;&quot;&gt;
+                  
+                    Tue 22 Sep
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:24px; color:#555555; padding:0 8px;&quot;&gt;
+                  
+                    Mon 05 Oct
+                  
+                &lt;/div&gt;
+              
+                &lt;div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:24px; color:#555555; padding:0 8px;&quot;&gt;
+                  
+                    Sun 18 Oct
+                  
+                &lt;/div&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+        
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"
+            scrolling="no"
+          ></iframe>
+        </div>
+      </div>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.tab');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var target = tab.getAttribute('data-target');
+          document.querySelectorAll('.tab').forEach(function (t) {
+            t.classList.remove('active');
+          });
+          document.querySelectorAll('.panel').forEach(function (p) {
+            p.classList.remove('active');
+          });
+          tab.classList.add('active');
+          document.getElementById('panel-' + target.replace('frame-', '')).classList.add('active');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

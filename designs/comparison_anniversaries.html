@@ -1,0 +1,1914 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TRMNL OG Anniversary Variants Comparison</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Arial, sans-serif; background: #1e1e1e; color: #eee; padding: 24px; }
+  h1 { font-size: 22px; margin: 0 0 24px; }
+</style>
+</head>
+<body>
+<h1>Creative Mosaic Light — Anniversary Block Variants (4-level grayscale)</h1>
+
+<div style="margin-bottom: 32px;">
+  <h2 style="font-family: sans-serif; font-size: 18px; margin: 0 0 12px;">Default mosaic light</h2>
+  <div style="background: #000; display: inline-block; padding: 1px;">
+    <iframe srcdoc="
+<style>
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Regular.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: &quot;TRMNL21&quot;;
+    src: url(&quot;../../assets/TRMNL21-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 800px;
+    height: 480px;
+    background: #AAAAAA;
+    font-family: &quot;TRMNL16&quot;, Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    padding: 10px;
+  }
+
+  .panel {
+    position: absolute;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+  }
+
+  /* Top row: date (left) + weather (right) */
+  .date-panel {
+    left: 10px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  .weather-panel {
+    left: 405px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  /* Middle row: upcoming (left) + tasks (right) */
+  .upcoming-panel {
+    left: 10px;
+    top: 120px;
+    width: 500px;
+    height: 250px;
+  }
+
+  .tasks-panel {
+    left: 520px;
+    top: 120px;
+    width: 270px;
+    height: 250px;
+  }
+
+  /* Bottom row: anniversaries ticker */
+  .anniv-panel {
+    left: 10px;
+    top: 380px;
+    width: 780px;
+    height: 90px;
+  }
+
+  .day-name {
+    font-family: &quot;TRMNL21&quot;, &quot;TRMNL16&quot;, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 1.1;
+    color: #000000;
+  }
+
+  .date-line {
+    font-size: 18px;
+    line-height: 1.1;
+    margin-top: 4px;
+    color: #000000;
+  }
+
+  .synced {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 12px;
+    color: #555555;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+<div class=&quot;page&quot;>
+  
+  <div class=&quot;panel date-panel&quot;>
+    <div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;&quot;>
+      <div class=&quot;day-name&quot;>Tuesday</div>
+      <div class=&quot;date-line&quot;>21 July</div>
+    </div>
+    <div class=&quot;synced&quot;>Synced 15:03 21/07</div>
+  </div>
+
+  
+  <div class=&quot;panel weather-panel&quot;>
+    <div style=&quot;height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;&quot;>
+      
+      <div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;>
+        <div style=&quot;display:flex; align-items:center; gap:8px; margin-bottom:4px;&quot;>
+          <div style=&quot;width:32px; height:32px; flex:0 0 auto;&quot;>
+            <svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;26&quot; cy=&quot;14&quot; r=&quot;7&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;26&quot; y1=&quot;2&quot; x2=&quot;26&quot; y2=&quot;5&quot;/><line x1=&quot;35&quot; y1=&quot;14&quot; x2=&quot;38&quot; y2=&quot;14&quot;/><line x1=&quot;32.5&quot; y1=&quot;7.5&quot; x2=&quot;34.5&quot; y2=&quot;5.5&quot;/></g><g fill=&quot;#ffffff&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;13&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;22&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;18&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+          </div>
+          <div style=&quot;font-weight:bold; font-size:26px; line-height:1; color:#000000;&quot;>21&deg;C</div>
+          <div style=&quot;display:flex; flex-direction:column; line-height:1; margin-left:4px;&quot;>
+            <div style=&quot;font-size:9px; color:#555555; text-transform:lowercase;&quot;>real feel</div>
+            <div style=&quot;font-size:13px; color:#000000;&quot;>19&deg;C</div>
+          </div>
+        </div>
+        <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Partly cloudy</div>
+        
+          <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;&quot;>Rain expected today</div>
+        
+      </div>
+      
+      <div style=&quot;flex:0 0 55%; display:flex; gap:4px;&quot;>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Tue</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;16&quot; rx=&quot;8&quot; ry=&quot;6&quot;/><ellipse cx=&quot;23&quot; cy=&quot;14&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;19&quot; cy=&quot;19&quot; rx=&quot;11&quot; ry=&quot;5&quot;/></g><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;13&quot; y1=&quot;28&quot; x2=&quot;11&quot; y2=&quot;36&quot;/><line x1=&quot;20&quot; y1=&quot;28&quot; x2=&quot;18&quot; y2=&quot;36&quot;/><line x1=&quot;27&quot; y1=&quot;28&quot; x2=&quot;25&quot; y2=&quot;36&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>20&deg;/15&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Wed</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;20&quot; y1=&quot;1&quot; x2=&quot;20&quot; y2=&quot;7&quot;/><line x1=&quot;20&quot; y1=&quot;33&quot; x2=&quot;20&quot; y2=&quot;39&quot;/><line x1=&quot;1&quot; y1=&quot;20&quot; x2=&quot;7&quot; y2=&quot;20&quot;/><line x1=&quot;33&quot; y1=&quot;20&quot; x2=&quot;39&quot; y2=&quot;20&quot;/><line x1=&quot;6.34&quot; y1=&quot;6.34&quot; x2=&quot;10.6&quot; y2=&quot;10.6&quot;/><line x1=&quot;29.4&quot; y1=&quot;29.4&quot; x2=&quot;33.66&quot; y2=&quot;33.66&quot;/><line x1=&quot;6.34&quot; y1=&quot;33.66&quot; x2=&quot;10.6&quot; y2=&quot;29.4&quot;/><line x1=&quot;29.4&quot; y1=&quot;10.6&quot; x2=&quot;33.66&quot; y2=&quot;6.34&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>24&deg;/16&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Thu</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;24&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;20&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>22&deg;/17&deg;</div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+  <div class=&quot;panel upcoming-panel&quot;>
+    
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    Upcoming
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 09:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dentist — Anna
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 15:30
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          School pickup
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 18:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dinner at parents
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Wed 22 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Grocery run
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Thu 23 Jul 17:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Football practice
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Fri 24 Jul 16:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Piano lesson
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sat 25 Jul 19:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Parent-teacher meeting
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sun 26 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Swimming lessons
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Mon 27 Jul 11:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Family bike ride
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel tasks-panel&quot;>
+    
+
+
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    <span style=&quot;font-weight:bold;&quot;>Tasks</span> - 2 due (!)
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Buy milk & eggs (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Call plumber (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Schedule car service
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Water plants
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Book weekend trip
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel anniv-panel&quot;>
+    <div style=&quot;padding:10px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+      <div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:6px;&quot;>Anniversaries</div>
+      <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+        
+          <div style=&quot;display:flex; align-items:center; gap:20px; height:40px; overflow:hidden;&quot;>
+            
+              <div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;>
+                <span style=&quot;font-weight:bold;&quot;>Emma</span>
+                <span style=&quot;color:#555555; margin-left:4px;&quot;>
+                  
+                    Fri 24 Jul
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;>
+                <span style=&quot;font-weight:bold;&quot;>Uncle Mark</span>
+                <span style=&quot;color:#555555; margin-left:4px;&quot;>
+                  
+                    Sat 08 Aug
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;>
+                <span style=&quot;font-weight:bold;&quot;>Wedding anniversary</span>
+                <span style=&quot;color:#555555; margin-left:4px;&quot;>
+                  
+                    Tue 01 Sep
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;white-space:nowrap; font-size:15px; color:#000000;&quot;>
+                <span style=&quot;font-weight:bold;&quot;>Grandma Sue</span>
+                <span style=&quot;color:#555555; margin-left:4px;&quot;>
+                  
+                    Mon 14 Sep
+                  
+                </span>
+              </div>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+" style="width: 800px; height: 480px; border: none; display: block; filter: grayscale(1) contrast(2.2);" scrolling="no"></iframe>
+  </div>
+</div>
+
+<div style="margin-bottom: 32px;">
+  <h2 style="font-family: sans-serif; font-size: 18px; margin: 0 0 12px;">Anniversaries grid</h2>
+  <div style="background: #000; display: inline-block; padding: 1px;">
+    <iframe srcdoc="
+<style>
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Regular.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: &quot;TRMNL21&quot;;
+    src: url(&quot;../../assets/TRMNL21-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 800px;
+    height: 480px;
+    background: #AAAAAA;
+    font-family: &quot;TRMNL16&quot;, Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    padding: 10px;
+  }
+
+  .panel {
+    position: absolute;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+  }
+
+  /* Top row: date (left) + weather (right) */
+  .date-panel {
+    left: 10px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  .weather-panel {
+    left: 405px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  /* Middle row: upcoming (left) + tasks (right) */
+  .upcoming-panel {
+    left: 10px;
+    top: 120px;
+    width: 500px;
+    height: 250px;
+  }
+
+  .tasks-panel {
+    left: 520px;
+    top: 120px;
+    width: 270px;
+    height: 250px;
+  }
+
+  /* Bottom row: anniversaries grid */
+  .anniv-panel {
+    left: 10px;
+    top: 380px;
+    width: 780px;
+    height: 90px;
+  }
+
+  .day-name {
+    font-family: &quot;TRMNL21&quot;, &quot;TRMNL16&quot;, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 1.1;
+    color: #000000;
+  }
+
+  .date-line {
+    font-size: 18px;
+    line-height: 1.1;
+    margin-top: 4px;
+    color: #000000;
+  }
+
+  .synced {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 12px;
+    color: #555555;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+<div class=&quot;page&quot;>
+  
+  <div class=&quot;panel date-panel&quot;>
+    <div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;&quot;>
+      <div class=&quot;day-name&quot;>Tuesday</div>
+      <div class=&quot;date-line&quot;>21 July</div>
+    </div>
+    <div class=&quot;synced&quot;>Synced 15:03 21/07</div>
+  </div>
+
+  
+  <div class=&quot;panel weather-panel&quot;>
+    <div style=&quot;height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;&quot;>
+      
+      <div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;>
+        <div style=&quot;display:flex; align-items:center; gap:8px; margin-bottom:4px;&quot;>
+          <div style=&quot;width:32px; height:32px; flex:0 0 auto;&quot;>
+            <svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;26&quot; cy=&quot;14&quot; r=&quot;7&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;26&quot; y1=&quot;2&quot; x2=&quot;26&quot; y2=&quot;5&quot;/><line x1=&quot;35&quot; y1=&quot;14&quot; x2=&quot;38&quot; y2=&quot;14&quot;/><line x1=&quot;32.5&quot; y1=&quot;7.5&quot; x2=&quot;34.5&quot; y2=&quot;5.5&quot;/></g><g fill=&quot;#ffffff&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;13&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;22&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;18&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+          </div>
+          <div style=&quot;font-weight:bold; font-size:26px; line-height:1; color:#000000;&quot;>21&deg;C</div>
+          <div style=&quot;display:flex; flex-direction:column; line-height:1; margin-left:4px;&quot;>
+            <div style=&quot;font-size:9px; color:#555555; text-transform:lowercase;&quot;>real feel</div>
+            <div style=&quot;font-size:13px; color:#000000;&quot;>19&deg;C</div>
+          </div>
+        </div>
+        <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Partly cloudy</div>
+        
+          <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;&quot;>Rain expected today</div>
+        
+      </div>
+      
+      <div style=&quot;flex:0 0 55%; display:flex; gap:4px;&quot;>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Tue</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;16&quot; rx=&quot;8&quot; ry=&quot;6&quot;/><ellipse cx=&quot;23&quot; cy=&quot;14&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;19&quot; cy=&quot;19&quot; rx=&quot;11&quot; ry=&quot;5&quot;/></g><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;13&quot; y1=&quot;28&quot; x2=&quot;11&quot; y2=&quot;36&quot;/><line x1=&quot;20&quot; y1=&quot;28&quot; x2=&quot;18&quot; y2=&quot;36&quot;/><line x1=&quot;27&quot; y1=&quot;28&quot; x2=&quot;25&quot; y2=&quot;36&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>20&deg;/15&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Wed</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;20&quot; y1=&quot;1&quot; x2=&quot;20&quot; y2=&quot;7&quot;/><line x1=&quot;20&quot; y1=&quot;33&quot; x2=&quot;20&quot; y2=&quot;39&quot;/><line x1=&quot;1&quot; y1=&quot;20&quot; x2=&quot;7&quot; y2=&quot;20&quot;/><line x1=&quot;33&quot; y1=&quot;20&quot; x2=&quot;39&quot; y2=&quot;20&quot;/><line x1=&quot;6.34&quot; y1=&quot;6.34&quot; x2=&quot;10.6&quot; y2=&quot;10.6&quot;/><line x1=&quot;29.4&quot; y1=&quot;29.4&quot; x2=&quot;33.66&quot; y2=&quot;33.66&quot;/><line x1=&quot;6.34&quot; y1=&quot;33.66&quot; x2=&quot;10.6&quot; y2=&quot;29.4&quot;/><line x1=&quot;29.4&quot; y1=&quot;10.6&quot; x2=&quot;33.66&quot; y2=&quot;6.34&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>24&deg;/16&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Thu</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;24&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;20&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>22&deg;/17&deg;</div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+  <div class=&quot;panel upcoming-panel&quot;>
+    
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    Upcoming
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 09:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dentist — Anna
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 15:30
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          School pickup
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 18:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dinner at parents
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Wed 22 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Grocery run
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Thu 23 Jul 17:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Football practice
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Fri 24 Jul 16:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Piano lesson
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sat 25 Jul 19:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Parent-teacher meeting
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sun 26 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Swimming lessons
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Mon 27 Jul 11:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Family bike ride
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel tasks-panel&quot;>
+    
+
+
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    <span style=&quot;font-weight:bold;&quot;>Tasks</span> - 2 due (!)
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Buy milk & eggs (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Call plumber (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Schedule car service
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Water plants
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Book weekend trip
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel anniv-panel&quot;>
+    <div style=&quot;padding:6px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+      <div style=&quot;font-weight:bold; font-size:12px; color:#000000; margin-bottom:2px;&quot;>Anniversaries</div>
+      <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+        
+          <div style=&quot;display:flex; flex-wrap:wrap; height:100%; align-content:flex-start;&quot;>
+            
+              <div style=&quot;flex:0 0 50%; height:21px; padding-right:6px; overflow:hidden;&quot;>
+                <div style=&quot;display:flex; align-items:center; gap:3px; white-space:nowrap; overflow:hidden;&quot;>
+                  <span style=&quot;flex:0 0 auto; font-size:9px; color:#555555;&quot;>
+                    🎂
+                  </span>
+                  <span style=&quot;font-weight:bold; font-size:11px; color:#000000; overflow:hidden; text-overflow:ellipsis;&quot;>Emma</span>
+                </div>
+                <div style=&quot;font-size:9px; line-height:9px; color:#555555; margin-top:1px;&quot;>
+                  
+                    Fri 24 Jul
+                  
+                </div>
+              </div>
+            
+              <div style=&quot;flex:0 0 50%; height:21px; padding-right:6px; overflow:hidden;&quot;>
+                <div style=&quot;display:flex; align-items:center; gap:3px; white-space:nowrap; overflow:hidden;&quot;>
+                  <span style=&quot;flex:0 0 auto; font-size:9px; color:#555555;&quot;>
+                    🎂
+                  </span>
+                  <span style=&quot;font-weight:bold; font-size:11px; color:#000000; overflow:hidden; text-overflow:ellipsis;&quot;>Uncle Mark</span>
+                </div>
+                <div style=&quot;font-size:9px; line-height:9px; color:#555555; margin-top:1px;&quot;>
+                  
+                    Sat 08 Aug
+                  
+                </div>
+              </div>
+            
+              <div style=&quot;flex:0 0 50%; height:21px; padding-right:6px; overflow:hidden;&quot;>
+                <div style=&quot;display:flex; align-items:center; gap:3px; white-space:nowrap; overflow:hidden;&quot;>
+                  <span style=&quot;flex:0 0 auto; font-size:9px; color:#555555;&quot;>
+                    💍
+                  </span>
+                  <span style=&quot;font-weight:bold; font-size:11px; color:#000000; overflow:hidden; text-overflow:ellipsis;&quot;>Wedding anniversary</span>
+                </div>
+                <div style=&quot;font-size:9px; line-height:9px; color:#555555; margin-top:1px;&quot;>
+                  
+                    Tue 01 Sep
+                  
+                </div>
+              </div>
+            
+              <div style=&quot;flex:0 0 50%; height:21px; padding-right:6px; overflow:hidden;&quot;>
+                <div style=&quot;display:flex; align-items:center; gap:3px; white-space:nowrap; overflow:hidden;&quot;>
+                  <span style=&quot;flex:0 0 auto; font-size:9px; color:#555555;&quot;>
+                    🎂
+                  </span>
+                  <span style=&quot;font-weight:bold; font-size:11px; color:#000000; overflow:hidden; text-overflow:ellipsis;&quot;>Grandma Sue</span>
+                </div>
+                <div style=&quot;font-size:9px; line-height:9px; color:#555555; margin-top:1px;&quot;>
+                  
+                    Mon 14 Sep
+                  
+                </div>
+              </div>
+            
+              <div style=&quot;flex:0 0 50%; height:21px; padding-right:6px; overflow:hidden;&quot;>
+                <div style=&quot;display:flex; align-items:center; gap:3px; white-space:nowrap; overflow:hidden;&quot;>
+                  <span style=&quot;flex:0 0 auto; font-size:9px; color:#555555;&quot;>
+                    🎂
+                  </span>
+                  <span style=&quot;font-weight:bold; font-size:11px; color:#000000; overflow:hidden; text-overflow:ellipsis;&quot;>Dad</span>
+                </div>
+                <div style=&quot;font-size:9px; line-height:9px; color:#555555; margin-top:1px;&quot;>
+                  
+                    Tue 22 Sep
+                  
+                </div>
+              </div>
+            
+              <div style=&quot;flex:0 0 50%; height:21px; padding-right:6px; overflow:hidden;&quot;>
+                <div style=&quot;display:flex; align-items:center; gap:3px; white-space:nowrap; overflow:hidden;&quot;>
+                  <span style=&quot;flex:0 0 auto; font-size:9px; color:#555555;&quot;>
+                    💍
+                  </span>
+                  <span style=&quot;font-weight:bold; font-size:11px; color:#000000; overflow:hidden; text-overflow:ellipsis;&quot;>First date anniversary</span>
+                </div>
+                <div style=&quot;font-size:9px; line-height:9px; color:#555555; margin-top:1px;&quot;>
+                  
+                    Mon 05 Oct
+                  
+                </div>
+              </div>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+" style="width: 800px; height: 480px; border: none; display: block; filter: grayscale(1) contrast(2.2);" scrolling="no"></iframe>
+  </div>
+</div>
+
+<div style="margin-bottom: 32px;">
+  <h2 style="font-family: sans-serif; font-size: 18px; margin: 0 0 12px;">Anniversaries compact list</h2>
+  <div style="background: #000; display: inline-block; padding: 1px;">
+    <iframe srcdoc="
+<style>
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Regular.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: &quot;TRMNL21&quot;;
+    src: url(&quot;../../assets/TRMNL21-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 800px;
+    height: 480px;
+    background: #AAAAAA;
+    font-family: &quot;TRMNL16&quot;, Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    padding: 10px;
+  }
+
+  .panel {
+    position: absolute;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+  }
+
+  /* Top row: date (left) + weather (right) */
+  .date-panel {
+    left: 10px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  .weather-panel {
+    left: 405px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  /* Middle row: upcoming (left) + tasks (right) */
+  .upcoming-panel {
+    left: 10px;
+    top: 120px;
+    width: 500px;
+    height: 250px;
+  }
+
+  .tasks-panel {
+    left: 520px;
+    top: 120px;
+    width: 270px;
+    height: 250px;
+  }
+
+  /* Bottom row: anniversaries compact list */
+  .anniv-panel {
+    left: 10px;
+    top: 380px;
+    width: 780px;
+    height: 90px;
+  }
+
+  .day-name {
+    font-family: &quot;TRMNL21&quot;, &quot;TRMNL16&quot;, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 1.1;
+    color: #000000;
+  }
+
+  .date-line {
+    font-size: 18px;
+    line-height: 1.1;
+    margin-top: 4px;
+    color: #000000;
+  }
+
+  .synced {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 12px;
+    color: #555555;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+<div class=&quot;page&quot;>
+  
+  <div class=&quot;panel date-panel&quot;>
+    <div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;&quot;>
+      <div class=&quot;day-name&quot;>Tuesday</div>
+      <div class=&quot;date-line&quot;>21 July</div>
+    </div>
+    <div class=&quot;synced&quot;>Synced 15:03 21/07</div>
+  </div>
+
+  
+  <div class=&quot;panel weather-panel&quot;>
+    <div style=&quot;height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;&quot;>
+      
+      <div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;>
+        <div style=&quot;display:flex; align-items:center; gap:8px; margin-bottom:4px;&quot;>
+          <div style=&quot;width:32px; height:32px; flex:0 0 auto;&quot;>
+            <svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;26&quot; cy=&quot;14&quot; r=&quot;7&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;26&quot; y1=&quot;2&quot; x2=&quot;26&quot; y2=&quot;5&quot;/><line x1=&quot;35&quot; y1=&quot;14&quot; x2=&quot;38&quot; y2=&quot;14&quot;/><line x1=&quot;32.5&quot; y1=&quot;7.5&quot; x2=&quot;34.5&quot; y2=&quot;5.5&quot;/></g><g fill=&quot;#ffffff&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;13&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;22&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;18&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+          </div>
+          <div style=&quot;font-weight:bold; font-size:26px; line-height:1; color:#000000;&quot;>21&deg;C</div>
+          <div style=&quot;display:flex; flex-direction:column; line-height:1; margin-left:4px;&quot;>
+            <div style=&quot;font-size:9px; color:#555555; text-transform:lowercase;&quot;>real feel</div>
+            <div style=&quot;font-size:13px; color:#000000;&quot;>19&deg;C</div>
+          </div>
+        </div>
+        <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Partly cloudy</div>
+        
+          <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;&quot;>Rain expected today</div>
+        
+      </div>
+      
+      <div style=&quot;flex:0 0 55%; display:flex; gap:4px;&quot;>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Tue</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;16&quot; rx=&quot;8&quot; ry=&quot;6&quot;/><ellipse cx=&quot;23&quot; cy=&quot;14&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;19&quot; cy=&quot;19&quot; rx=&quot;11&quot; ry=&quot;5&quot;/></g><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;13&quot; y1=&quot;28&quot; x2=&quot;11&quot; y2=&quot;36&quot;/><line x1=&quot;20&quot; y1=&quot;28&quot; x2=&quot;18&quot; y2=&quot;36&quot;/><line x1=&quot;27&quot; y1=&quot;28&quot; x2=&quot;25&quot; y2=&quot;36&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>20&deg;/15&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Wed</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;20&quot; y1=&quot;1&quot; x2=&quot;20&quot; y2=&quot;7&quot;/><line x1=&quot;20&quot; y1=&quot;33&quot; x2=&quot;20&quot; y2=&quot;39&quot;/><line x1=&quot;1&quot; y1=&quot;20&quot; x2=&quot;7&quot; y2=&quot;20&quot;/><line x1=&quot;33&quot; y1=&quot;20&quot; x2=&quot;39&quot; y2=&quot;20&quot;/><line x1=&quot;6.34&quot; y1=&quot;6.34&quot; x2=&quot;10.6&quot; y2=&quot;10.6&quot;/><line x1=&quot;29.4&quot; y1=&quot;29.4&quot; x2=&quot;33.66&quot; y2=&quot;33.66&quot;/><line x1=&quot;6.34&quot; y1=&quot;33.66&quot; x2=&quot;10.6&quot; y2=&quot;29.4&quot;/><line x1=&quot;29.4&quot; y1=&quot;10.6&quot; x2=&quot;33.66&quot; y2=&quot;6.34&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>24&deg;/16&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Thu</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;24&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;20&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>22&deg;/17&deg;</div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+  <div class=&quot;panel upcoming-panel&quot;>
+    
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    Upcoming
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 09:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dentist — Anna
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 15:30
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          School pickup
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 18:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dinner at parents
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Wed 22 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Grocery run
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Thu 23 Jul 17:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Football practice
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Fri 24 Jul 16:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Piano lesson
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sat 25 Jul 19:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Parent-teacher meeting
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sun 26 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Swimming lessons
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Mon 27 Jul 11:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Family bike ride
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel tasks-panel&quot;>
+    
+
+
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    <span style=&quot;font-weight:bold;&quot;>Tasks</span> - 2 due (!)
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Buy milk & eggs (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Call plumber (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Schedule car service
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Water plants
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Book weekend trip
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel anniv-panel&quot;>
+    <div style=&quot;padding:4px 10px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+      <div style=&quot;font-weight:bold; font-size:12px; color:#000000; margin-bottom:2px;&quot;>Anniversaries</div>
+      <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+        
+          <div style=&quot;display:flex; flex-direction:column;&quot;>
+            
+              <div style=&quot;display:flex; align-items:center; gap:6px; font-size:11px; line-height:11px; color:#000000;&quot;>
+                <span style=&quot;display:inline-flex; align-items:center; justify-content:center; width:11px; height:11px; border:1px solid #555555; border-radius:2px; font-size:8px; font-weight:bold; flex:0 0 auto;&quot;>
+                  B
+                </span>
+                <span style=&quot;font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Emma</span>
+                <span style=&quot;color:#555555; margin-left:auto; flex:0 0 auto;&quot;>
+                  
+                    Fri 24 Jul
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;display:flex; align-items:center; gap:6px; font-size:11px; line-height:11px; color:#000000;&quot;>
+                <span style=&quot;display:inline-flex; align-items:center; justify-content:center; width:11px; height:11px; border:1px solid #555555; border-radius:2px; font-size:8px; font-weight:bold; flex:0 0 auto;&quot;>
+                  B
+                </span>
+                <span style=&quot;font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Uncle Mark</span>
+                <span style=&quot;color:#555555; margin-left:auto; flex:0 0 auto;&quot;>
+                  
+                    Sat 08 Aug
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;display:flex; align-items:center; gap:6px; font-size:11px; line-height:11px; color:#000000;&quot;>
+                <span style=&quot;display:inline-flex; align-items:center; justify-content:center; width:11px; height:11px; border:1px solid #555555; border-radius:2px; font-size:8px; font-weight:bold; flex:0 0 auto;&quot;>
+                  A
+                </span>
+                <span style=&quot;font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Wedding anniversary</span>
+                <span style=&quot;color:#555555; margin-left:auto; flex:0 0 auto;&quot;>
+                  
+                    Tue 01 Sep
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;display:flex; align-items:center; gap:6px; font-size:11px; line-height:11px; color:#000000;&quot;>
+                <span style=&quot;display:inline-flex; align-items:center; justify-content:center; width:11px; height:11px; border:1px solid #555555; border-radius:2px; font-size:8px; font-weight:bold; flex:0 0 auto;&quot;>
+                  B
+                </span>
+                <span style=&quot;font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Grandma Sue</span>
+                <span style=&quot;color:#555555; margin-left:auto; flex:0 0 auto;&quot;>
+                  
+                    Mon 14 Sep
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;display:flex; align-items:center; gap:6px; font-size:11px; line-height:11px; color:#000000;&quot;>
+                <span style=&quot;display:inline-flex; align-items:center; justify-content:center; width:11px; height:11px; border:1px solid #555555; border-radius:2px; font-size:8px; font-weight:bold; flex:0 0 auto;&quot;>
+                  B
+                </span>
+                <span style=&quot;font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Dad</span>
+                <span style=&quot;color:#555555; margin-left:auto; flex:0 0 auto;&quot;>
+                  
+                    Tue 22 Sep
+                  
+                </span>
+              </div>
+            
+              <div style=&quot;display:flex; align-items:center; gap:6px; font-size:11px; line-height:11px; color:#000000;&quot;>
+                <span style=&quot;display:inline-flex; align-items:center; justify-content:center; width:11px; height:11px; border:1px solid #555555; border-radius:2px; font-size:8px; font-weight:bold; flex:0 0 auto;&quot;>
+                  A
+                </span>
+                <span style=&quot;font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>First date anniversary</span>
+                <span style=&quot;color:#555555; margin-left:auto; flex:0 0 auto;&quot;>
+                  
+                    Mon 05 Oct
+                  
+                </span>
+              </div>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+" style="width: 800px; height: 480px; border: none; display: block; filter: grayscale(1) contrast(2.2);" scrolling="no"></iframe>
+  </div>
+</div>
+
+<div style="margin-bottom: 32px;">
+  <h2 style="font-family: sans-serif; font-size: 18px; margin: 0 0 12px;">Anniversaries name/date rows</h2>
+  <div style="background: #000; display: inline-block; padding: 1px;">
+    <iframe srcdoc="
+<style>
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Regular.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: normal;
+  }
+  @font-face {
+    font-family: &quot;TRMNL16&quot;;
+    src: url(&quot;../../assets/TRMNL16-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: &quot;TRMNL21&quot;;
+    src: url(&quot;../../assets/TRMNL21-Bold.ttf&quot;) format(&quot;truetype&quot;);
+    font-weight: bold;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 800px;
+    height: 480px;
+    background: #AAAAAA;
+    font-family: &quot;TRMNL16&quot;, Arial, Helvetica, sans-serif;
+    color: #000000;
+    overflow: hidden;
+  }
+
+  .page {
+    position: relative;
+    width: 800px;
+    height: 480px;
+    padding: 10px;
+  }
+
+  .panel {
+    position: absolute;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 2px solid #555555;
+  }
+
+  /* Top row: date (left) + weather (right) */
+  .date-panel {
+    left: 10px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  .weather-panel {
+    left: 405px;
+    top: 10px;
+    width: 385px;
+    height: 100px;
+  }
+
+  /* Middle row: upcoming (left) + tasks (right) */
+  .upcoming-panel {
+    left: 10px;
+    top: 120px;
+    width: 500px;
+    height: 250px;
+  }
+
+  .tasks-panel {
+    left: 520px;
+    top: 120px;
+    width: 270px;
+    height: 250px;
+  }
+
+  /* Bottom row: anniversaries rows */
+  .anniv-panel {
+    left: 10px;
+    top: 380px;
+    width: 780px;
+    height: 90px;
+  }
+
+  .day-name {
+    font-family: &quot;TRMNL21&quot;, &quot;TRMNL16&quot;, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 1.1;
+    color: #000000;
+  }
+
+  .date-line {
+    font-size: 18px;
+    line-height: 1.1;
+    margin-top: 4px;
+    color: #000000;
+  }
+
+  .synced {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 12px;
+    color: #555555;
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+<div class=&quot;page&quot;>
+  
+  <div class=&quot;panel date-panel&quot;>
+    <div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%; padding:10px;&quot;>
+      <div class=&quot;day-name&quot;>Tuesday</div>
+      <div class=&quot;date-line&quot;>21 July</div>
+    </div>
+    <div class=&quot;synced&quot;>Synced 15:03 21/07</div>
+  </div>
+
+  
+  <div class=&quot;panel weather-panel&quot;>
+    <div style=&quot;height:100%; padding:8px; box-sizing:border-box; display:flex; gap:8px;&quot;>
+      
+      <div style=&quot;flex:0 0 45%; display:flex; flex-direction:column; justify-content:center;&quot;>
+        <div style=&quot;display:flex; align-items:center; gap:8px; margin-bottom:4px;&quot;>
+          <div style=&quot;width:32px; height:32px; flex:0 0 auto;&quot;>
+            <svg viewBox=&quot;0 0 40 40&quot; width=&quot;32&quot; height=&quot;32&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;26&quot; cy=&quot;14&quot; r=&quot;7&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;26&quot; y1=&quot;2&quot; x2=&quot;26&quot; y2=&quot;5&quot;/><line x1=&quot;35&quot; y1=&quot;14&quot; x2=&quot;38&quot; y2=&quot;14&quot;/><line x1=&quot;32.5&quot; y1=&quot;7.5&quot; x2=&quot;34.5&quot; y2=&quot;5.5&quot;/></g><g fill=&quot;#ffffff&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;13&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;22&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;18&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+          </div>
+          <div style=&quot;font-weight:bold; font-size:26px; line-height:1; color:#000000;&quot;>21&deg;C</div>
+          <div style=&quot;display:flex; flex-direction:column; line-height:1; margin-left:4px;&quot;>
+            <div style=&quot;font-size:9px; color:#555555; text-transform:lowercase;&quot;>real feel</div>
+            <div style=&quot;font-size:13px; color:#000000;&quot;>19&deg;C</div>
+          </div>
+        </div>
+        <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>Partly cloudy</div>
+        
+          <div style=&quot;font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;&quot;>Rain expected today</div>
+        
+      </div>
+      
+      <div style=&quot;flex:0 0 55%; display:flex; gap:4px;&quot;>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Tue</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;16&quot; rx=&quot;8&quot; ry=&quot;6&quot;/><ellipse cx=&quot;23&quot; cy=&quot;14&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;19&quot; cy=&quot;19&quot; rx=&quot;11&quot; ry=&quot;5&quot;/></g><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;13&quot; y1=&quot;28&quot; x2=&quot;11&quot; y2=&quot;36&quot;/><line x1=&quot;20&quot; y1=&quot;28&quot; x2=&quot;18&quot; y2=&quot;36&quot;/><line x1=&quot;27&quot; y1=&quot;28&quot; x2=&quot;25&quot; y2=&quot;36&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>20&deg;/15&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Wed</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;9&quot; fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;/><g stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><line x1=&quot;20&quot; y1=&quot;1&quot; x2=&quot;20&quot; y2=&quot;7&quot;/><line x1=&quot;20&quot; y1=&quot;33&quot; x2=&quot;20&quot; y2=&quot;39&quot;/><line x1=&quot;1&quot; y1=&quot;20&quot; x2=&quot;7&quot; y2=&quot;20&quot;/><line x1=&quot;33&quot; y1=&quot;20&quot; x2=&quot;39&quot; y2=&quot;20&quot;/><line x1=&quot;6.34&quot; y1=&quot;6.34&quot; x2=&quot;10.6&quot; y2=&quot;10.6&quot;/><line x1=&quot;29.4&quot; y1=&quot;29.4&quot; x2=&quot;33.66&quot; y2=&quot;33.66&quot;/><line x1=&quot;6.34&quot; y1=&quot;33.66&quot; x2=&quot;10.6&quot; y2=&quot;29.4&quot;/><line x1=&quot;29.4&quot; y1=&quot;10.6&quot; x2=&quot;33.66&quot; y2=&quot;6.34&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>24&deg;/16&deg;</div>
+          </div>
+        
+          <div style=&quot;flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;&quot;>
+            <div style=&quot;font-size:10px; line-height:1.1; color:#000000; white-space:nowrap;&quot;>Thu</div>
+            <div style=&quot;width:16px; height:16px; margin:2px 0;&quot;>
+              <svg viewBox=&quot;0 0 40 40&quot; width=&quot;16&quot; height=&quot;16&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; stroke=&quot;#000000&quot; stroke-width=&quot;2&quot;><ellipse cx=&quot;14&quot; cy=&quot;24&quot; rx=&quot;9&quot; ry=&quot;7&quot;/><ellipse cx=&quot;24&quot; cy=&quot;22&quot; rx=&quot;10&quot; ry=&quot;8&quot;/><ellipse cx=&quot;20&quot; cy=&quot;27&quot; rx=&quot;12&quot; ry=&quot;6&quot;/></g></svg>
+            </div>
+            <div style=&quot;font-size:11px; line-height:1.1; color:#000000;&quot;>22&deg;/17&deg;</div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+  <div class=&quot;panel upcoming-panel&quot;>
+    
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-weight:bold; font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    Upcoming
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 09:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dentist — Anna
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 15:30
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          School pickup
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Today 18:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Dinner at parents
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Wed 22 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Grocery run
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Thu 23 Jul 17:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Football practice
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Fri 24 Jul 16:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Piano lesson
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sat 25 Jul 19:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Parent-teacher meeting
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Sun 26 Jul 10:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Swimming lessons
+        </div>
+      </div>
+    
+      
+      <div style=&quot;display:flex; align-items:baseline; gap:8px; height:22px; font-size:15px; color:#000000;&quot;>
+        <div style=&quot;flex:0 0 auto; min-width:16ch; white-space:nowrap;&quot;>
+          
+            
+              Mon 27 Jul 11:00
+            
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;&quot;>
+          Family bike ride
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel tasks-panel&quot;>
+    
+
+
+<div style=&quot;padding:8px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+  <div style=&quot;font-size:17px; color:#000000; margin-bottom:8px;&quot;>
+    <span style=&quot;font-weight:bold;&quot;>Tasks</span> - 2 due (!)
+  </div>
+  <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+    
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Buy milk & eggs (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; font-weight:bold;&quot;>
+          Call plumber (!)
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Schedule car service
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Water plants
+        </div>
+      </div>
+    
+      
+      
+      <div style=&quot;display:flex; align-items:center; gap:8px; height:22px;&quot;>
+        <div style=&quot;flex:0 0 auto; width:11px; height:11px; border:2px solid #555555; box-sizing:border-box; position:relative;&quot;>
+          
+        </div>
+        <div style=&quot;flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:15px; color:#000000; &quot;>
+          Book weekend trip
+        </div>
+      </div>
+    
+    
+  </div>
+</div>
+
+  </div>
+
+  
+  <div class=&quot;panel anniv-panel&quot;>
+    <div style=&quot;padding:10px; height:100%; box-sizing:border-box; display:flex; flex-direction:column;&quot;>
+      <div style=&quot;font-weight:bold; font-size:15px; color:#000000; margin-bottom:4px;&quot;>Anniversaries</div>
+      <div style=&quot;flex:1 1 auto; overflow:hidden;&quot;>
+        
+          <div style=&quot;display:flex; flex-direction:column; justify-content:center; height:100%;&quot;>
+            <div style=&quot;display:flex; align-items:center; justify-content:space-between; height:50%; overflow:hidden;&quot;>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;>
+                  Emma
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;>
+                  Uncle Mark
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;>
+                  Wedding anniversary
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;>
+                  Grandma Sue
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:15px; color:#000000; padding:0 4px;&quot;>
+                  Dad
+                </div>
+              
+            </div>
+            <div style=&quot;display:flex; align-items:center; justify-content:space-between; height:50%; overflow:hidden;&quot;>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;>
+                  
+                    Fri 24 Jul
+                  
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;>
+                  
+                    Sat 08 Aug
+                  
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;>
+                  
+                    Tue 01 Sep
+                  
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;>
+                  
+                    Mon 14 Sep
+                  
+                </div>
+              
+                <div style=&quot;flex:1 1 0; min-width:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:#555555; padding:0 4px;&quot;>
+                  
+                    Tue 22 Sep
+                  
+                </div>
+              
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+" style="width: 800px; height: 480px; border: none; display: block; filter: grayscale(1) contrast(2.2);" scrolling="no"></iframe>
+  </div>
+</div>
+
+</body>
+</html>
