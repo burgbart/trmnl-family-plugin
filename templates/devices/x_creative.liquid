@@ -160,6 +160,10 @@
             {% if weather.icon == "sun" %}{{ icon_sun_64 }}{% elsif weather.icon == "cloud" %}{{ icon_cloud_64 }}{% elsif weather.icon == "rain" %}{{ icon_rain_64 }}{% else %}{{ icon_partly_64 }}{% endif %}
           </div>
           <div style="font-weight:bold; font-size:56px; line-height:1; color:#000000;">{{ weather.temperature }}&deg;C</div>
+          <div style="display:flex; flex-direction:column; line-height:1; margin-left:8px;">
+            <div style="font-size:16px; color:#555555; text-transform:lowercase;">real feel</div>
+            <div style="font-size:22px; color:#000000;">{{ weather.feels_like }}&deg;C</div>
+          </div>
         </div>
         <div style="font-size:22px; line-height:1.3; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ weather.description }}</div>
         {% if weather.alert %}
