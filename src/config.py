@@ -53,9 +53,9 @@ def get_reference_date() -> date:
 
 
 def get_reference_datetime() -> datetime:
-    """Return midnight UTC on the reference date as a timezone-aware datetime."""
+    """Return midnight in the configured local timezone on the reference date."""
     return datetime.combine(get_reference_date(), datetime.min.time()).replace(
-        tzinfo=timezone.utc
+        tzinfo=ZoneInfo(TIMEZONE)
     )
 
 

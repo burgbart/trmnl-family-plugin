@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from typing import List
 
 from google.oauth2 import service_account
@@ -15,6 +16,7 @@ from src.config import (
     CALENDAR_MAIN_CALENDAR_ID,
     GOOGLE_CALENDAR_IDS,
     GOOGLE_SERVICE_ACCOUNT_JSON,
+    TIMEZONE,
     get_reference_datetime,
 )
 from src.data import Birthday, CalendarEvent
@@ -42,10 +44,10 @@ def get_calendar_service():
 
 
 def _normalize_dt(dt: datetime) -> datetime:
-    """Convert a datetime to a timezone-aware UTC datetime."""
+    """Convert a datetime to a timezone-aware datetime in the configured timezone."""
     if dt.tzinfo is None:
-        return dt.replace(tzinfo=timezone.utc)
-    return dt.astimezone(timezone.utc)
+        return dt.replace(tzinfo=ZoneInfo(TIMEZONE))
+    return dt.astimezone(ZoneInfo(TIMEZONE))
 
 
 def _parse_event(item: dict, calendar_id: str) -> CalendarEvent:
@@ -62,7 +64,8 @@ def _parse_event(item: dict, calendar_id: str) -> CalendarEvent:
         )
         all_day = False
     else:
-        # All-day event — treat as midnight UTC so sorting never mixes naive/aware.
+        # All-day event — treat as midnight in the configured timezone so sorting
+        # never mixes naive/aware and the calendar date is preserved.
         start_dt = _normalize_dt(datetime.strptime(start["date"], "%Y-%m-%d"))
         # For all-day events Google returns an exclusive end date. Store it so
         # multi-day events can be rendered with their real span.

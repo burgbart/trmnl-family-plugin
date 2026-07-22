@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -44,10 +45,11 @@ def test_set_reference_date_from_datetime():
     assert get_reference_date() == date(2026, 12, 23)
 
 
-def test_get_reference_datetime_is_midnight_utc():
+def test_get_reference_datetime_is_midnight_local(monkeypatch):
+    monkeypatch.setattr(config_module, "TIMEZONE", "Europe/Amsterdam")
     set_reference_date("23-12-2026")
     assert get_reference_datetime() == datetime(
-        2026, 12, 23, 0, 0, 0, tzinfo=timezone.utc
+        2026, 12, 23, 0, 0, 0, tzinfo=ZoneInfo("Europe/Amsterdam")
     )
 
 
