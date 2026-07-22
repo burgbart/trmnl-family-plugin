@@ -148,24 +148,24 @@
           </div>
           <div style="font-weight:bold; font-size:26px; line-height:1; color:#000000;">{{ weather.temperature }}&deg;C</div>
           <div style="display:flex; flex-direction:column; line-height:1; margin-left:4px;">
-            <div style="font-size:9px; color:#555555; text-transform:lowercase;">real feel</div>
-            <div style="font-size:13px; color:#000000;">{{ weather.feels_like }}&deg;C</div>
+            <div style="font-size:11px; color:#555555; text-transform:lowercase;">real feel</div>
+            <div style="font-size:15px; color:#000000;">{{ weather.feels_like }}&deg;C</div>
           </div>
         </div>
-        <div style="font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ weather.description }}</div>
+        <div style="font-size:14px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ weather.description }}</div>
         {% if weather.alert %}
-          <div style="font-size:13px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">{{ weather.alert }}</div>
+          <div style="font-size:14px; line-height:1.2; color:#000000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">{{ weather.alert }}</div>
         {% endif %}
       </div>
       {% comment %} Right: 3-day forecast (~70%) {% endcomment %}
       <div style="flex:0 0 70%; display:flex; gap:8px;">
         {% for day in weather.forecast limit: 3 %}
           <div style="flex:1 1 0; min-width:0; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-            <div style="font-size:17px; line-height:1.1; color:#000000; white-space:nowrap;">{{ day.date | date: "%a" }}</div>
+            <div style="font-size:14px; line-height:1.1; color:#000000; white-space:nowrap;">{{ day.date | date: "%a" }}</div>
             <div style="width:32px; height:32px; margin:4px 0;">
               {% if day.icon == "sun" %}{{ icon_sun_32 }}{% elsif day.icon == "cloud" %}{{ icon_cloud_32 }}{% elsif day.icon == "rain" %}{{ icon_rain_32 }}{% else %}{{ icon_partly_32 }}{% endif %}
             </div>
-            <div style="font-size:17px; line-height:1.1; color:#000000;">{{ day.temperature_high }}&deg;/{{ day.temperature_low }}&deg;</div>
+            <div style="font-size:14px; line-height:1.1; color:#000000;">{{ day.temperature_high }}&deg;/{{ day.temperature_low }}&deg;</div>
           </div>
         {% endfor %}
       </div>
