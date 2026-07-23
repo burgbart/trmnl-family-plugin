@@ -9,7 +9,7 @@ from rich.console import Console
 from rich.layout import Layout
 
 from src.config import get_reference_date
-from src.data import Birthday, CalendarEvent, Task, Weather
+from src.data import Birthday, CalendarEvent, Task, Weather, WeatherForecast
 from src.terminal_dashboard import _allocate_rows, render
 from src.terminal_fetcher import CalendarSource, TaskListSource, TerminalData, fetch_terminal_data
 
@@ -40,8 +40,28 @@ def _make_terminal_data() -> TerminalData:
     today = get_reference_date()
     return TerminalData(
         weather=Weather(
-            description="Partly cloudy", temperature=21, feels_like=19, icon="partly-cloudy"
+            description="Partly cloudy",
+            temperature=21,
+            feels_like=19,
+            icon="partly-cloudy",
+            forecast=[
+                WeatherForecast(
+                    date=today,
+                    description="Sunny",
+                    temperature_high=22,
+                    temperature_low=15,
+                    icon="sun",
+                )
+            ],
         ),
+        events=[
+            CalendarEvent(title="Aggregated Event A", start=_make_dt()),
+            CalendarEvent(title="Aggregated Event B", start=_make_dt(1)),
+        ],
+        tasks=[
+            Task(title="Aggregated Task A", due_date=today),
+            Task(title="Aggregated Task B"),
+        ],
         calendars=[
             CalendarSource(
                 "cal-1",
@@ -106,6 +126,116 @@ def test_render_merges_multiple_calendars_and_task_lists():
     assert "Home" in rendered
     assert "Work Tasks" in rendered
     assert "Home Tasks" in rendered
+
+
+def test_render_shows_weather_forecast():
+    today = get_reference_date()
+    data = TerminalData(
+        weather=Weather(
+            description="Clear",
+            temperature=20,
+            feels_like=19,
+            icon="sun",
+            forecast=[
+                WeatherForecast(
+                    date=today,
+                    description="Sunny",
+                    temperature_high=22,
+                    temperature_low=15,
+                    icon="sun",
+                )
+            ],
+        ),
+        calendars=[CalendarSource("none", "No calendars", [])],
+        task_lists=[TaskListSource("none", "No tasks", [])],
+        birthdays=[],
+    )
+    console = Console(width=100, height=40, record=True)
+    layout = render(data, console)
+    with console.capture() as capture:
+        console.print(layout)
+    rendered = capture.get()
+    assert "Forecast" in rendered
+    assert "Sunny" in rendered
+
+
+def test_render_shows_aggregated_events_and_tasks():
+    today = get_reference_date()
+    data = TerminalData(
+        weather=Weather(description="Clear", temperature=20, feels_like=19, icon="sun"),
+        events=[CalendarEvent(title="Top Event", start=_make_dt())],
+        tasks=[Task(title="Top Task", due_date=today)],
+        calendars=[CalendarSource("cal-1", "Work", [])],
+        task_lists=[TaskListSource("list-1", "Work Tasks", [])],
+        birthdays=[],
+    )
+    console = Console(width=100, height=40, record=True)
+    layout = render(data, console)
+    with console.capture() as capture:
+        console.print(layout)
+    rendered = capture.get()
+    assert "Upcoming Events" in rendered
+    assert "Top Event" in rendered
+    assert "Tasks" in rendered
+    assert "Top Task" in rendered
+
+
+def test_render_shows_weather_alert_in_header():
+    data = TerminalData(
+        weather=Weather(
+            description="Rain",
+            temperature=15,
+            feels_like=13,
+            icon="rain",
+            alert="Rain expected today",
+        ),
+        calendars=[CalendarSource("none", "No calendars", [])],
+        task_lists=[TaskListSource("none", "No tasks", [])],
+        birthdays=[],
+    )
+    console = Console(width=100, height=40, record=True)
+    layout = render(data, console)
+    with console.capture() as capture:
+        console.print(layout)
+    rendered = capture.get()
+    assert "Rain expected today" in rendered
+
+
+def test_render_shows_anniversary_kind_in_footer():
+    today = get_reference_date()
+    data = TerminalData(
+        weather=Weather(description="Clear", temperature=20, feels_like=19, icon="sun"),
+        calendars=[CalendarSource("none", "No calendars", [])],
+        task_lists=[TaskListSource("none", "No tasks", [])],
+        birthdays=[
+            Birthday(name="Alice", date=today + timedelta(days=5), kind="birthday"),
+            Birthday(name="Wedding", date=today + timedelta(days=10), kind="anniversary"),
+        ],
+    )
+    console = Console(width=100, height=40, record=True)
+    layout = render(data, console)
+    with console.capture() as capture:
+        console.print(layout)
+    rendered = capture.get()
+    assert "birthday" in rendered
+    assert "anniversary" in rendered
+
+
+def test_render_shows_data_age():
+    from src.terminal_dashboard import _build_header
+
+    generated_at = datetime(2026, 7, 23, 10, 0, tzinfo=timezone.utc)
+    last_refreshed = datetime(2026, 7, 23, 10, 5, tzinfo=timezone.utc)
+    data = TerminalData(
+        weather=Weather(description="Clear", temperature=20, feels_like=19, icon="sun"),
+        calendars=[CalendarSource("none", "No calendars", [])],
+        task_lists=[TaskListSource("none", "No tasks", [])],
+        birthdays=[],
+        generated_at=generated_at,
+    )
+    text = _build_header(data, last_refreshed=last_refreshed)
+    assert "refreshed" in text.plain
+    assert "data 5 min old" in text.plain
 
 
 def test_fetch_terminal_data_returns_data(monkeypatch):
@@ -182,7 +312,7 @@ def test_footer_uses_red_for_days_within_7():
     bday = Birthday(name="Soon", date=today + timedelta(days=3), kind="anniversary")
     text = _build_footer([bday])
 
-    label = "(in 3d)"
+    label = "(anniversary · in 3d)"
     start = text.plain.find(label)
     assert start != -1
     span_styles = [
@@ -200,7 +330,7 @@ def test_footer_uses_dim_for_days_beyond_7():
     bday = Birthday(name="Far", date=today + timedelta(days=20), kind="birthday")
     text = _build_footer([bday])
 
-    label = "(in 20d)"
+    label = "(birthday · in 20d)"
     start = text.plain.find(label)
     assert start != -1
     span_styles = [

@@ -260,6 +260,8 @@ def _run_server(
             calendars=result.calendars,
             task_lists=result.task_lists,
             birthdays=result.birthdays,
+            events=result.events,
+            tasks=result.tasks,
             generated_at=ts,
         ),
         "ts": ts,
@@ -273,6 +275,8 @@ def _run_server(
             calendars=data.calendars,
             task_lists=data.task_lists,
             birthdays=data.birthdays,
+            events=data.events,
+            tasks=data.tasks,
             generated_at=ts,
         )
         shared["ts"] = ts

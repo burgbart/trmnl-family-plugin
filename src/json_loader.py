@@ -79,11 +79,30 @@ def resolve_input_path(cli_input: str | None = None) -> str:
 
 def parse_weather(data: dict) -> Weather:
     """Parse a weather dictionary into a ``Weather`` dataclass."""
+    from src.data import WeatherForecast
+
+    forecast = [
+        WeatherForecast(
+            date=_parse_date(day["date"]),
+            description=day["description"],
+            temperature_high=int(day["temperature_high"]),
+            temperature_low=int(day["temperature_low"]),
+            icon=day["icon"],
+            precipitation_amount=day.get("precipitation_amount"),
+            precipitation_probability=day.get("precipitation_probability"),
+        )
+        for day in data.get("forecast", [])
+    ]
+
     return Weather(
         description=data["description"],
         temperature=int(data["temperature"]),
         feels_like=int(data["feels_like"]),
         icon=data["icon"],
+        forecast=forecast,
+        alert=data.get("alert"),
+        precipitation_amount=data.get("precipitation_amount"),
+        precipitation_probability=data.get("precipitation_probability"),
     )
 
 
@@ -154,6 +173,8 @@ def parse_task_list_source(data: dict) -> TaskListSource:
 def parse_terminal_data(data: dict) -> TerminalData:
     """Parse the full data needed by the terminal dashboard."""
     weather = parse_weather(data["weather"])
+    events = [parse_event(event) for event in data.get("events", [])]
+    tasks = [parse_task(task) for task in data.get("tasks", [])]
     calendars = [parse_calendar_source(source) for source in data.get("calendars", [])]
     task_lists = [parse_task_list_source(source) for source in data.get("task_lists", [])]
     birthdays = [parse_birthday(bday) for bday in data.get("birthdays", [])]
@@ -164,6 +185,8 @@ def parse_terminal_data(data: dict) -> TerminalData:
         calendars=calendars,
         task_lists=task_lists,
         birthdays=birthdays,
+        events=events,
+        tasks=tasks,
         generated_at=generated_at,
         errors=errors,
     )

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 from src.calendar import (
@@ -56,6 +56,10 @@ class TerminalData:
     calendars: List[CalendarSource]
     task_lists: List[TaskListSource]
     birthdays: List[Birthday]
+    # Aggregated dashboard view (matches the top-level events/tasks arrays in
+    # dashboard-v2.json). These are shown alongside the per-source breakdowns.
+    events: List[CalendarEvent] = field(default_factory=list)
+    tasks: List[Task] = field(default_factory=list)
     generated_at: "datetime | None" = None
     errors: dict[str, str | None] | None = None
 
@@ -205,9 +209,21 @@ def fetch_terminal_data() -> TerminalData:
         source.tasks = source.tasks[:TERMINAL_MAX_TASKS]
     birthdays = birthdays[:TERMINAL_MAX_BIRTHDAYS]
 
+    # Derive the aggregated dashboard view from the per-source data so the
+    # deprecated direct-fetch path still populates every TerminalData field.
+    aggregated_events = sorted(
+        (event for source in calendars for event in source.events),
+        key=lambda e: e.start,
+    )[:TERMINAL_MAX_EVENTS]
+    aggregated_tasks = [
+        task for source in task_lists for task in source.tasks
+    ][:TERMINAL_MAX_TASKS]
+
     return TerminalData(
         weather=weather,
         calendars=calendars,
         task_lists=task_lists,
         birthdays=birthdays,
+        events=aggregated_events,
+        tasks=aggregated_tasks,
     )

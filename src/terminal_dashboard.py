@@ -139,28 +139,6 @@ def _build_events_table(source: CalendarSource, max_rows: int) -> Table:
     return table
 
 
-def _build_merged_events_panel(calendars: List[CalendarSource], total_rows: int) -> Group:
-    """Stack every calendar's events in one panel, sized to fit the terminal.
-
-    Row budget is water-filled across calendars (see ``_allocate_rows``) so a
-    calendar with few events doesn't hog space a busier one needs; whatever a
-    calendar still can't fit collapses to a single "+N more" line rather than
-    being silently dropped.
-    """
-    n = len(calendars)
-    overhead = n + max(n - 1, 0)  # one title row + one blank spacer between sections
-    available = max(total_rows - overhead, n)
-    demands = [max(len(cal.events), 1) for cal in calendars]
-    alloc = _allocate_rows(demands, available)
-
-    renderables: List[object] = []
-    for i, cal in enumerate(calendars):
-        if i > 0:
-            renderables.append(Text(""))
-        renderables.append(_build_events_table(cal, max(alloc[i], 1)))
-    return Group(*renderables)
-
-
 def _build_tasks_table(source: TaskListSource, max_rows: int) -> Table:
     table = Table(
         title=f"Tasks: {source.name}",
@@ -194,22 +172,131 @@ def _build_tasks_table(source: TaskListSource, max_rows: int) -> Table:
     return table
 
 
-def _build_merged_tasks_panel(task_lists: List[TaskListSource], total_rows: int) -> Group:
-    """Stack every task list in one panel, sized to fit the terminal.
+def _build_aggregated_events_table(events: List[CalendarEvent], max_rows: int) -> Table:
+    """Render the top-level aggregated upcoming events list."""
+    table = Table(
+        title="Upcoming Events",
+        box=SIMPLE,
+        show_header=False,
+        expand=True,
+        pad_edge=False,
+    )
+    table.add_column("When", style="cyan", ratio=2)
+    table.add_column("What", style="white", ratio=5)
 
-    Same water-filling strategy as ``_build_merged_events_panel``.
-    """
-    n = len(task_lists)
-    overhead = n + max(n - 1, 0)
+    shown = events[:max_rows]
+    prev_date = None
+    for event in shown:
+        event_date = event.start.date()
+        if prev_date is not None and event_date != prev_date:
+            table.add_row("", Text("·" * 50, style="dim"))
+        table.add_row(_event_when(event), Text(event.title))
+        prev_date = event_date
+
+    remaining = len(events) - len(shown)
+    if remaining > 0:
+        table.add_row("", Text(f"+{remaining} more", style="dim"))
+    elif not events:
+        table.add_row("", Text("No upcoming events", style="dim"))
+
+    return table
+
+
+def _build_aggregated_tasks_table(tasks: List[Task], max_rows: int) -> Table:
+    """Render the top-level aggregated tasks list with due-date indicators."""
+    table = Table(
+        title="Tasks",
+        box=SIMPLE,
+        show_header=False,
+        expand=True,
+        pad_edge=False,
+    )
+    table.add_column("Done", style="green", ratio=1)
+    table.add_column("Task", style="white", ratio=6)
+
+    shown = tasks[:max_rows]
+    for task in shown:
+        check = "[x]" if task.done else "[ ]"
+        title_text = Text(task.title)
+        if task.done:
+            title_text.stylize("dim strike")
+        elif _is_due(task):
+            title_text.stylize("bold red")
+        elif task.due_date:
+            title_text.append(f"  ({task.due_date.isoformat()})", style="dim")
+
+        table.add_row(Text(check, style="green" if task.done else "white"), title_text)
+
+    remaining = len(tasks) - len(shown)
+    if remaining > 0:
+        table.add_row("", Text(f"+{remaining} more", style="dim"))
+    elif not tasks:
+        table.add_row("", Text("No tasks", style="dim"))
+
+    return table
+
+
+def _build_events_column(
+    events: List[CalendarEvent],
+    calendars: List[CalendarSource],
+    total_rows: int,
+) -> Group:
+    """Stack aggregated events and per-source calendars in one column."""
+    sections: List[tuple[str, List[CalendarEvent]]] = [("Upcoming Events", events)]
+    for cal in calendars:
+        sections.append((cal.name, cal.events))
+
+    n = len(sections)
+    overhead = n  # one title row per section
     available = max(total_rows - overhead, n)
-    demands = [max(len(tl.tasks), 1) for tl in task_lists]
+    demands = [max(len(items), 1) for _, items in sections]
     alloc = _allocate_rows(demands, available)
 
     renderables: List[object] = []
-    for i, tl in enumerate(task_lists):
+    for i, (title, items) in enumerate(sections):
         if i > 0:
             renderables.append(Text(""))
-        renderables.append(_build_tasks_table(tl, max(alloc[i], 1)))
+        if i == 0:
+            renderables.append(_build_aggregated_events_table(items, max(alloc[i], 1)))
+        else:
+            renderables.append(
+                _build_events_table(
+                    CalendarSource("", title, items), max(alloc[i], 1)
+                )
+            )
+
+    return Group(*renderables)
+
+
+def _build_tasks_column(
+    tasks: List[Task],
+    task_lists: List[TaskListSource],
+    total_rows: int,
+) -> Group:
+    """Stack aggregated tasks and per-source task lists in one column."""
+    sections: List[tuple[str, List[Task]]] = [("Tasks", tasks)]
+    for tl in task_lists:
+        sections.append((tl.name, tl.tasks))
+
+    n = len(sections)
+    overhead = n
+    available = max(total_rows - overhead, n)
+    demands = [max(len(items), 1) for _, items in sections]
+    alloc = _allocate_rows(demands, available)
+
+    renderables: List[object] = []
+    for i, (title, items) in enumerate(sections):
+        if i > 0:
+            renderables.append(Text(""))
+        if i == 0:
+            renderables.append(_build_aggregated_tasks_table(items, max(alloc[i], 1)))
+        else:
+            renderables.append(
+                _build_tasks_table(
+                    TaskListSource("", title, items), max(alloc[i], 1)
+                )
+            )
+
     return Group(*renderables)
 
 
@@ -221,6 +308,8 @@ def _build_header(
         f"{data.weather.temperature}°C (feels {data.weather.feels_like}°C)"
         f" · {data.weather.description}"
     )
+    if data.weather.alert:
+        weather_text += f"\n⚠ {data.weather.alert}"
 
     calendar_count = len(data.calendars)
     task_count = len(data.task_lists)
@@ -273,10 +362,14 @@ def _build_footer(
             entries.append(" · ", style="dim")
         days = _days_until(bday.date)
         label = "today!" if days == 0 else f"in {days}d"
+        kind_label = bday.kind if bday.kind else "birthday"
         # All anniversaries use the birthday yellow; only the urgency indicator
         # turns red when the date is within a week.
         entries.append(f"{bday.name} ", style="yellow")
-        entries.append(f"({label})", style="bold red" if days <= 7 else "dim")
+        entries.append(
+            f"({kind_label} · {label})",
+            style="bold red" if days <= 7 else "dim",
+        )
 
     text.append(entries)
     return text
@@ -290,47 +383,94 @@ def _build_error_panel(message: str) -> Panel:
     return Panel(text, border_style="red")
 
 
+def _build_weather_forecast_panel(weather: Weather) -> Text:
+    """Render a compact horizontal multi-day forecast."""
+    if not weather.forecast:
+        return Text("No forecast available", style="dim")
+
+    text = Text()
+    text.append("Forecast  ", style="bold bright_white")
+    for i, day in enumerate(weather.forecast[:5]):
+        if i > 0:
+            text.append("   ", style="dim")
+        day_label = day.date.strftime("%a %d %b")
+        precip = ""
+        if day.precipitation_probability is not None:
+            precip = f" · {day.precipitation_probability}%"
+        elif day.precipitation_amount:
+            precip = f" · {day.precipitation_amount}mm"
+        text.append(
+            f"{day_label}: {day.description} "
+            f"{day.temperature_high}°/{day.temperature_low}°{precip}",
+            style="white",
+        )
+
+    return text
+
+
 def render(
     data: TerminalData,
     console: Console | None = None,
     *,
     last_refreshed: datetime | None = None,
 ) -> Layout:
-    """Render the terminal dashboard layout, merging every calendar and task
-    list into a single scrollable-by-eye view instead of one-at-a-time tabs.
+    """Render the terminal dashboard layout.
+
+    Shows current weather (with alerts), a multi-day forecast, the aggregated
+    upcoming events and tasks from dashboard-v2.json, the per-source calendar
+    and task-list breakdowns, and anniversaries with their kinds.
     """
     active_console = console or Console()
     height = active_console.height or 24
-    # Reserve space for header, footer, borders and padding.
-    max_rows = max(height - 12, 5)
 
     errors = data.errors or {}
-
     header = _build_header(data, last_refreshed=last_refreshed)
+    header_size = 5 if data.weather.alert else 4
+    footer_size = 3
+    forecast_size = 4
+
+    # Row budget for the events/tasks lists below the forecast.
+    lists_height = max(height - header_size - footer_size - forecast_size, 5)
 
     if errors.get("events"):
-        events_panel = _build_error_panel(errors["events"])
+        events_column = _build_error_panel(errors["events"])
     else:
         calendars = data.calendars or [CalendarSource("none", "No calendars", [])]
-        events_panel = _build_merged_events_panel(calendars, max_rows)
+        events_column = _build_events_column(data.events, calendars, lists_height)
 
     if errors.get("tasks"):
-        tasks_panel = _build_error_panel(errors["tasks"])
+        tasks_column = _build_error_panel(errors["tasks"])
     else:
         task_lists = data.task_lists or [TaskListSource("none", "No tasks", [])]
-        tasks_panel = _build_merged_tasks_panel(task_lists, max_rows)
+        tasks_column = _build_tasks_column(data.tasks, task_lists, lists_height)
 
     footer = _build_footer(data.birthdays, birthdays_error=errors.get("birthdays"))
 
     layout = Layout(name="root")
     layout.split_column(
-        Layout(Panel(header, border_style="bright_blue"), size=4),
+        Layout(Panel(header, border_style="bright_blue"), size=header_size),
         Layout(name="main", ratio=1),
-        Layout(Panel(footer, border_style="bright_magenta"), size=3),
+        Layout(Panel(footer, border_style="bright_magenta"), size=footer_size),
     )
-    layout["main"].split_row(
-        Layout(Panel(events_panel, border_style="blue" if not errors.get("events") else "red"), ratio=1),
-        Layout(Panel(tasks_panel, border_style="green" if not errors.get("tasks") else "red"), ratio=1),
+    layout["main"].split_column(
+        Layout(
+            Panel(
+                _build_weather_forecast_panel(data.weather),
+                border_style="yellow",
+            ),
+            size=forecast_size,
+        ),
+        Layout(name="lists", ratio=1),
+    )
+    layout["lists"].split_row(
+        Layout(
+            Panel(events_column, border_style="blue" if not errors.get("events") else "red"),
+            ratio=1,
+        ),
+        Layout(
+            Panel(tasks_column, border_style="green" if not errors.get("tasks") else "red"),
+            ratio=1,
+        ),
     )
 
     return layout

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added error-state rendering in the terminal dashboard (`terminal_dashboard.py`). Failed sources render red error panels.
 - Added `DASHBOARD_JSON_FILENAME` constant in `src/config.py` as the single source of truth for the output JSON filename.
 - Added `tests/test_unified_fetcher.py` and `tests/test_liquid_render.py` to cover missing-credential, API-failure, and error-rendering paths.
+- Added full `dashboard-v2.json` parity to the terminal dashboard: current weather details (feels-like, alert, precipitation), a multi-day forecast, aggregated upcoming events and tasks, per-source calendar and task-list breakdowns, anniversary kinds, and the generated/synced timestamp with data age.
 
 ### Changed
 
