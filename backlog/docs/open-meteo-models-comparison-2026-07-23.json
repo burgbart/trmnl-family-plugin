@@ -1,0 +1,146 @@
+{
+  "ecmwf_ifs04": [
+    {
+      "date": "2026-07-23",
+      "code": null,
+      "desc": null,
+      "precip_sum": null,
+      "precip_prob": null,
+      "high": null,
+      "low": null
+    },
+    {
+      "date": "2026-07-24",
+      "code": null,
+      "desc": null,
+      "precip_sum": null,
+      "precip_prob": null,
+      "high": null,
+      "low": null
+    },
+    {
+      "date": "2026-07-25",
+      "code": null,
+      "desc": null,
+      "precip_sum": null,
+      "precip_prob": null,
+      "high": null,
+      "low": null
+    },
+    {
+      "date": "2026-07-26",
+      "code": null,
+      "desc": null,
+      "precip_sum": null,
+      "precip_prob": null,
+      "high": null,
+      "low": null
+    },
+    {
+      "date": "2026-07-27",
+      "code": null,
+      "desc": null,
+      "precip_sum": null,
+      "precip_prob": null,
+      "high": null,
+      "low": null
+    }
+  ],
+  "gfs_seamless": [
+    {
+      "date": "2026-07-23",
+      "code": 51,
+      "desc": "Light drizzle",
+      "precip_sum": 0.6,
+      "precip_prob": 10,
+      "high": 21.5,
+      "low": 13.6
+    },
+    {
+      "date": "2026-07-24",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 0,
+      "high": 24.5,
+      "low": 12.3
+    },
+    {
+      "date": "2026-07-25",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 3,
+      "high": 25.2,
+      "low": 15.3
+    },
+    {
+      "date": "2026-07-26",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 52,
+      "high": 21.7,
+      "low": 14.5
+    },
+    {
+      "date": "2026-07-27",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 13,
+      "high": 23.4,
+      "low": 11.8
+    }
+  ],
+  "icon_seamless": [
+    {
+      "date": "2026-07-23",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 0,
+      "high": 20.0,
+      "low": 15.3
+    },
+    {
+      "date": "2026-07-24",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 3,
+      "high": 22.9,
+      "low": 15.1
+    },
+    {
+      "date": "2026-07-25",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 0,
+      "high": 24.2,
+      "low": 16.3
+    },
+    {
+      "date": "2026-07-26",
+      "code": 80,
+      "desc": "Slight showers",
+      "precip_sum": 2.6,
+      "precip_prob": 45,
+      "high": 20.3,
+      "low": 18.2
+    },
+    {
+      "date": "2026-07-27",
+      "code": 3,
+      "desc": "Overcast",
+      "precip_sum": 0.0,
+      "precip_prob": 15,
+      "high": 22.9,
+      "low": 17.1
+    }
+  ],
+  "metno_nordic": {
+    "error": "Expecting value: line 1 column 13 (char 12)"
+  }
+}

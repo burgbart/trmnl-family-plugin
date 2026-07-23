@@ -200,6 +200,12 @@ LATITUDE = float(os.getenv("WEATHER_LATITUDE", "52.3676"))
 LONGITUDE = float(os.getenv("WEATHER_LONGITUDE", "4.9041"))
 CITY = os.getenv("CITY", "Amsterdam")
 
+# Optional Open-Meteo forecast model. When unset or empty, Open-Meteo uses its
+# default best_match selection. Regional models such as icon_seamless (DWD,
+# higher resolution for Central Europe) or gfs_seamless (NOAA GFS, global) can
+# be selected by setting this variable to the model identifier.
+WEATHER_MODEL = os.getenv("WEATHER_MODEL", "")
+
 # Local timezone for displaying calendar event times. Defaults to Amsterdam to
 # match the default weather location; override with the TIMEZONE env var
 # (e.g. "Europe/London" or "America/New_York").

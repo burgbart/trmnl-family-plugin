@@ -1,0 +1,67 @@
+[
+  {
+    "date": "2026-07-23",
+    "om_high": 19,
+    "om_low": 17,
+    "om_code": 51,
+    "om_desc": "Light drizzle",
+    "om_precip_sum": 0.2,
+    "om_precip_prob": 4,
+    "accu_high": 20,
+    "accu_low": 14,
+    "accu_precip": 7,
+    "accu_desc": "Rather cloudy"
+  },
+  {
+    "date": "2026-07-24",
+    "om_high": 23,
+    "om_low": 17,
+    "om_code": 51,
+    "om_desc": "Light drizzle",
+    "om_precip_sum": 0.1,
+    "om_precip_prob": 10,
+    "accu_high": 24,
+    "accu_low": 16,
+    "accu_precip": 25,
+    "accu_desc": "Pleasant with a sun-and-cloud mix"
+  },
+  {
+    "date": "2026-07-25",
+    "om_high": 26,
+    "om_low": 18,
+    "om_code": 3,
+    "om_desc": "Overcast",
+    "om_precip_sum": 0.0,
+    "om_precip_prob": 12,
+    "accu_high": 25,
+    "accu_low": 18,
+    "accu_precip": 4,
+    "accu_desc": "Mostly sunny and delightful"
+  },
+  {
+    "date": "2026-07-26",
+    "om_high": 22,
+    "om_low": 17,
+    "om_code": 80,
+    "om_desc": "Slight rain showers",
+    "om_precip_sum": 2.7,
+    "om_precip_prob": 70,
+    "accu_high": 21,
+    "accu_low": 14,
+    "accu_precip": 62,
+    "accu_desc": "Variable cloudiness with a brief shower or two in the afternoon"
+  },
+  {
+    "date": "2026-07-27",
+    "om_high": 22,
+    "om_low": 15,
+    "om_code": 51,
+    "om_desc": "Light drizzle",
+    "om_precip_sum": 0.3,
+    "om_precip_prob": 49,
+    "accu_high": 21,
+    "accu_low": 15,
+    "accu_precip": 5,
+    "accu_desc": "Mostly sunny and pleasant"
+  }
+]

@@ -7,7 +7,7 @@ from typing import Optional
 
 import requests
 
-from src.config import LATITUDE, LONGITUDE
+from src.config import LATITUDE, LONGITUDE, WEATHER_MODEL
 from src.data import Weather, WeatherForecast
 
 # WMO Weather interpretation codes (simplified)
@@ -67,24 +67,49 @@ PRECIPITATION_THRESHOLDS = {
     "hourly": {"light": 0.5, "heavy": 4.0},
 }
 
+# Open-Meteo reports the most severe hourly weather_code for each day. Brief
+# drizzle or slight showers (codes 51/53/80) can therefore dominate the daily
+# icon even when the day is mostly dry. Threshold those borderline codes back
+# to a cloud icon when both the precipitation probability and total amount are
+# low. See backlog/docs/weather/doc-1 for the investigation.
+BORDERLINE_RAIN_CODES = {51, 53, 80}
+BORDERLINE_RAIN_MAX_PROBABILITY = 30  # percent
+BORDERLINE_RAIN_MAX_PRECIPITATION = 1.0  # mm/day
+BORDERLINE_RAIN_FALLBACK_ICON = "cloud"
+
 
 def select_weather_icon(
     code: int,
     precipitation: float,
     *,
     is_daily: bool = False,
+    precipitation_probability: int | None = None,
     default: str = "cloud",
 ) -> str:
     """Map a WMO weather code + precipitation amount to a dashboard icon.
 
     The icon set is deliberately small for a low-resolution e-ink screen:
     sun, partly-cloudy, cloud, rain-light, rain, rain-heavy, thunder, snow.
+
+    For daily icons, borderline drizzle/shower codes (51/53/80) are downgraded
+    to a plain cloud icon when both the precipitation probability and the total
+    precipitation amount are low. Open-Meteo reports the most severe hourly
+    code for each day, so a brief 0.1 mm drizzle event would otherwise show a
+    full-day rain icon.
     """
     if code in THUNDER_CODES:
         return "thunder"
     if code in SNOW_CODES:
         return "snow"
     if code in RAIN_CODES:
+        if is_daily and code in BORDERLINE_RAIN_CODES:
+            prob_low = (
+                precipitation_probability is not None
+                and precipitation_probability < BORDERLINE_RAIN_MAX_PROBABILITY
+            )
+            amount_low = precipitation < BORDERLINE_RAIN_MAX_PRECIPITATION
+            if prob_low and amount_low:
+                return BORDERLINE_RAIN_FALLBACK_ICON
         thresholds = PRECIPITATION_THRESHOLDS["daily" if is_daily else "hourly"]
         if precipitation >= thresholds["heavy"]:
             return "rain-heavy"
@@ -105,6 +130,8 @@ def fetch_weather() -> Weather:
         "timezone": "auto",
         "forecast_days": 5,
     }
+    if WEATHER_MODEL:
+        params["models"] = WEATHER_MODEL
 
     response = requests.get(url, params=params, timeout=20)
     response.raise_for_status()
@@ -131,10 +158,16 @@ def fetch_weather() -> Weather:
         day_code = codes[i] if i < len(codes) else 0
         day_desc, day_base_icon = WEATHER_CODES.get(day_code, ("Unknown", "cloud"))
         day_precip = float(precip_sums[i] if i < len(precip_sums) and precip_sums[i] is not None else 0.0)
-        day_icon = select_weather_icon(day_code, day_precip, is_daily=True, default=day_base_icon)
         day_prob = precip_probs[i] if i < len(precip_probs) and precip_probs[i] is not None else None
         if day_prob is not None:
             day_prob = int(day_prob)
+        day_icon = select_weather_icon(
+            day_code,
+            day_precip,
+            is_daily=True,
+            precipitation_probability=day_prob,
+            default=day_base_icon,
+        )
         forecast.append(
             WeatherForecast(
                 date=date.fromisoformat(dates[i]),
