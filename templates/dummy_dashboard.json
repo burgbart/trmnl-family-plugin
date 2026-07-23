@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generated_at": "2026-07-22T14:33:40.507288+00:00",
-    "reference_date": "2026-07-22",
+    "generated_at": "2026-07-23T08:59:21.614803+00:00",
+    "reference_date": "2026-07-23",
     "city": "Amsterdam"
   },
   "errors": {
@@ -16,120 +16,132 @@
     "icon": "partly-cloudy",
     "forecast": [
       {
-        "date": "2026-07-22",
-        "description": "Rain",
+        "date": "2026-07-23",
+        "description": "Light rain",
         "temperature_high": 20,
         "temperature_low": 15,
-        "icon": "rain"
-      },
-      {
-        "date": "2026-07-23",
-        "description": "Sunny",
-        "temperature_high": 24,
-        "temperature_low": 16,
-        "icon": "sun"
+        "icon": "rain-light",
+        "precipitation_amount": 1.2,
+        "precipitation_probability": 60
       },
       {
         "date": "2026-07-24",
-        "description": "Cloudy",
+        "description": "Rain",
         "temperature_high": 22,
-        "temperature_low": 17,
-        "icon": "cloud"
+        "temperature_low": 16,
+        "icon": "rain",
+        "precipitation_amount": 5.0,
+        "precipitation_probability": 80
       },
       {
         "date": "2026-07-25",
-        "description": "Partly cloudy",
-        "temperature_high": 23,
-        "temperature_low": 16,
-        "icon": "partly-cloudy"
+        "description": "Heavy rain",
+        "temperature_high": 19,
+        "temperature_low": 14,
+        "icon": "rain-heavy",
+        "precipitation_amount": 18.0,
+        "precipitation_probability": 95
       },
       {
         "date": "2026-07-26",
-        "description": "Clear sky",
-        "temperature_high": 25,
-        "temperature_low": 18,
-        "icon": "sun"
+        "description": "Thunderstorm",
+        "temperature_high": 18,
+        "temperature_low": 13,
+        "icon": "thunder",
+        "precipitation_amount": 12.0,
+        "precipitation_probability": 85
+      },
+      {
+        "date": "2026-07-27",
+        "description": "Snow",
+        "temperature_high": 2,
+        "temperature_low": -2,
+        "icon": "snow",
+        "precipitation_amount": 4.0,
+        "precipitation_probability": 70
       }
     ],
-    "alert": "Rain expected today"
+    "alert": "Rain expected today",
+    "precipitation_amount": 0.0,
+    "precipitation_probability": null
   },
   "events": [
     {
       "title": "Dentist \u2014 Anna",
-      "start": "2026-07-22T09:00:00+02:00",
-      "end": "2026-07-22T10:00:00+02:00",
+      "start": "2026-07-23T09:00:00+02:00",
+      "end": "2026-07-23T10:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "School pickup",
-      "start": "2026-07-22T15:30:00+02:00",
-      "end": "2026-07-22T16:00:00+02:00",
+      "start": "2026-07-23T15:30:00+02:00",
+      "end": "2026-07-23T16:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Dinner at parents",
-      "start": "2026-07-22T18:00:00+02:00",
-      "end": "2026-07-22T21:00:00+02:00",
+      "start": "2026-07-23T18:00:00+02:00",
+      "end": "2026-07-23T21:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Grocery run",
-      "start": "2026-07-23T10:00:00+02:00",
-      "end": "2026-07-23T11:00:00+02:00",
+      "start": "2026-07-24T10:00:00+02:00",
+      "end": "2026-07-24T11:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Football practice",
-      "start": "2026-07-24T17:00:00+02:00",
-      "end": "2026-07-24T18:30:00+02:00",
+      "start": "2026-07-25T17:00:00+02:00",
+      "end": "2026-07-25T18:30:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Piano lesson",
-      "start": "2026-07-25T16:00:00+02:00",
-      "end": "2026-07-25T17:00:00+02:00",
+      "start": "2026-07-26T16:00:00+02:00",
+      "end": "2026-07-26T17:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Parent-teacher meeting",
-      "start": "2026-07-26T19:00:00+02:00",
-      "end": "2026-07-26T20:00:00+02:00",
+      "start": "2026-07-27T19:00:00+02:00",
+      "end": "2026-07-27T20:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Swimming lessons",
-      "start": "2026-07-27T10:00:00+02:00",
-      "end": "2026-07-27T11:00:00+02:00",
+      "start": "2026-07-28T10:00:00+02:00",
+      "end": "2026-07-28T11:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Family bike ride",
-      "start": "2026-07-28T11:00:00+02:00",
-      "end": "2026-07-28T13:00:00+02:00",
+      "start": "2026-07-29T11:00:00+02:00",
+      "end": "2026-07-29T13:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Car maintenance",
-      "start": "2026-07-29T09:00:00+02:00",
-      "end": "2026-07-29T10:00:00+02:00",
+      "start": "2026-07-30T09:00:00+02:00",
+      "end": "2026-07-30T10:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
@@ -140,21 +152,21 @@
       "title": "Buy milk & eggs",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-22",
+      "due_date": "2026-07-23",
       "sort_order": 0
     },
     {
       "title": "Call plumber",
       "done": false,
       "priority": 0,
-      "due_date": "2026-07-22",
+      "due_date": "2026-07-23",
       "sort_order": 0
     },
     {
       "title": "Schedule car service",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-24",
+      "due_date": "2026-07-25",
       "sort_order": 0
     },
     {
@@ -175,7 +187,7 @@
       "title": "Replace hallway lightbulb",
       "done": false,
       "priority": 0,
-      "due_date": "2026-07-23",
+      "due_date": "2026-07-24",
       "sort_order": 0
     },
     {
@@ -189,7 +201,7 @@
       "title": "Renew library books",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-25",
+      "due_date": "2026-07-26",
       "sort_order": 0
     },
     {
@@ -217,44 +229,44 @@
       "title": "Buy birthday gift for Emma",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-25",
+      "due_date": "2026-07-26",
       "sort_order": 0
     }
   ],
   "birthdays": [
     {
       "name": "Emma",
-      "date": "2026-07-25",
+      "date": "2026-07-26",
       "kind": "birthday"
     },
     {
       "name": "Uncle Mark",
-      "date": "2026-08-09",
+      "date": "2026-08-10",
       "kind": "birthday"
     },
     {
       "name": "Wedding anniversary",
-      "date": "2026-09-02",
+      "date": "2026-09-03",
       "kind": "anniversary"
     },
     {
       "name": "Grandma Sue",
-      "date": "2026-09-15",
+      "date": "2026-09-16",
       "kind": "birthday"
     },
     {
       "name": "Dad",
-      "date": "2026-09-23",
+      "date": "2026-09-24",
       "kind": "birthday"
     },
     {
       "name": "First date anniversary",
-      "date": "2026-10-06",
+      "date": "2026-10-07",
       "kind": "anniversary"
     },
     {
       "name": "Cousin Lisa",
-      "date": "2026-10-19",
+      "date": "2026-10-20",
       "kind": "birthday"
     }
   ],

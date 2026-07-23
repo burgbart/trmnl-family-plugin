@@ -20,6 +20,8 @@ class WeatherForecast:
     temperature_high: int
     temperature_low: int
     icon: str
+    precipitation_amount: float | None = None
+    precipitation_probability: int | None = None
 
 
 @dataclass
@@ -30,6 +32,8 @@ class Weather:
     icon: str
     forecast: list[WeatherForecast] = field(default_factory=list)
     alert: str | None = None
+    precipitation_amount: float | None = None
+    precipitation_probability: int | None = None
 
 
 @dataclass
@@ -66,41 +70,52 @@ def fetch_weather() -> Weather:
         temperature=21,
         feels_like=19,
         icon="partly-cloudy",
+        precipitation_amount=0.0,
         forecast=[
             WeatherForecast(
                 date=today,
-                description="Rain",
+                description="Light rain",
                 temperature_high=20,
                 temperature_low=15,
-                icon="rain",
+                icon="rain-light",
+                precipitation_amount=1.2,
+                precipitation_probability=60,
             ),
             WeatherForecast(
                 date=today + timedelta(days=1),
-                description="Sunny",
-                temperature_high=24,
+                description="Rain",
+                temperature_high=22,
                 temperature_low=16,
-                icon="sun",
+                icon="rain",
+                precipitation_amount=5.0,
+                precipitation_probability=80,
             ),
             WeatherForecast(
                 date=today + timedelta(days=2),
-                description="Cloudy",
-                temperature_high=22,
-                temperature_low=17,
-                icon="cloud",
+                description="Heavy rain",
+                temperature_high=19,
+                temperature_low=14,
+                icon="rain-heavy",
+                precipitation_amount=18.0,
+                precipitation_probability=95,
             ),
             WeatherForecast(
                 date=today + timedelta(days=3),
-                description="Partly cloudy",
-                temperature_high=23,
-                temperature_low=16,
-                icon="partly-cloudy",
+                description="Thunderstorm",
+                temperature_high=18,
+                temperature_low=13,
+                icon="thunder",
+                precipitation_amount=12.0,
+                precipitation_probability=85,
             ),
             WeatherForecast(
                 date=today + timedelta(days=4),
-                description="Clear sky",
-                temperature_high=25,
-                temperature_low=18,
-                icon="sun",
+                description="Snow",
+                temperature_high=2,
+                temperature_low=-2,
+                icon="snow",
+                precipitation_amount=4.0,
+                precipitation_probability=70,
             ),
         ],
         alert="Rain expected today",

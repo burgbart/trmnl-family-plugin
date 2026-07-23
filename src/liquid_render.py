@@ -1,11 +1,7 @@
 """Render a device's Liquid template against parsed dashboard-v2.json data.
 
 Uses python-liquid with a `FileSystemLoader` pointed at the repo's
-`templates/` directory. The loader is constructed with `ext=".liquid"`, so
-partials can be referenced with the bare name inside `{% render %}` tags
-(e.g. `{% render 'partials/weather', ... %}` resolves to
-`templates/partials/weather.liquid`) — this is the convention documented in
-`templates/CONTRACT.md`.
+`templates/` directory. The loader is constructed with `ext=".liquid"`.
 """
 
 from __future__ import annotations
@@ -31,9 +27,9 @@ def render(
     `device_profile` may be a `DeviceProfile` instance or a device name
     string (e.g. "og"/"x"), which is resolved via `get_device_profile()`.
     `data` is the parsed dashboard-v2.json dict (meta/weather/events/tasks/
-    birthdays — see templates/CONTRACT.md) and is passed directly as the
-    top-level Liquid render context; the device templates own all
-    sizing/layout values themselves and don't expect them injected.
+    birthdays) and is passed directly as the top-level Liquid render context;
+    the device templates own all sizing/layout values themselves and don't
+    expect them injected.
 
     Optional `template_path` overrides the template file defined by the
     device profile. This is useful for quickly testing a new design without

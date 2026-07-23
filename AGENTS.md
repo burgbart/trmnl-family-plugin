@@ -47,8 +47,6 @@ The project supports three operational modes, all built on the same collect → 
 │   ├── TRMNL_SETUP.md                          # Stranger-friendly TRMNL account/plugin setup guide
 │   └── DESIGN_REFERENCE.md                    # Visual design notes carried over from the PNG era
 ├── templates/
-│   ├── CONTRACT.md                            # JSON→Liquid variable contract for the partials
-│   ├── partials/*.liquid                      # Shared sections: weather, calendar, tasks, birthdays
 │   ├── devices/og.liquid                      # TRMNL OG (800×480) full template
 │   ├── devices/x.liquid                       # TRMNL X (1872×1404) full template
 │   ├── build_dummy_fixture.py                 # Generates templates/dummy_dashboard.json for local testing
@@ -95,7 +93,7 @@ The project supports three operational modes, all built on the same collect → 
 
 - `src/config.py` — Loads settings from environment variables (via `.env` if present). Defines `DeviceProfile`s for each supported device (dimensions, grayscale level count, Liquid template filename), a stub third-device profile proving the registry scales without code changes, location, API credentials, and dashboard limits.
 - `src/data.py` — Defines the core dataclasses (`Weather`, `CalendarEvent`, `Task`, `Birthday`) and provides dummy data generators used for the explicit dummy fixture and low-level `fetch_*_or_dummy()` fallbacks. `Birthday` includes a `kind` field (`birthday` or `anniversary`).
-- `src/liquid_render.py` — `render(device_profile, data)` renders a device's Liquid template (from `templates/devices/`) against a parsed `dashboard-v2.json` dict, using `python-liquid` with a `FileSystemLoader(ext=".liquid")` so partials resolve by bare name inside `{% render %}` tags.
+- `src/liquid_render.py` — `render(device_profile, data)` renders a device's Liquid template (from `templates/devices/`) against a parsed `dashboard-v2.json` dict using `python-liquid`.
 - `src/unified_fetcher.py` — `fetch_unified_data()` fetches the union of dashboard + terminal sources once, deduplicates, and returns a `UnifiedData` object containing both aggregated and per-source (terminal) views. All callers that need to collect data use this instead of calling individual fetchers directly.
 - `src/pipeline.py` — `run_pipeline(output_dir, devices, upload=False)` runs one full collect → JSON → [upload] cycle: calls `fetch_unified_data()`, writes `dashboard-v2.json`, renders `preview.html` via `export_preview.build_preview_html()`, and optionally uploads the JSON to R2. Used by `run_workflow_loop.py` and `server.py`.
 - `src/json_loader.py` — `load_json(path_or_url)` fetches `dashboard-v2.json` from a URL or local path and deserialises it into dataclasses. `resolve_input_path()` determines the source (CLI arg → `DASHBOARD_JSON_URL` env var → Cloudflare public URL → `output/dashboard-v2.json`).
@@ -211,7 +209,6 @@ The project does not have integration tests for live Google Calendar or TickTick
 - Data fetchers follow a consistent pattern: a real `fetch_*()` function plus a `fetch_*_or_dummy()` wrapper that catches exceptions and returns dummy data. The production pipeline (`src/unified_fetcher.fetch_unified_data()`) surfaces missing credentials and API failures as `errors` entries in the JSON payload rather than falling back to dummy data.
 - Use dataclasses in `src/data.py` as the common data model across modules.
 - Avoid adding new required environment variables; provide sensible defaults in `src/config.py`.
-- Liquid partials in `templates/partials/` are device-agnostic: they take sizing/spacing values as explicit `{% render %}` parameters rather than assuming a specific device's `DeviceProfile`. See `templates/CONTRACT.md` for the full variable contract before editing a partial or adding a new one.
 
 ## Runtime architecture
 
@@ -313,3 +310,28 @@ python -m src.upload output/dashboard-v2.json
 - `plan/PLAN.md` is the authoritative architecture record; `plan/TASKS.md` tracks phase-by-phase progress and notes any deviations from the original plan (e.g. tasks completed earlier/later than originally scheduled, or skipped with a reason). Check both before assuming an "Open item" listed there has been resolved.
 - The codebase intentionally supports running without credentials by rendering explicit error states for unconfigured sources. If you add a new data source, follow the `fetch_*_or_dummy` fallback pattern for low-level fetchers, but surface missing credentials / failures through the `errors` object in `src/unified_fetcher.py`.
 - Rendering (device-specific layout, grayscale dithering) happens in `templates/*.liquid`, not in Python. If you add a new device profile in `src/config.py`, it needs a corresponding `templates/devices/<name>.liquid` template before `src/liquid_render.py`/`export_preview.py` can render it — profiles without a template (`template_filename=None`, see `STUB_PROFILE`) are valid and are skipped by both.
+- This project uses Backlog.md for task management. At the start of each task-focused session, run `backlog instructions overview`. Prefer `backlog task create`, `backlog task edit`, and `backlog board` over hand-editing files in `backlog/`.
+
+<!-- BACKLOG.MD GUIDELINES START -->
+<!-- backlog.md-instructions-version: 1.48.0 -->
+<CRITICAL_INSTRUCTION>
+
+## Backlog.md Workflow
+
+This project uses Backlog.md for task and project management.
+
+**For every user request in this project, run `backlog instructions overview` before answering or taking action.**
+
+Use the overview to decide whether to search, read, create, or update Backlog tasks.
+
+Before task lifecycle actions, read the matching detailed guide:
+- `backlog instructions task-creation` before creating or splitting tasks
+- `backlog instructions task-execution` before planning, changing status or assignee, adding a plan or implementation notes, or implementing task work
+- `backlog instructions task-finalization` before checking acceptance criteria, writing final summaries, or moving tasks to terminal statuses
+
+Use `backlog <command> --help` before running unfamiliar commands. Help shows options, fields, and examples.
+
+Do not edit Backlog task, draft, document, decision, or milestone markdown files directly. Use the `backlog` CLI so metadata, relationships, and history stay consistent.
+
+</CRITICAL_INSTRUCTION>
+<!-- BACKLOG.MD GUIDELINES END -->
