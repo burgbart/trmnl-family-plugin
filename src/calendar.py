@@ -17,6 +17,7 @@ from src.config import (
     GOOGLE_CALENDAR_IDS,
     GOOGLE_SERVICE_ACCOUNT_JSON,
     TIMEZONE,
+    get_reference_date,
     get_reference_datetime,
 )
 from src.data import Birthday, CalendarEvent
@@ -214,11 +215,21 @@ def fetch_calendar_events() -> List[CalendarEvent]:
 
 
 def _extract_birthdays(events: List[CalendarEvent]) -> List[Birthday]:
-    """Convert celebration events into Birthday dataclasses."""
+    """Convert celebration events into Birthday dataclasses.
+
+    Celebrations are compared against the current local date in the configured
+    timezone; all-day events from before the reference date are skipped so the
+    anniversaries section never shows stale entries.
+    """
     celebrations: List[Birthday] = []
     seen = set()
+    today = get_reference_date()
 
     for event in events:
+        local_start_date = _normalize_dt(event.start).date()
+        if local_start_date < today:
+            continue
+
         title_lower = event.title.lower()
         matched_keyword = next(
             (k for k in BIRTHDAY_KEYWORDS if k in title_lower), None
@@ -246,13 +257,13 @@ def _extract_birthdays(events: List[CalendarEvent]) -> List[Birthday]:
         if not name:
             continue
 
-        key = (name, event.start.date(), kind)
+        key = (name, local_start_date, kind)
         if key in seen:
             continue
         seen.add(key)
 
         celebrations.append(
-            Birthday(name=name.title(), date=event.start.date(), kind=kind)
+            Birthday(name=name.title(), date=local_start_date, kind=kind)
         )
 
     return celebrations

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -230,3 +231,81 @@ def test_parse_single_day_all_day_event_has_next_day_end():
     assert event.start.date() == date(2026, 7, 14)
     assert event.end is not None
     assert event.end.date() == date(2026, 7, 15)
+
+
+class TestAnniversaryDateFiltering:
+    def test_yesterdays_anniversary_is_excluded(self, monkeypatch):
+        monkeypatch.setattr(calendar_module, "get_reference_date", lambda: date(2026, 7, 23))
+        events = [
+            _make_event(
+                title="Wedding anniversary",
+                start=datetime(2026, 7, 22, 0, 0, tzinfo=ZoneInfo("Europe/Amsterdam")),
+                all_day=True,
+            )
+        ]
+        monkeypatch.setattr(calendar_module, "_fetch_celebration_events", lambda: events)
+
+        assert fetch_birthdays() == []
+
+    def test_todays_and_future_anniversaries_are_included(self, monkeypatch):
+        monkeypatch.setattr(calendar_module, "get_reference_date", lambda: date(2026, 7, 23))
+        events = [
+            _make_event(
+                title="Wedding anniversary",
+                start=datetime(2026, 7, 23, 0, 0, tzinfo=ZoneInfo("Europe/Amsterdam")),
+                all_day=True,
+            ),
+            _make_event(
+                title="First date anniversary",
+                start=datetime(2026, 7, 24, 0, 0, tzinfo=ZoneInfo("Europe/Amsterdam")),
+                all_day=True,
+            ),
+        ]
+        monkeypatch.setattr(calendar_module, "_fetch_celebration_events", lambda: events)
+
+        birthdays = fetch_birthdays()
+        assert [b.name for b in birthdays] == ["Wedding", "First Date"]
+
+    def test_reference_date_override_is_used(self, monkeypatch):
+        monkeypatch.setattr(calendar_module, "get_reference_date", lambda: date(2026, 7, 25))
+        events = [
+            _make_event(
+                title="Wedding anniversary",
+                start=datetime(2026, 7, 24, 0, 0, tzinfo=ZoneInfo("Europe/Amsterdam")),
+                all_day=True,
+            ),
+            _make_event(
+                title="Emma birthday",
+                start=datetime(2026, 7, 25, 0, 0, tzinfo=ZoneInfo("Europe/Amsterdam")),
+                all_day=True,
+            ),
+        ]
+        monkeypatch.setattr(calendar_module, "_fetch_celebration_events", lambda: events)
+
+        birthdays = fetch_birthdays()
+        assert [b.name for b in birthdays] == ["Emma"]
+
+    def test_timezone_normalization_compares_local_date(self, monkeypatch):
+        # 2026-07-22 23:00 UTC is already 2026-07-23 in Amsterdam but still
+        # 2026-07-22 in New York. The same event should be included or excluded
+        # based on the configured TIMEZONE.
+        start = datetime(2026, 7, 22, 23, 0, tzinfo=timezone.utc)
+        events = [
+            _make_event(
+                title="Wedding anniversary",
+                start=start,
+                all_day=True,
+            )
+        ]
+        monkeypatch.setattr(calendar_module, "_fetch_celebration_events", lambda: events)
+
+        monkeypatch.setattr(calendar_module, "TIMEZONE", "Europe/Amsterdam")
+        monkeypatch.setattr(calendar_module, "get_reference_date", lambda: date(2026, 7, 23))
+        amsterdam_birthdays = fetch_birthdays()
+        assert len(amsterdam_birthdays) == 1
+        assert amsterdam_birthdays[0].date == date(2026, 7, 23)
+
+        monkeypatch.setattr(calendar_module, "TIMEZONE", "America/New_York")
+        monkeypatch.setattr(calendar_module, "get_reference_date", lambda: date(2026, 7, 23))
+        new_york_birthdays = fetch_birthdays()
+        assert new_york_birthdays == []
