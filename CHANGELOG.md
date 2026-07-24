@@ -27,5 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `templates/CONTRACT.md` to document the `errors` object and the new optional `error` parameter on affected partials.
 - Regenerated `templates/dummy_dashboard.json` to include the new `errors` object.
 - Updated `src/weather.py` and `tests/test_weather.py` to use daily `cloud_cover_mean` from Open-Meteo and recover a partly-cloudy icon for otherwise overcast days with low mean cloud cover (TASK-8).
+- Updated `src/weather.py` and `tests/test_weather.py` to score borderline drizzle/shower codes (51/53/80) by probability-weighted expected amount (`precipitation_sum * precipitation_probability_max / 100`), smoothing the transition from cloud to rain-light to amount-based intensity (TASK-9).
+- Updated `src/weather.py` and `tests/test_weather.py` so the weather alert is always populated: it describes expected rain/snow/thunder or reports `No rain expected today` when the day is dry (TASK-11).
 - Updated `templates/devices/og.liquid` and `templates/devices/x.liquid` to show `Today`/`Tomorrow` labels for events and anniversaries, bold the `Today`/`Tomorrow` text in events, and append a bold ` (!)` marker to Today/Tomorrow anniversary dates while keeping anniversary names bold (TASK-10).
 - Regenerated `templates/dummy_dashboard.json`, `preview.html`, and `output/preview.html` to reflect the new event and anniversary formatting.
