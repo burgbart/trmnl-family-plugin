@@ -9,9 +9,8 @@ import pytest
 
 from src import weather
 from src.weather import (
-    BORDERLINE_RAIN_FALLBACK_ICON,
-    BORDERLINE_RAIN_MAX_PRECIPITATION,
-    BORDERLINE_RAIN_MAX_PROBABILITY,
+    BORDERLINE_RAIN_EXPECTED_AMOUNT_CLOUD_THRESHOLD,
+    BORDERLINE_RAIN_EXPECTED_AMOUNT_RAIN_LIGHT_THRESHOLD,
     CLOUD_COVER_PARTLY_CLOUDY_THRESHOLD,
     fetch_weather,
     select_weather_icon,
@@ -22,74 +21,87 @@ class TestSelectWeatherIcon:
     """Tests for select_weather_icon threshold logic."""
 
     @pytest.mark.parametrize("code", [51, 53, 80])
-    def test_borderline_rain_downgraded_when_low_probability_and_amount(
+    def test_borderline_rain_cloud_when_expected_amount_below_threshold(
         self, code: int
     ) -> None:
-        """Drizzle/slight-shower codes become cloud when both thresholds are low."""
+        """Very low expected amount downgrades borderline codes to cloud."""
+        amount = BORDERLINE_RAIN_EXPECTED_AMOUNT_CLOUD_THRESHOLD / 2
+        # probability 100% so amount == expected_amount
         icon = select_weather_icon(
             code,
-            BORDERLINE_RAIN_MAX_PRECIPITATION - 0.1,
+            amount,
             is_daily=True,
-            precipitation_probability=BORDERLINE_RAIN_MAX_PROBABILITY - 1,
+            precipitation_probability=100,
         )
-        assert icon == BORDERLINE_RAIN_FALLBACK_ICON
+        assert icon == "cloud"
 
     @pytest.mark.parametrize("code", [51, 53, 80])
-    def test_borderline_rain_kept_when_probability_high(
+    def test_borderline_rain_light_when_expected_amount_between_thresholds(
         self, code: int
     ) -> None:
-        """A high enough probability keeps the rain icon for borderline codes."""
+        """Moderate expected amount renders rain-light for borderline codes."""
+        expected = (
+            BORDERLINE_RAIN_EXPECTED_AMOUNT_CLOUD_THRESHOLD
+            + BORDERLINE_RAIN_EXPECTED_AMOUNT_RAIN_LIGHT_THRESHOLD
+        ) / 2
+        # 50% probability -> amount = expected * 2
+        amount = expected * 2
         icon = select_weather_icon(
             code,
-            BORDERLINE_RAIN_MAX_PRECIPITATION - 0.1,
+            amount,
             is_daily=True,
-            precipitation_probability=BORDERLINE_RAIN_MAX_PROBABILITY + 1,
-        )
-        assert icon == "rain-light"
-
-    @pytest.mark.parametrize("code", [51, 53, 80])
-    def test_borderline_rain_kept_when_precipitation_high(
-        self, code: int
-    ) -> None:
-        """A high enough precipitation amount keeps the rain icon for borderline codes."""
-        icon = select_weather_icon(
-            code,
-            BORDERLINE_RAIN_MAX_PRECIPITATION + 0.1,
-            is_daily=True,
-            precipitation_probability=BORDERLINE_RAIN_MAX_PROBABILITY - 1,
+            precipitation_probability=50,
         )
         assert icon == "rain-light"
 
     @pytest.mark.parametrize("code", [51, 53, 80])
-    def test_borderline_rain_kept_when_probability_unknown(
+    def test_borderline_rain_falls_through_when_expected_amount_high(
         self, code: int
     ) -> None:
-        """Without a probability we cannot threshold, so keep the rain icon."""
+        """High expected amount falls through to amount-based thresholds."""
+        amount = BORDERLINE_RAIN_EXPECTED_AMOUNT_RAIN_LIGHT_THRESHOLD * 2
         icon = select_weather_icon(
             code,
-            BORDERLINE_RAIN_MAX_PRECIPITATION - 0.1,
+            amount,
+            is_daily=True,
+            precipitation_probability=100,
+        )
+        # amount 3.0 mm is below daily light threshold 2.5? Wait 3.0 >= 2.5 so rain
+        assert icon == "rain"
+
+    @pytest.mark.parametrize("code", [51, 53, 80])
+    def test_borderline_rain_falls_through_when_probability_unknown(
+        self, code: int
+    ) -> None:
+        """Without a probability we cannot compute expected amount."""
+        icon = select_weather_icon(
+            code,
+            BORDERLINE_RAIN_EXPECTED_AMOUNT_CLOUD_THRESHOLD / 2,
             is_daily=True,
             precipitation_probability=None,
         )
         assert icon == "rain-light"
 
-    def test_non_borderline_rain_ignores_thresholds(self) -> None:
-        """Real rain codes show rain even with tiny probability/amount."""
+    @pytest.mark.parametrize("code", [61, 63, 65, 66, 67, 81, 82])
+    def test_non_borderline_rain_uses_amount_based_thresholds(
+        self, code: int
+    ) -> None:
+        """Non-borderline rain codes ignore expected-amount scoring."""
         icon = select_weather_icon(
-            61,
-            BORDERLINE_RAIN_MAX_PRECIPITATION - 0.1,
+            code,
+            0.1,
             is_daily=True,
-            precipitation_probability=BORDERLINE_RAIN_MAX_PROBABILITY - 1,
+            precipitation_probability=5,
         )
         assert icon == "rain-light"
 
     def test_borderline_rain_not_downgraded_for_current_hourly(self) -> None:
-        """The threshold only applies to daily icons, not current/hourly."""
+        """Expected-amount scoring only applies to daily icons."""
         icon = select_weather_icon(
             51,
-            0.1,
+            BORDERLINE_RAIN_EXPECTED_AMOUNT_CLOUD_THRESHOLD / 2,
             is_daily=False,
-            precipitation_probability=BORDERLINE_RAIN_MAX_PROBABILITY - 1,
+            precipitation_probability=100,
         )
         assert icon == "rain-light"
 
@@ -201,8 +213,8 @@ class TestFetchWeather:
         result = fetch_weather()
 
         assert len(result.forecast) == 2
-        assert result.forecast[0].icon == BORDERLINE_RAIN_FALLBACK_ICON
-        assert result.forecast[1].icon == BORDERLINE_RAIN_FALLBACK_ICON
+        assert result.forecast[0].icon == "cloud"
+        assert result.forecast[1].icon == "cloud"
         assert result.forecast[0].precipitation_probability == 4
         assert result.forecast[0].precipitation_amount == 0.2
 

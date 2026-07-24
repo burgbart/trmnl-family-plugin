@@ -69,13 +69,13 @@ PRECIPITATION_THRESHOLDS = {
 
 # Open-Meteo reports the most severe hourly weather_code for each day. Brief
 # drizzle or slight showers (codes 51/53/80) can therefore dominate the daily
-# icon even when the day is mostly dry. Threshold those borderline codes back
-# to a cloud icon when both the precipitation probability and total amount are
-# low. See backlog/docs/weather/doc-1 for the investigation.
+# icon even when the day is mostly dry. For these borderline codes, use a
+# probability-weighted expected amount (precipitation_sum * PoP / 100) to
+# smooth the transition from cloud to rain-light to full amount-based intensity.
+# See backlog/docs/weather/doc-3 for the investigation.
 BORDERLINE_RAIN_CODES = {51, 53, 80}
-BORDERLINE_RAIN_MAX_PROBABILITY = 30  # percent
-BORDERLINE_RAIN_MAX_PRECIPITATION = 1.0  # mm/day
-BORDERLINE_RAIN_FALLBACK_ICON = "cloud"
+BORDERLINE_RAIN_EXPECTED_AMOUNT_CLOUD_THRESHOLD = 0.2  # mm
+BORDERLINE_RAIN_EXPECTED_AMOUNT_RAIN_LIGHT_THRESHOLD = 1.5  # mm
 
 # Open-Meteo reports the most severe hourly weather_code for each day. A single
 # overcast hour can make an otherwise partly-cloudy day report code 3. Use the
@@ -97,11 +97,12 @@ def select_weather_icon(
     The icon set is deliberately small for a low-resolution e-ink screen:
     sun, partly-cloudy, cloud, rain-light, rain, rain-heavy, thunder, snow.
 
-    For daily icons, borderline drizzle/shower codes (51/53/80) are downgraded
-    to a plain cloud icon when both the precipitation probability and the total
-    precipitation amount are low. Open-Meteo reports the most severe hourly
-    code for each day, so a brief 0.1 mm drizzle event would otherwise show a
-    full-day rain icon.
+    For daily icons, borderline drizzle/shower codes (51/53/80) are scored by
+    probability-weighted expected amount (precipitation_sum * PoP / 100). Low
+    expected amounts become a cloud icon, moderate amounts become rain-light,
+    and higher amounts fall through to the existing amount-based thresholds.
+    Open-Meteo reports the most severe hourly code for each day, so a brief
+    0.1 mm drizzle event would otherwise show a full-day rain icon.
 
     For daily code 3 (Overcast), the mean cloud cover fraction is used to
     distinguish partly-cloudy days (< 65% cover) from genuinely overcast days
@@ -112,14 +113,16 @@ def select_weather_icon(
     if code in SNOW_CODES:
         return "snow"
     if code in RAIN_CODES:
-        if is_daily and code in BORDERLINE_RAIN_CODES:
-            prob_low = (
-                precipitation_probability is not None
-                and precipitation_probability < BORDERLINE_RAIN_MAX_PROBABILITY
-            )
-            amount_low = precipitation < BORDERLINE_RAIN_MAX_PRECIPITATION
-            if prob_low and amount_low:
-                return BORDERLINE_RAIN_FALLBACK_ICON
+        if (
+            is_daily
+            and code in BORDERLINE_RAIN_CODES
+            and precipitation_probability is not None
+        ):
+            expected_amount = precipitation * (precipitation_probability / 100)
+            if expected_amount < BORDERLINE_RAIN_EXPECTED_AMOUNT_CLOUD_THRESHOLD:
+                return "cloud"
+            if expected_amount < BORDERLINE_RAIN_EXPECTED_AMOUNT_RAIN_LIGHT_THRESHOLD:
+                return "rain-light"
         thresholds = PRECIPITATION_THRESHOLDS["daily" if is_daily else "hourly"]
         if precipitation >= thresholds["heavy"]:
             return "rain-heavy"
