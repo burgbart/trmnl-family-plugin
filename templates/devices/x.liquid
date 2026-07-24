@@ -203,13 +203,20 @@
         <div style="font-size:28px; font-weight:bold; color:#000000;">(!) Not loaded</div>
         <div style="font-size:28px; color:#000000; margin-top:10px;">{{ errors.events }}</div>
         {% else %}
+        {% assign tomorrow = today | date: "%s" | plus: 86400 | date: "%Y-%m-%d" %}
         {% for event in events limit: 17 %}
           {% assign event_date = event.start | slice: 0, 10 %}
+          {% assign is_today_or_tomorrow = false %}
+          {% if event_date == today or event_date == tomorrow %}
+            {% assign is_today_or_tomorrow = true %}
+          {% endif %}
           <div style="display:flex; align-items:baseline; gap:20px; height:34px; font-size:28px; color:#000000;">
             <div style="flex:0 0 auto; min-width:16ch; white-space:nowrap;">
               {% if event.all_day %}
                 {% if event_date == today %}
-                  Today &middot; All day
+                  <span style="font-weight:bold;">Today</span> &middot; All day
+                {% elsif event_date == tomorrow %}
+                  <span style="font-weight:bold;">Tomorrow</span> &middot; All day
                 {% elsif event.end and event.end != event.start %}
                   {{ event.start | date: "%a %d %b" }}&ndash;{{ event.end | date: "%a %d %b" }}
                 {% else %}
@@ -217,7 +224,9 @@
                 {% endif %}
               {% else %}
                 {% if event_date == today %}
-                  Today {{ event.start | date: "%H:%M" }}
+                  <span style="font-weight:bold;">Today</span> {{ event.start | date: "%H:%M" }}
+                {% elsif event_date == tomorrow %}
+                  <span style="font-weight:bold;">Tomorrow</span> {{ event.start | date: "%H:%M" }}
                 {% else %}
                   {{ event.start | date: "%a %d %b" }} {{ event.start | date: "%H:%M" }}
                 {% endif %}
@@ -296,13 +305,16 @@
           <div style="font-size:30px; color:#555555;">No upcoming dates</div>
         </div>
       {% else %}
+        {% assign tomorrow = meta.reference_date | date: "%s" | plus: 86400 | date: "%Y-%m-%d" %}
         <div style="flex:1 1 0; overflow:hidden;">
           {% for entry in birthdays limit: 4 %}
             <div style="display:flex; align-items:baseline; gap:10px; font-size:28px; line-height:34px; color:#000000; white-space:nowrap; overflow:hidden;">
               <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
-              <span style="color:#555555; flex:0 0 auto;">
+              <span style="flex:0 0 auto; color:#555555;">
                 {% if entry.date == meta.reference_date %}
-                  Today!
+                  Today<span style="font-weight:bold; color:#000000;"> (!)</span>
+                {% elsif entry.date == tomorrow %}
+                  Tomorrow<span style="font-weight:bold; color:#000000;"> (!)</span>
                 {% else %}
                   {{ entry.date | date: "%a %d %b" }}
                 {% endif %}
@@ -314,9 +326,11 @@
           {% for entry in birthdays offset: 4 limit: 4 %}
             <div style="display:flex; align-items:baseline; gap:10px; font-size:28px; line-height:34px; color:#000000; white-space:nowrap; overflow:hidden;">
               <span style="font-weight:bold; overflow:hidden; text-overflow:ellipsis;">{{ entry.name }}</span>
-              <span style="color:#555555; flex:0 0 auto;">
+              <span style="flex:0 0 auto; color:#555555;">
                 {% if entry.date == meta.reference_date %}
-                  Today!
+                  Today<span style="font-weight:bold; color:#000000;"> (!)</span>
+                {% elsif entry.date == tomorrow %}
+                  Tomorrow<span style="font-weight:bold; color:#000000;"> (!)</span>
                 {% else %}
                   {{ entry.date | date: "%a %d %b" }}
                 {% endif %}

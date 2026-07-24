@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generated_at": "2026-07-23T08:59:21.614803+00:00",
-    "reference_date": "2026-07-23",
+    "generated_at": "2026-07-24T09:21:00.999082+00:00",
+    "reference_date": "2026-07-24",
     "city": "Amsterdam"
   },
   "errors": {
@@ -16,7 +16,7 @@
     "icon": "partly-cloudy",
     "forecast": [
       {
-        "date": "2026-07-23",
+        "date": "2026-07-24",
         "description": "Light rain",
         "temperature_high": 20,
         "temperature_low": 15,
@@ -25,7 +25,7 @@
         "precipitation_probability": 60
       },
       {
-        "date": "2026-07-24",
+        "date": "2026-07-25",
         "description": "Rain",
         "temperature_high": 22,
         "temperature_low": 16,
@@ -34,7 +34,7 @@
         "precipitation_probability": 80
       },
       {
-        "date": "2026-07-25",
+        "date": "2026-07-26",
         "description": "Heavy rain",
         "temperature_high": 19,
         "temperature_low": 14,
@@ -43,7 +43,7 @@
         "precipitation_probability": 95
       },
       {
-        "date": "2026-07-26",
+        "date": "2026-07-27",
         "description": "Thunderstorm",
         "temperature_high": 18,
         "temperature_low": 13,
@@ -52,7 +52,7 @@
         "precipitation_probability": 85
       },
       {
-        "date": "2026-07-27",
+        "date": "2026-07-28",
         "description": "Snow",
         "temperature_high": 2,
         "temperature_low": -2,
@@ -68,80 +68,80 @@
   "events": [
     {
       "title": "Dentist \u2014 Anna",
-      "start": "2026-07-23T09:00:00+02:00",
-      "end": "2026-07-23T10:00:00+02:00",
+      "start": "2026-07-24T09:00:00+02:00",
+      "end": "2026-07-24T10:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "School pickup",
-      "start": "2026-07-23T15:30:00+02:00",
-      "end": "2026-07-23T16:00:00+02:00",
+      "start": "2026-07-24T15:30:00+02:00",
+      "end": "2026-07-24T16:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Dinner at parents",
-      "start": "2026-07-23T18:00:00+02:00",
-      "end": "2026-07-23T21:00:00+02:00",
+      "start": "2026-07-24T18:00:00+02:00",
+      "end": "2026-07-24T21:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Grocery run",
-      "start": "2026-07-24T10:00:00+02:00",
-      "end": "2026-07-24T11:00:00+02:00",
+      "start": "2026-07-25T10:00:00+02:00",
+      "end": "2026-07-25T11:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Football practice",
-      "start": "2026-07-25T17:00:00+02:00",
-      "end": "2026-07-25T18:30:00+02:00",
+      "start": "2026-07-26T17:00:00+02:00",
+      "end": "2026-07-26T18:30:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Piano lesson",
-      "start": "2026-07-26T16:00:00+02:00",
-      "end": "2026-07-26T17:00:00+02:00",
+      "start": "2026-07-27T16:00:00+02:00",
+      "end": "2026-07-27T17:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Parent-teacher meeting",
-      "start": "2026-07-27T19:00:00+02:00",
-      "end": "2026-07-27T20:00:00+02:00",
+      "start": "2026-07-28T19:00:00+02:00",
+      "end": "2026-07-28T20:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Swimming lessons",
-      "start": "2026-07-28T10:00:00+02:00",
-      "end": "2026-07-28T11:00:00+02:00",
+      "start": "2026-07-29T10:00:00+02:00",
+      "end": "2026-07-29T11:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Family bike ride",
-      "start": "2026-07-29T11:00:00+02:00",
-      "end": "2026-07-29T13:00:00+02:00",
+      "start": "2026-07-30T11:00:00+02:00",
+      "end": "2026-07-30T13:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
     },
     {
       "title": "Car maintenance",
-      "start": "2026-07-30T09:00:00+02:00",
-      "end": "2026-07-30T10:00:00+02:00",
+      "start": "2026-07-31T09:00:00+02:00",
+      "end": "2026-07-31T10:00:00+02:00",
       "all_day": false,
       "attendees": [],
       "calendar_id": null
@@ -152,21 +152,21 @@
       "title": "Buy milk & eggs",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-23",
+      "due_date": "2026-07-24",
       "sort_order": 0
     },
     {
       "title": "Call plumber",
       "done": false,
       "priority": 0,
-      "due_date": "2026-07-23",
+      "due_date": "2026-07-24",
       "sort_order": 0
     },
     {
       "title": "Schedule car service",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-25",
+      "due_date": "2026-07-26",
       "sort_order": 0
     },
     {
@@ -187,7 +187,7 @@
       "title": "Replace hallway lightbulb",
       "done": false,
       "priority": 0,
-      "due_date": "2026-07-24",
+      "due_date": "2026-07-25",
       "sort_order": 0
     },
     {
@@ -201,7 +201,7 @@
       "title": "Renew library books",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-26",
+      "due_date": "2026-07-27",
       "sort_order": 0
     },
     {
@@ -229,44 +229,49 @@
       "title": "Buy birthday gift for Emma",
       "done": false,
       "priority": 1,
-      "due_date": "2026-07-26",
+      "due_date": "2026-07-27",
       "sort_order": 0
     }
   ],
   "birthdays": [
     {
+      "name": "Mum",
+      "date": "2026-07-25",
+      "kind": "birthday"
+    },
+    {
       "name": "Emma",
-      "date": "2026-07-26",
+      "date": "2026-07-27",
       "kind": "birthday"
     },
     {
       "name": "Uncle Mark",
-      "date": "2026-08-10",
+      "date": "2026-08-11",
       "kind": "birthday"
     },
     {
       "name": "Wedding anniversary",
-      "date": "2026-09-03",
+      "date": "2026-09-04",
       "kind": "anniversary"
     },
     {
       "name": "Grandma Sue",
-      "date": "2026-09-16",
+      "date": "2026-09-17",
       "kind": "birthday"
     },
     {
       "name": "Dad",
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "kind": "birthday"
     },
     {
       "name": "First date anniversary",
-      "date": "2026-10-07",
+      "date": "2026-10-08",
       "kind": "anniversary"
     },
     {
       "name": "Cousin Lisa",
-      "date": "2026-10-20",
+      "date": "2026-10-21",
       "kind": "birthday"
     }
   ],

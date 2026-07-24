@@ -202,6 +202,7 @@ def fetch_birthdays() -> List[Birthday]:
     """Dummy upcoming birthdays and anniversaries."""
     today = get_reference_date()
     return [
+        Birthday(name="Mum", date=today + timedelta(days=1)),
         Birthday(name="Emma", date=today + timedelta(days=3)),
         Birthday(name="Uncle Mark", date=today + timedelta(days=18)),
         Birthday(

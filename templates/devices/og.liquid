@@ -302,6 +302,10 @@
     white-space: nowrap;
   }
 
+  .event-time--highlight {
+    font-weight: bold;
+  }
+
   .event-title {
     flex: 1 1 auto;
     min-width: 0;
@@ -402,6 +406,11 @@
     flex: 0 0 auto;
   }
 
+  .anniv-date--highlight {
+    font-weight: bold;
+    color: #000000;
+  }
+
   /* Local shim for TRMNL Framework's bg--/text-- utility classes (defined
      natively on TRMNL's platform, not by this stylesheet). Keeps
      export_preview.py's local preview visually accurate; harmless no-op
@@ -479,13 +488,20 @@
         <div class="error-title">(!) Not loaded</div>
         <div class="error-detail">{{ errors.events }}</div>
         {% else %}
+        {% assign tomorrow = meta.reference_date | date: "%s" | plus: 86400 | date: "%Y-%m-%d" %}
         {% for event in events limit: 9 %}
           {% assign event_date = event.start | slice: 0, 10 %}
+          {% assign is_today_or_tomorrow = false %}
+          {% if event_date == meta.reference_date or event_date == tomorrow %}
+            {% assign is_today_or_tomorrow = true %}
+          {% endif %}
           <div class="event-row">
             <div class="event-time">
               {% if event.all_day %}
                 {% if event_date == meta.reference_date %}
-                  Today &middot; All day
+                  <span class="event-time--highlight">Today</span> &middot; All day
+                {% elsif event_date == tomorrow %}
+                  <span class="event-time--highlight">Tomorrow</span> &middot; All day
                 {% elsif event.end and event.end != event.start %}
                   {{ event.start | date: "%a %d %b" }}&ndash;{{ event.end | date: "%a %d %b" }}
                 {% else %}
@@ -493,7 +509,9 @@
                 {% endif %}
               {% else %}
                 {% if event_date == meta.reference_date %}
-                  Today {{ event.start | date: "%H:%M" }}
+                  <span class="event-time--highlight">Today</span> {{ event.start | date: "%H:%M" }}
+                {% elsif event_date == tomorrow %}
+                  <span class="event-time--highlight">Tomorrow</span> {{ event.start | date: "%H:%M" }}
                 {% else %}
                   {{ event.start | date: "%a %d %b" }} {{ event.start | date: "%H:%M" }}
                 {% endif %}
@@ -571,13 +589,16 @@
           <div class="empty-message text--gray-30">No upcoming dates</div>
         </div>
       {% else %}
+        {% assign tomorrow = meta.reference_date | date: "%s" | plus: 86400 | date: "%Y-%m-%d" %}
         <div class="anniv-col">
           {% for entry in birthdays limit: 4 %}
             <div class="anniv-row">
               <span class="anniv-name">{{ entry.name }}</span>
               <span class="anniv-date text--gray-30">
                 {% if entry.date == meta.reference_date %}
-                  Today!
+                  Today<span class="anniv-date--highlight"> (!)</span>
+                {% elsif entry.date == tomorrow %}
+                  Tomorrow<span class="anniv-date--highlight"> (!)</span>
                 {% else %}
                   {{ entry.date | date: "%a %d %b" }}
                 {% endif %}
@@ -591,7 +612,9 @@
               <span class="anniv-name">{{ entry.name }}</span>
               <span class="anniv-date text--gray-30">
                 {% if entry.date == meta.reference_date %}
-                  Today!
+                  Today<span class="anniv-date--highlight"> (!)</span>
+                {% elsif entry.date == tomorrow %}
+                  Tomorrow<span class="anniv-date--highlight"> (!)</span>
                 {% else %}
                   {{ entry.date | date: "%a %d %b" }}
                 {% endif %}

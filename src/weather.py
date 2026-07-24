@@ -77,6 +77,11 @@ BORDERLINE_RAIN_MAX_PROBABILITY = 30  # percent
 BORDERLINE_RAIN_MAX_PRECIPITATION = 1.0  # mm/day
 BORDERLINE_RAIN_FALLBACK_ICON = "cloud"
 
+# Open-Meteo reports the most severe hourly weather_code for each day. A single
+# overcast hour can make an otherwise partly-cloudy day report code 3. Use the
+# daily mean cloud cover to recover the partly-cloudy state. See backlog/docs/doc-2.
+CLOUD_COVER_PARTLY_CLOUDY_THRESHOLD = 65  # percent
+
 
 def select_weather_icon(
     code: int,
@@ -84,6 +89,7 @@ def select_weather_icon(
     *,
     is_daily: bool = False,
     precipitation_probability: int | None = None,
+    cloud_cover_mean: int | None = None,
     default: str = "cloud",
 ) -> str:
     """Map a WMO weather code + precipitation amount to a dashboard icon.
@@ -96,6 +102,10 @@ def select_weather_icon(
     precipitation amount are low. Open-Meteo reports the most severe hourly
     code for each day, so a brief 0.1 mm drizzle event would otherwise show a
     full-day rain icon.
+
+    For daily code 3 (Overcast), the mean cloud cover fraction is used to
+    distinguish partly-cloudy days (< 65% cover) from genuinely overcast days
+    (>= 65% cover), because the most-severe-hour code can overstate cloudiness.
     """
     if code in THUNDER_CODES:
         return "thunder"
@@ -116,6 +126,9 @@ def select_weather_icon(
         if precipitation < thresholds["light"]:
             return "rain-light"
         return "rain"
+    if is_daily and code == 3 and cloud_cover_mean is not None:
+        if cloud_cover_mean < CLOUD_COVER_PARTLY_CLOUDY_THRESHOLD:
+            return "partly-cloudy"
     return default
 
 
@@ -126,7 +139,7 @@ def fetch_weather() -> Weather:
         "latitude": LATITUDE,
         "longitude": LONGITUDE,
         "current": "temperature_2m,apparent_temperature,weather_code,precipitation",
-        "daily": "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max",
+        "daily": "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,cloud_cover_mean",
         "timezone": "auto",
         "forecast_days": 5,
     }
@@ -154,6 +167,7 @@ def fetch_weather() -> Weather:
     lows = daily.get("temperature_2m_min", [])
     precip_sums = daily.get("precipitation_sum", [])
     precip_probs = daily.get("precipitation_probability_max", [])
+    cloud_covers = daily.get("cloud_cover_mean", [])
     for i in range(0, min(5, len(dates))):
         day_code = codes[i] if i < len(codes) else 0
         day_desc, day_base_icon = WEATHER_CODES.get(day_code, ("Unknown", "cloud"))
@@ -161,11 +175,15 @@ def fetch_weather() -> Weather:
         day_prob = precip_probs[i] if i < len(precip_probs) and precip_probs[i] is not None else None
         if day_prob is not None:
             day_prob = int(day_prob)
+        day_cloud_cover = cloud_covers[i] if i < len(cloud_covers) and cloud_covers[i] is not None else None
+        if day_cloud_cover is not None:
+            day_cloud_cover = int(day_cloud_cover)
         day_icon = select_weather_icon(
             day_code,
             day_precip,
             is_daily=True,
             precipitation_probability=day_prob,
+            cloud_cover_mean=day_cloud_cover,
             default=day_base_icon,
         )
         forecast.append(
