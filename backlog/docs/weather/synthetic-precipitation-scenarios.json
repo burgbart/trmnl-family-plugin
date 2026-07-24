@@ -1,0 +1,92 @@
+[
+  {
+    "code": 51,
+    "precipitation_sum": 0.1,
+    "precipitation_probability_max": 4,
+    "description": "brief drizzle, very low prob",
+    "current": "cloud",
+    "proposed_all": "rain-light",
+    "proposed_borderline": "cloud"
+  },
+  {
+    "code": 51,
+    "precipitation_sum": 0.5,
+    "precipitation_probability_max": 20,
+    "description": "light drizzle, low prob",
+    "current": "cloud",
+    "proposed_all": "rain-light",
+    "proposed_borderline": "cloud"
+  },
+  {
+    "code": 51,
+    "precipitation_sum": 1.0,
+    "precipitation_probability_max": 30,
+    "description": "drizzle, borderline prob/amount",
+    "current": "rain-light",
+    "proposed_all": "rain-light",
+    "proposed_borderline": "rain-light"
+  },
+  {
+    "code": 51,
+    "precipitation_sum": 2.0,
+    "precipitation_probability_max": 40,
+    "description": "moderate drizzle, medium prob",
+    "current": "rain-light",
+    "proposed_all": "rain",
+    "proposed_borderline": "rain-light"
+  },
+  {
+    "code": 80,
+    "precipitation_sum": 1.5,
+    "precipitation_probability_max": 20,
+    "description": "short shower, low prob",
+    "current": "rain-light",
+    "proposed_all": "rain-light",
+    "proposed_borderline": "rain-light"
+  },
+  {
+    "code": 80,
+    "precipitation_sum": 2.0,
+    "precipitation_probability_max": 60,
+    "description": "showers, decent prob",
+    "current": "rain-light",
+    "proposed_all": "rain",
+    "proposed_borderline": "rain-light"
+  },
+  {
+    "code": 80,
+    "precipitation_sum": 6.0,
+    "precipitation_probability_max": 70,
+    "description": "substantial showers, high prob",
+    "current": "rain",
+    "proposed_all": "rain-heavy",
+    "proposed_borderline": "rain"
+  },
+  {
+    "code": 61,
+    "precipitation_sum": 5.0,
+    "precipitation_probability_max": 30,
+    "description": "real rain, lower prob",
+    "current": "rain",
+    "proposed_all": "rain",
+    "proposed_borderline": "rain"
+  },
+  {
+    "code": 61,
+    "precipitation_sum": 5.0,
+    "precipitation_probability_max": 70,
+    "description": "real rain, high prob",
+    "current": "rain",
+    "proposed_all": "rain",
+    "proposed_borderline": "rain"
+  },
+  {
+    "code": 65,
+    "precipitation_sum": 12.0,
+    "precipitation_probability_max": 90,
+    "description": "heavy rain, high prob",
+    "current": "rain-heavy",
+    "proposed_all": "rain-heavy",
+    "proposed_borderline": "rain-heavy"
+  }
+]
