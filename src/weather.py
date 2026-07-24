@@ -198,12 +198,15 @@ def fetch_weather() -> Weather:
             )
         )
 
-    alert: str | None = None
     if codes and codes[0] is not None:
         today_desc, _ = WEATHER_CODES.get(codes[0], ("Unknown", "cloud"))
         today_icon = forecast[0].icon if forecast else icon
-        if today_icon in {"rain-light", "rain", "rain-heavy", "thunder"}:
+        if today_icon in {"rain-light", "rain", "rain-heavy", "thunder", "snow"}:
             alert = f"{today_desc} expected today"
+        else:
+            alert = "No rain expected today"
+    else:
+        alert = "No rain expected today"
 
     return Weather(
         description=description,

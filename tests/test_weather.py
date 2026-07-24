@@ -236,6 +236,40 @@ class TestFetchWeather:
         assert result.forecast[1].icon == "cloud"
 
     @patch("src.weather.requests.get")
+    def test_fetch_weather_alert_when_rain_expected(
+        self, mock_get: MagicMock
+    ) -> None:
+        """The alert text describes today's rain when precipitation is expected."""
+        response = self._forecast_response()
+        response["daily"]["weather_code"] = [61, 61]
+        response["daily"]["precipitation_sum"] = [5.0, 5.0]
+        response["daily"]["precipitation_probability_max"] = [70, 70]
+        mock_response = MagicMock()
+        mock_response.json.return_value = response
+        mock_get.return_value = mock_response
+
+        result = fetch_weather()
+
+        assert result.alert == "Slight rain expected today"
+
+    @patch("src.weather.requests.get")
+    def test_fetch_weather_alert_when_no_rain_expected(
+        self, mock_get: MagicMock
+    ) -> None:
+        """The alert text indicates no rain when today is dry."""
+        response = self._forecast_response()
+        response["daily"]["weather_code"] = [3, 3]
+        response["daily"]["precipitation_sum"] = [0.0, 0.0]
+        response["daily"]["precipitation_probability_max"] = [4, 10]
+        mock_response = MagicMock()
+        mock_response.json.return_value = response
+        mock_get.return_value = mock_response
+
+        result = fetch_weather()
+
+        assert result.alert == "No rain expected today"
+
+    @patch("src.weather.requests.get")
     def test_fetch_weather_passes_model_when_configured(
         self, mock_get: MagicMock
     ) -> None:
