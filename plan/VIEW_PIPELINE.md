@@ -36,7 +36,12 @@ artifact lives on its own ticket:
   Proposal ticket.
 
 Create tickets with `backlog task create "View: <name> — <stage>" -l view
---depends-on <previous ticket id>`. A `skip` decision closes the Proposal
+--depends-on <previous ticket id>`. Create them **one at a time**: confirm
+each new ticket's ID from the CLI output before creating the next ticket in
+the chain — do not batch the creations or scrape IDs blindly. (Ticket IDs
+are sequential in creation order; if creation does go wrong, the
+`--depends-on` chain is the source of truth for stage order and `--ordinal`
+can realign board ordering.) A `skip` decision closes the Proposal
 ticket as Done with the reason in its final summary — skipped views stay
 visibly decided, and no downstream tickets are created.
 
@@ -168,6 +173,10 @@ AI skill/MCP, desktop app, Scriptable iOS widget) enter at Stage 1 when the
 owner asks for them.
 
 Note: doc-4 recommended the desktop option as a macOS xbar/SwiftBar menu-bar
-plugin; the owner redirected it (31 Jul 2026) to a launchable full-screen
-desktop application modeled after the local `dashboard-md-launcher` project.
-That view's Proposal ticket is TASK-20.
+plugin; the owner redirected it (31 Jul 2026) and then split it into two
+views: a full-screen desktop app using the proven `dashboard-md-launcher`
+technique (Python server + HTML + pywebview + PyInstaller .app) — approved,
+Proposal ticket TASK-20, stage chain TASK-25 (Requirements) → TASK-27
+(Design) → TASK-26 (Implementation) — and a macOS menu-bar quick view
+(native SwiftUI MenuBarExtra direction per architecture advisory), Proposal
+ticket TASK-28.

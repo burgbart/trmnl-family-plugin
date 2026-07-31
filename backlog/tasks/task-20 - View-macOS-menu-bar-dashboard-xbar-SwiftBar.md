@@ -1,10 +1,10 @@
 ---
 id: TASK-20
 title: 'View: full-screen desktop dashboard app — Proposal'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-31 20:19'
-updated_date: '2026-07-31 20:38'
+updated_date: '2026-07-31 20:51'
 labels:
   - view
 dependencies: []
@@ -131,4 +131,24 @@ launcher (local server + browser/pywebview, like dashboard-md-launcher).
 No backend work; packaging to a `.app` is optional polish.
 
 Pipeline model changed (owner, 31 Jul 2026): stages are now separate tickets linked by dependencies instead of one ticket with stages in notes. This ticket is the Stage 1-2 Proposal/decision ticket for the view; downstream tickets will be created on approval.
+
+## Scope split + decision (owner, 31 Jul 2026)
+
+The combined tray+full-screen concept is split into two views. THIS ticket's
+view = the **full-screen desktop app only**, built with the same technique as
+~/personal-projects/dashboard (dashboard-md-launcher: Python server + HTML UI,
+pywebview native window, PyInstaller .app) — the owner likes that result and
+wants this view built first. The **menu-bar quick view** becomes a separate
+view with its own Proposal ticket (SwiftUI MenuBarExtra direction per the
+architecture advisory recorded there).
+
+**Decision: to implement** — proven technique already running on the owner's
+machine; the v2 lofi (3-column full-screen layout, in notes above) stands
+unchanged as the proposal.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Decision: to implement. Scope narrowed to the full-screen desktop app (dashboard-md-launcher technique: Python server + HTML + pywebview + PyInstaller .app) after splitting the menu-bar quick view into its own view ticket. V2 proposal with 3-column full-screen lofi approved by owner; this is the priority view. Requirements/Design/Implementation tickets created as a dependency chain per plan/VIEW_PIPELINE.md.
+<!-- SECTION:FINAL_SUMMARY:END -->
