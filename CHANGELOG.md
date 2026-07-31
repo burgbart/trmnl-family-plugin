@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `design/` — a design system for all non-TRMNL views, based on heimdalsecurity.com (TASK-15): `tokens.json` (W3C DTCG design tokens with a `theme.dark` override group and `motion` group), `index.html` (static style guide with dark-mode toggle, component inventory, motion and gradient-usage guidance, and a sample dashboard view), and `README.md` (principles and consumption rules).
+- Added `src/terminal_theme.py` and `tests/test_terminal_theme.py` (TASK-16): terminal color palette loaded from `design/tokens.json` (DTCG references resolved) with a fallback mirroring the tokens.
 - Added a top-level `errors` object to `dashboard-v2.json` with keys `events`, `tasks`, and `birthdays`. Missing credentials and API failures are surfaced here instead of being hidden behind dummy data.
 - Added error-state rendering in the Liquid partials (`partials/calendar.liquid`, `partials/tasks.liquid`, `partials/birthdays.liquid`) and device templates (`devices/og.liquid`, `devices/x.liquid`). Affected sections now display `(!) Not loaded` plus the error message.
 - Added error-state rendering in the terminal dashboard (`terminal_dashboard.py`). Failed sources render red error panels.
@@ -18,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updated `src/terminal_dashboard.py` to source all colors from `src/terminal_theme.py` (`THEME`) instead of ad-hoc Rich color names, aligning the terminal view with the design system palette (TASK-16). Event times use blue-light `#8EBEFF`, errors `#FF2626`, success `#6DCE43`, warnings `#FF5F00`, anniversaries `#A459FF`.
+- Updated `tests/test_terminal_dashboard.py` to assert the theme error color instead of the literal `red` style (TASK-16).
+- Updated `AGENTS.md` with the `design/` folder, the terminal theme module, and the convention that non-TRMNL views consume the design system.
 - Renamed the produced/uploaded/served JSON artifact from `dashboard.json` to `dashboard-v2.json`. The dummy fixture `templates/dummy_dashboard.json` keeps its name and is now explicitly opt-in via `--input templates/dummy_dashboard.json`.
 - Updated `src/unified_fetcher.py` to return empty data and populate `errors` when calendar or task credentials are missing or the API call fails. Weather still falls back to dummy data because it requires no credentials.
 - Updated `src/serialization.py` to always include the `errors` object in the JSON payload.

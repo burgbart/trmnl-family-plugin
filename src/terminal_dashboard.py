@@ -15,6 +15,7 @@ from rich.text import Text
 from src.config import CITY, get_reference_date, to_local_time
 from src.data import Birthday, CalendarEvent, Task, Weather
 from src.terminal_fetcher import CalendarSource, TaskListSource, TerminalData
+from src.terminal_theme import THEME
 
 
 def _allocate_rows(demands: List[int], total: int) -> List[int]:
@@ -102,12 +103,12 @@ def _event_when(event: CalendarEvent) -> Text:
         date_range = _event_date_range(event.start, event.end)
         # Multi-day events already show their span; no need for the "All day" label.
         if event.end and event.end.date() > event.start.date() + timedelta(days=1):
-            return Text(date_range, style="italic #D97757")
-        return Text(f"{date_range} · All day", style="cyan")
+            return Text(date_range, style=f"italic {THEME.warning}")
+        return Text(f"{date_range} · All day", style=THEME.interactive)
     time_range = _fmt_time(event.start)
     if event.end:
         time_range += f"–{_fmt_time(event.end)}"
-    return Text(f"{_fmt_event_date(event.start)} {time_range}", style="cyan")
+    return Text(f"{_fmt_event_date(event.start)} {time_range}", style=THEME.interactive)
 
 
 def _build_events_table(source: CalendarSource, max_rows: int) -> Table:
@@ -118,8 +119,8 @@ def _build_events_table(source: CalendarSource, max_rows: int) -> Table:
         expand=True,
         pad_edge=False,
     )
-    table.add_column("When", style="cyan", ratio=2)
-    table.add_column("What", style="white", ratio=5)
+    table.add_column("When", style=THEME.interactive, ratio=2)
+    table.add_column("What", style=THEME.text, ratio=5)
 
     events = source.events[:max_rows]
     prev_date = None
@@ -147,8 +148,8 @@ def _build_tasks_table(source: TaskListSource, max_rows: int) -> Table:
         expand=True,
         pad_edge=False,
     )
-    table.add_column("Done", style="green", ratio=1)
-    table.add_column("Task", style="white", ratio=6)
+    table.add_column("Done", style=THEME.success, ratio=1)
+    table.add_column("Task", style=THEME.text, ratio=6)
 
     tasks = source.tasks[:max_rows]
     for task in tasks:
@@ -157,11 +158,11 @@ def _build_tasks_table(source: TaskListSource, max_rows: int) -> Table:
         if task.done:
             title_text.stylize("dim strike")
         elif _is_due(task):
-            title_text.stylize("bold red")
+            title_text.stylize(f"bold {THEME.error}")
         elif task.due_date:
             title_text.append(f"  ({task.due_date.isoformat()})", style="dim")
 
-        table.add_row(Text(check, style="green" if task.done else "white"), title_text)
+        table.add_row(Text(check, style=THEME.success if task.done else THEME.text), title_text)
 
     remaining = len(source.tasks) - len(tasks)
     if remaining > 0:
@@ -181,8 +182,8 @@ def _build_aggregated_events_table(events: List[CalendarEvent], max_rows: int) -
         expand=True,
         pad_edge=False,
     )
-    table.add_column("When", style="cyan", ratio=2)
-    table.add_column("What", style="white", ratio=5)
+    table.add_column("When", style=THEME.interactive, ratio=2)
+    table.add_column("What", style=THEME.text, ratio=5)
 
     shown = events[:max_rows]
     prev_date = None
@@ -211,8 +212,8 @@ def _build_aggregated_tasks_table(tasks: List[Task], max_rows: int) -> Table:
         expand=True,
         pad_edge=False,
     )
-    table.add_column("Done", style="green", ratio=1)
-    table.add_column("Task", style="white", ratio=6)
+    table.add_column("Done", style=THEME.success, ratio=1)
+    table.add_column("Task", style=THEME.text, ratio=6)
 
     shown = tasks[:max_rows]
     for task in shown:
@@ -221,11 +222,11 @@ def _build_aggregated_tasks_table(tasks: List[Task], max_rows: int) -> Table:
         if task.done:
             title_text.stylize("dim strike")
         elif _is_due(task):
-            title_text.stylize("bold red")
+            title_text.stylize(f"bold {THEME.error}")
         elif task.due_date:
             title_text.append(f"  ({task.due_date.isoformat()})", style="dim")
 
-        table.add_row(Text(check, style="green" if task.done else "white"), title_text)
+        table.add_row(Text(check, style=THEME.success if task.done else THEME.text), title_text)
 
     remaining = len(tasks) - len(shown)
     if remaining > 0:
@@ -332,14 +333,14 @@ def _build_header(
     text = Text()
     text.append(
         f"{today.strftime('%A %d %B %Y')} · {CITY} · {weather_text}",
-        style="bold bright_white",
+        style=f"bold {THEME.text}",
     )
     text.append("\n")
     text.append(f"Calendars: ", style="dim")
-    text.append(f"{calendar_count}", style="bold blue")
+    text.append(f"{calendar_count}", style=f"bold {THEME.interactive}")
     text.append("   ")
     text.append("Task lists: ", style="dim")
-    text.append(f"{task_count}", style="bold green")
+    text.append(f"{task_count}", style=f"bold {THEME.success}")
     text.append("   ")
     text.append(f"q: quit{refresh_text}", style="dim")
     return text
@@ -348,9 +349,9 @@ def _build_header(
 def _build_footer(
     birthdays: List[Birthday], birthdays_error: str | None = None
 ) -> Text:
-    text = Text("Anniversaries  ", style="bold bright_white")
+    text = Text("Anniversaries  ", style=f"bold {THEME.text}")
     if birthdays_error:
-        text.append(f"(!) Not loaded: {birthdays_error}", style="red")
+        text.append(f"(!) Not loaded: {birthdays_error}", style=THEME.error)
         return text
     if not birthdays:
         text.append("None upcoming", style="dim")
@@ -363,12 +364,12 @@ def _build_footer(
         days = _days_until(bday.date)
         label = "today!" if days == 0 else f"in {days}d"
         kind_label = bday.kind if bday.kind else "birthday"
-        # All anniversaries use the birthday yellow; only the urgency indicator
-        # turns red when the date is within a week.
-        entries.append(f"{bday.name} ", style="yellow")
+        # Anniversaries use the design system's differentiation purple; only
+        # the urgency indicator turns to the error color within a week.
+        entries.append(f"{bday.name} ", style=THEME.purple)
         entries.append(
             f"({kind_label} · {label})",
-            style="bold red" if days <= 7 else "dim",
+            style=f"bold {THEME.error}" if days <= 7 else "dim",
         )
 
     text.append(entries)
@@ -378,9 +379,9 @@ def _build_footer(
 def _build_error_panel(message: str) -> Panel:
     """Render a simple error panel for a failed data source."""
     text = Text()
-    text.append("(!) Not loaded\n", style="bold red")
-    text.append(message, style="red")
-    return Panel(text, border_style="red")
+    text.append("(!) Not loaded\n", style=f"bold {THEME.error}")
+    text.append(message, style=THEME.error)
+    return Panel(text, border_style=THEME.error)
 
 
 def _build_weather_forecast_panel(weather: Weather) -> Text:
@@ -389,7 +390,7 @@ def _build_weather_forecast_panel(weather: Weather) -> Text:
         return Text("No forecast available", style="dim")
 
     text = Text()
-    text.append("Forecast  ", style="bold bright_white")
+    text.append("Forecast  ", style=f"bold {THEME.text}")
     for i, day in enumerate(weather.forecast[:5]):
         if i > 0:
             text.append("   ", style="dim")
@@ -402,7 +403,7 @@ def _build_weather_forecast_panel(weather: Weather) -> Text:
         text.append(
             f"{day_label}: {day.description} "
             f"{day.temperature_high}°/{day.temperature_low}°{precip}",
-            style="white",
+            style=THEME.text,
         )
 
     return text
@@ -448,15 +449,15 @@ def render(
 
     layout = Layout(name="root")
     layout.split_column(
-        Layout(Panel(header, border_style="bright_blue"), size=header_size),
+        Layout(Panel(header, border_style=THEME.interactive), size=header_size),
         Layout(name="main", ratio=1),
-        Layout(Panel(footer, border_style="bright_magenta"), size=footer_size),
+        Layout(Panel(footer, border_style=THEME.accent), size=footer_size),
     )
     layout["main"].split_column(
         Layout(
             Panel(
                 _build_weather_forecast_panel(data.weather),
-                border_style="yellow",
+                border_style=THEME.warning,
             ),
             size=forecast_size,
         ),
@@ -464,11 +465,11 @@ def render(
     )
     layout["lists"].split_row(
         Layout(
-            Panel(events_column, border_style="blue" if not errors.get("events") else "red"),
+            Panel(events_column, border_style=THEME.interactive if not errors.get("events") else THEME.error),
             ratio=1,
         ),
         Layout(
-            Panel(tasks_column, border_style="green" if not errors.get("tasks") else "red"),
+            Panel(tasks_column, border_style=THEME.success if not errors.get("tasks") else THEME.error),
             ratio=1,
         ),
     )

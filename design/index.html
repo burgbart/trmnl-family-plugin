@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>trmnl-home Design System — Style Guide</title>
+<!--
+  Style guide for all non-TRMNL views (web, widgets, desktop, AI surfaces).
+  Style based on heimdalsecurity.com. Single source of truth: design/tokens.json.
+  The CSS custom properties below mirror that file 1:1 — keep them in sync.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== Design tokens (mirror of design/tokens.json) ===== */
+  :root {
+    --color-pink: #FF2F70;
+    --color-pink-deep: #FF2626;
+    --color-navy: #0A1A65;
+    --color-blue: #0065FE;
+    --color-blue-light: #8EBEFF;
+    --color-purple: #A459FF;
+    --color-purple-dark: #351E66;
+    --color-surface: #FFFFFF;
+    --color-surface-tinted: #E8EAFD;
+    --color-text-primary: #0A1A65;
+    --color-text-secondary: #ACB3D3;
+    --color-text-inverse: #FFFFFF;
+    --color-success: #6DCE43;
+    --color-success-bright: #83E31E;
+    --color-error: #FF2626;
+    --color-warning: #FF5F00;
+    --gradient-cta: linear-gradient(90deg, #FF2F70 0%, #FF2626 100%);
+    --gradient-blue: linear-gradient(180deg, #8EBEFF 0%, #0065FE 100%);
+    --color-card: #FFFFFF;
+    --color-interactive: #0065FE;
+    --color-border: #E8EAFD;
+    --font-display: 'Nunito Sans', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --radius-small: 8px;
+    --radius-card: 18px;
+    --radius-large: 28px;
+    --radius-pill: 30px;
+    --shadow-card: 0px 6px 12px rgba(0, 56, 255, 0.15);
+    --shadow-raised: 0 12px 20px rgba(1, 22, 55, 0.25);
+    --shadow-glow: 0 0 40px 5px rgba(72, 171, 224, 0.5);
+  }
+
+  /* ===== Dark theme overrides (mirror of tokens.json theme.dark) ===== */
+  [data-theme="dark"] {
+    --color-surface: #060C30;
+    --color-surface-tinted: #0D1648;
+    --color-card: #121E5C;
+    --color-text-primary: #FFFFFF;
+    --color-interactive: #8EBEFF;
+    --color-border: rgba(172, 179, 211, 0.25);
+    --shadow-card: 0px 6px 12px rgba(0, 0, 0, 0.4);
+    --shadow-raised: 0 12px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    transition: background .25s ease, color .25s ease;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 64px 0; }
+  section.tinted { background: var(--color-surface-tinted); }
+  section.dark { background: var(--color-navy); color: var(--color-text-inverse); }
+  section.dark p.muted { color: var(--color-text-secondary); }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weight: 800; }
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.5rem; margin-bottom: 8px; }
+  h3 { font-size: 2rem; }
+  h4 { font-size: 1.5rem; }
+  p.muted { color: var(--color-text-secondary); max-width: 640px; margin-bottom: 32px; }
+  .token { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.875rem; color: var(--color-interactive); }
+
+  /* ===== Theme toggle ===== */
+  .theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 10;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.875rem;
+    padding: 10px 20px; border-radius: var(--radius-pill); border: 2px solid var(--color-border);
+    background: var(--color-card); color: var(--color-text-primary);
+    cursor: pointer; box-shadow: var(--shadow-card);
+  }
+
+  /* ===== Page hero ===== */
+  .hero { padding: 96px 0 64px; background: var(--color-navy); color: var(--color-text-inverse); }
+  .hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 16px; }
+  .hero p { color: var(--color-text-secondary); font-size: 1.375rem; max-width: 640px; margin-bottom: 32px; }
+
+  /* ===== Buttons ===== */
+  .btn {
+    display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+    padding: 14px 32px; border-radius: var(--radius-pill); border: 2px solid transparent;
+    cursor: pointer; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-raised); }
+  .btn-primary { background: var(--gradient-cta); color: var(--color-text-inverse); }
+  .btn-secondary { background: transparent; border-color: var(--color-interactive); color: var(--color-interactive); }
+  .btn-ghost { background: transparent; color: var(--color-interactive); padding: 14px 16px; }
+  .btn-on-dark { background: var(--color-text-inverse); color: var(--color-navy); }
+  .btn-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+
+  /* ===== Swatches ===== */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+  .swatch { border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); background: var(--color-card); }
+  .swatch .chip { height: 88px; }
+  .swatch .meta { padding: 12px 16px; }
+  .swatch .name { font-weight: 600; font-size: 1rem; }
+  .swatch .hex { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.875rem; color: var(--color-text-secondary); }
+  .group-label { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; margin: 32px 0 16px; }
+
+  /* ===== Type specimens ===== */
+  .specimen { border-bottom: 1px solid var(--color-border); padding: 20px 0; display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap; }
+  .specimen .label { min-width: 180px; font-size: 0.875rem; color: var(--color-text-secondary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* ===== Spacing / radius / shadow demos ===== */
+  .demo-row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end; }
+  .space-block { background: var(--gradient-blue); border-radius: var(--radius-small); }
+  .demo-box { background: var(--color-card); border: 2px solid var(--color-border); width: 140px; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: var(--color-text-secondary); }
+  .demo-caption { font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 8px; text-align: center; }
+
+  /* ===== Badges ===== */
+  .badge { display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; padding: 6px 16px; border-radius: var(--radius-pill); }
+  .badge-success { background: var(--color-success); color: var(--color-text-inverse); }
+  .badge-warning { background: var(--color-warning); color: var(--color-text-inverse); }
+  .badge-error { background: var(--color-error); color: var(--color-text-inverse); }
+  .badge-info { background: var(--color-interactive); color: var(--color-text-inverse); }
+  .badge-neutral { background: var(--color-surface-tinted); color: var(--color-text-primary); }
+
+  /* ===== Cards ===== */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .card { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 32px; }
+  .card:hover { box-shadow: var(--shadow-raised); }
+  .card h4 { margin-bottom: 8px; }
+  .card .icon { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-blue); margin-bottom: 16px; }
+
+  /* ===== Sample view: family dashboard card ===== */
+  .dash { max-width: 560px; background: var(--color-card); border-radius: var(--radius-large); box-shadow: var(--shadow-raised); padding: 40px; color: var(--color-text-primary); }
+  .dash .dash-date { font-family: var(--font-display); font-weight: 800; font-size: 2rem; }
+  .dash .dash-city { color: var(--color-text-secondary); margin-bottom: 24px; }
+  .dash .dash-temp { font-family: var(--font-display); font-weight: 900; font-size: 3rem; }
+  .dash .dash-section { border-top: 2px solid var(--color-border); padding: 16px 0; }
+  .dash .dash-section h4 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 8px; }
+  .dash .dash-item { display: flex; justify-content: space-between; padding: 6px 0; font-size: 1.125rem; }
+  .dash .dash-item .time { color: var(--color-interactive); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  footer { padding: 48px 0; background: var(--color-navy); color: var(--color-text-secondary); font-size: 0.875rem; }
+
+  /* ===== Forms ===== */
+  .field { display: flex; flex-direction: column; gap: 8px; max-width: 340px; }
+  .field .label { font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; }
+  .input, .select {
+    font-family: var(--font-body); font-size: 1rem; padding: 12px 16px;
+    border-radius: var(--radius-small); border: 2px solid var(--color-border);
+    background: var(--color-card); color: var(--color-text-primary);
+    transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .input:focus, .select:focus { outline: none; border-color: var(--color-interactive); box-shadow: 0 0 0 3px rgba(0, 101, 254, 0.18); }
+  .input::placeholder { color: var(--color-text-secondary); }
+  .input:disabled { opacity: 0.5; cursor: not-allowed; }
+  .switch { position: relative; width: 52px; height: 30px; display: inline-block; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track { position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--color-text-secondary); cursor: pointer; transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .switch .track::before { content: ""; position: absolute; width: 22px; height: 22px; left: 4px; top: 4px; border-radius: 50%; background: #fff; transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .switch input:checked + .track { background: var(--gradient-cta); }
+  .switch input:checked + .track::before { transform: translateX(22px); }
+
+  /* ===== Navigation ===== */
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 16px 24px; }
+  .nav .brand { font-family: var(--font-display); font-weight: 900; font-size: 1.25rem; }
+  .nav .links { display: flex; gap: 24px; }
+  .nav .links a { color: var(--color-text-primary); text-decoration: none; font-weight: 600; font-size: 1rem; }
+  .nav .links a.active { color: var(--color-interactive); border-bottom: 2px solid var(--color-interactive); }
+  .tabs { display: inline-flex; background: var(--color-surface-tinted); border-radius: var(--radius-pill); padding: 4px; gap: 4px; }
+  .tabs .tab { font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; padding: 8px 20px; border-radius: var(--radius-pill); color: var(--color-text-secondary); border: none; background: transparent; cursor: pointer; transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .tabs .tab.active { background: var(--color-card); color: var(--color-text-primary); box-shadow: var(--shadow-card); }
+
+  /* ===== Lists ===== */
+  .list { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; max-width: 560px; }
+  .list-row { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--color-border); transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .list-row:last-child { border-bottom: none; }
+  .list-row:hover { background: var(--color-surface-tinted); }
+  .list-row .dot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+  .list-row .grow { flex: 1; }
+  .list-row .meta { color: var(--color-text-secondary); font-size: 0.875rem; }
+  .list-row .time { color: var(--color-interactive); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* ===== Alerts & toasts ===== */
+  .alert { display: flex; gap: 12px; align-items: flex-start; border-radius: var(--radius-card); padding: 16px 20px; max-width: 560px; background: var(--color-card); border-left: 6px solid; box-shadow: var(--shadow-card); }
+  .alert-info { border-color: var(--color-blue); }
+  .alert-success { border-color: var(--color-success); }
+  .alert-warning { border-color: var(--color-warning); }
+  .alert-error { border-color: var(--color-error); }
+  .alert .title { font-family: var(--font-display); font-weight: 700; }
+  .alert p { margin: 0; font-size: 1rem; color: var(--color-text-secondary); }
+  .toast { display: inline-flex; align-items: center; gap: 12px; background: var(--color-navy); color: var(--color-text-inverse); border-radius: var(--radius-pill); padding: 12px 24px; box-shadow: var(--shadow-raised); font-size: 1rem; }
+  [data-theme="dark"] .toast { border: 2px solid var(--color-border); }
+  .toast .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* ===== Modal ===== */
+  .modal-backdrop { background: rgba(10, 26, 101, 0.45); border-radius: var(--radius-card); padding: 48px 24px; display: flex; justify-content: center; }
+  .modal { background: var(--color-card); border-radius: var(--radius-large); box-shadow: var(--shadow-raised); padding: 32px; max-width: 420px; width: 100%; }
+  .modal h4 { margin-bottom: 8px; }
+  .modal .actions { display: flex; gap: 12px; margin-top: 24px; }
+
+  /* ===== Empty state ===== */
+  .empty { text-align: center; padding: 48px 32px; border: 2px dashed var(--color-border); border-radius: var(--radius-card); max-width: 560px; }
+  .empty .icon { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-blue); margin: 0 auto 16px; opacity: 0.6; }
+  .empty .title { font-family: var(--font-display); font-weight: 700; margin-bottom: 4px; }
+  .empty p { margin: 0; color: var(--color-text-secondary); }
+
+  /* ===== Motion demos ===== */
+  @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .motion-demo { display: flex; gap: 24px; flex-wrap: wrap; }
+  .motion-card { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); width: 200px; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: var(--color-text-secondary); text-align: center; padding: 8px; }
+  .motion-card.enter { animation: fade-up 400ms cubic-bezier(0, 0, 0.2, 1) both; }
+  .motion-card.lift { transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .motion-card.lift:hover { transform: translateY(-8px); box-shadow: var(--shadow-raised); }
+  .motion-card.slow-lift { transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .motion-card.slow-lift:hover { transform: translateY(-8px); box-shadow: var(--shadow-raised); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* ===== Gradient do / don't ===== */
+  .dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .dodont .card { position: relative; padding-top: 48px; }
+  .dodont .verdict { position: absolute; top: 16px; left: 32px; }
+</style>
+</head>
+<body>
+
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">☾ Dark</button>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>trmnl-home Design System</h1>
+    <p>Design language for every non-TRMNL view — web pages, widgets, desktop and AI surfaces. Based on the friendly, modern SaaS look of heimdalsecurity.com: deep navy, vivid pink CTAs, blue gradients, generous rounding.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="tokens.json">View tokens.json</a>
+      <a class="btn btn-on-dark" href="README.md">Read the docs</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Colors</h2>
+    <p class="muted">Navy leads, pink acts, blue informs. Lavender tints separate sections; purple is reserved for differentiation (tags, charts).</p>
+
+    <div class="group-label">Brand</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#FF2F70"></div><div class="meta"><div class="name">Pink</div><div class="hex">#FF2F70 · brand.pink</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF2626"></div><div class="meta"><div class="name">Pink Deep</div><div class="hex">#FF2626 · brand.pink-deep</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#0A1A65"></div><div class="meta"><div class="name">Navy</div><div class="hex">#0A1A65 · brand.navy</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#0065FE"></div><div class="meta"><div class="name">Blue</div><div class="hex">#0065FE · brand.blue</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8EBEFF"></div><div class="meta"><div class="name">Blue Light</div><div class="hex">#8EBEFF · brand.blue-light</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#A459FF"></div><div class="meta"><div class="name">Purple</div><div class="hex">#A459FF · brand.purple</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#351E66"></div><div class="meta"><div class="name">Purple Dark</div><div class="hex">#351E66 · brand.purple-dark</div></div></div>
+    </div>
+
+    <div class="group-label">Surface &amp; text</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#FFFFFF;border:1px solid #E8EAFD"></div><div class="meta"><div class="name">Base</div><div class="hex">#FFFFFF · surface.base</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#E8EAFD"></div><div class="meta"><div class="name">Tinted</div><div class="hex">#E8EAFD · surface.tinted</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#ACB3D3"></div><div class="meta"><div class="name">Text Secondary</div><div class="hex">#ACB3D3 · text.secondary</div></div></div>
+    </div>
+
+    <div class="group-label">Semantic</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#6DCE43"></div><div class="meta"><div class="name">Success</div><div class="hex">#6DCE43 · semantic.success</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#83E31E"></div><div class="meta"><div class="name">Success Bright</div><div class="hex">#83E31E · semantic.success-bright</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF2626"></div><div class="meta"><div class="name">Error</div><div class="hex">#FF2626 · semantic.error</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF5F00"></div><div class="meta"><div class="name">Warning</div><div class="hex">#FF5F00 · semantic.warning</div></div></div>
+    </div>
+
+    <div class="group-label">Gradients</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:var(--gradient-cta)"></div><div class="meta"><div class="name">CTA</div><div class="hex">pink → pink-deep · gradient.cta</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--gradient-blue)"></div><div class="meta"><div class="name">Blue</div><div class="hex">blue-light → blue · gradient.blue</div></div></div>
+    </div>
+
+    <div class="group-label">Dark theme surfaces <span style="font-weight:400;font-size:0.875rem;color:var(--color-text-secondary)">— use the toggle (top right) to see the whole page in dark mode</span></div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#060C30"></div><div class="meta"><div class="name">Dark Base</div><div class="hex">#060C30 · theme.dark.surface.base</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#121E5C"></div><div class="meta"><div class="name">Dark Raised</div><div class="hex">#121E5C · theme.dark.surface.raised</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#0D1648"></div><div class="meta"><div class="name">Dark Tinted</div><div class="hex">#0D1648 · theme.dark.surface.tinted</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8EBEFF"></div><div class="meta"><div class="name">Dark Interactive</div><div class="hex">#8EBEFF · theme.dark.interactive</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="tinted">
+  <div class="wrap">
+    <h2>Typography</h2>
+    <p class="muted">Nunito Sans for display — rounded and friendly. Inter for body — crisp and readable. Headings are extrabold with tight leading.</p>
+    <div class="specimen"><span class="label">hero · Nunito 900 · 4rem</span><span style="font-family:var(--font-display);font-weight:900;font-size:4rem;line-height:1.15">Family first</span></div>
+    <div class="specimen"><span class="label">h1 · Nunito 800 · 3rem</span><span style="font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:1.15">What's next</span></div>
+    <div class="specimen"><span class="label">h2 · Nunito 800 · 2.5rem</span><span style="font-family:var(--font-display);font-weight:800;font-size:2.5rem;line-height:1.15">Upcoming events</span></div>
+    <div class="specimen"><span class="label">h3 · Nunito 800 · 2rem</span><span style="font-family:var(--font-display);font-weight:800;font-size:2rem;line-height:1.15">Tasks</span></div>
+    <div class="specimen"><span class="label">lead · Inter 400 · 1.375rem</span><span style="font-size:1.375rem">Everything the family needs to know, anywhere.</span></div>
+    <div class="specimen"><span class="label">body · Inter 400 · 1.125rem</span><span>Pick up groceries before the party on Saturday afternoon.</span></div>
+    <div class="specimen"><span class="label">caption · Inter 400 · 0.875rem</span><span style="font-size:0.875rem;color:var(--color-text-secondary)">Last refreshed 2 minutes ago</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Shape &amp; depth</h2>
+    <p class="muted">Friendly rounding everywhere: pill buttons, 18px cards, 28px hero panels. Shadows are tinted navy/blue, never plain gray.</p>
+
+    <div class="group-label">Radius</div>
+    <div class="demo-row">
+      <div><div class="demo-box" style="border-radius:var(--radius-small)">8px</div><div class="demo-caption">radius.small</div></div>
+      <div><div class="demo-box" style="border-radius:var(--radius-card)">18px</div><div class="demo-caption">radius.card</div></div>
+      <div><div class="demo-box" style="border-radius:var(--radius-large)">28px</div><div class="demo-caption">radius.large</div></div>
+      <div><div class="demo-box" style="border-radius:var(--radius-pill)">pill</div><div class="demo-caption">radius.pill</div></div>
+    </div>
+
+    <div class="group-label">Shadow</div>
+    <div class="demo-row">
+      <div><div class="demo-box" style="border:none;border-radius:var(--radius-card);box-shadow:var(--shadow-card)">card</div><div class="demo-caption">shadow.card</div></div>
+      <div><div class="demo-box" style="border:none;border-radius:var(--radius-card);box-shadow:var(--shadow-raised)">raised</div><div class="demo-caption">shadow.raised</div></div>
+      <div><div class="demo-box" style="border:none;border-radius:var(--radius-card);box-shadow:var(--shadow-glow)">glow</div><div class="demo-caption">shadow.glow</div></div>
+    </div>
+
+    <div class="group-label">Spacing scale</div>
+    <div class="demo-row">
+      <div><div class="space-block" style="width:4px;height:24px"></div><div class="demo-caption">3xs · 4</div></div>
+      <div><div class="space-block" style="width:8px;height:24px"></div><div class="demo-caption">2xs · 8</div></div>
+      <div><div class="space-block" style="width:12px;height:24px"></div><div class="demo-caption">xs · 12</div></div>
+      <div><div class="space-block" style="width:16px;height:24px"></div><div class="demo-caption">sm · 16</div></div>
+      <div><div class="space-block" style="width:24px;height:24px"></div><div class="demo-caption">md · 24</div></div>
+      <div><div class="space-block" style="width:32px;height:24px"></div><div class="demo-caption">lg · 32</div></div>
+      <div><div class="space-block" style="width:48px;height:24px"></div><div class="demo-caption">xl · 48</div></div>
+      <div><div class="space-block" style="width:64px;height:24px"></div><div class="demo-caption">2xl · 64</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="tinted">
+  <div class="wrap">
+    <h2>Motion &amp; animation</h2>
+    <p class="muted">Motion is subtle and functional — short, ease-out, never decorative on data views. Three durations (150/250/400ms), three easings (standard, entrance, exit), one default entrance (<span class="token">fade-up</span>). Always honor <span class="token">prefers-reduced-motion</span> — this page disables all animation when the OS asks for it.</p>
+    <div class="motion-demo">
+      <div class="motion-card enter">fade-up entrance<br>400ms · easing.entrance<br>(replay by reloading)</div>
+      <div class="motion-card lift">hover lift<br>150ms · easing.standard<br>buttons, cards</div>
+      <div class="motion-card slow-lift">slow hover lift<br>400ms · too heavy for<br>small elements — compare</div>
+    </div>
+    <p class="muted" style="margin:24px 0 0">Rule of thumb: micro-interactions (hover, color) use <span class="token">duration.fast</span>; state changes (toggles, tabs) use <span class="token">duration.normal</span>; entrances and modals use <span class="token">duration.slow</span> with <span class="token">easing.entrance</span>. Nothing loops, nothing bounces.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Gradient usage</h2>
+    <p class="muted">Two gradients exist — <span class="token">gradient.cta</span> (pink) and <span class="token">gradient.blue</span> — and they have strict jobs. Pink means "act", blue means "decorate".</p>
+    <div class="dodont">
+      <div class="card">
+        <span class="verdict badge badge-success">Do</span>
+        <h4>Primary CTA</h4>
+        <p class="muted">The pink gradient is reserved for the one primary action per view.</p>
+        <a class="btn btn-primary" href="#">Get started</a>
+      </div>
+      <div class="card">
+        <span class="verdict badge badge-success">Do</span>
+        <h4>Icon chips &amp; decorative art</h4>
+        <p class="muted">The blue gradient fills circular icon chips, hero illustrations, and chart accents.</p>
+        <div class="icon" style="width:48px;height:48px;border-radius:50%;background:var(--gradient-blue)"></div>
+      </div>
+      <div class="card">
+        <span class="verdict badge badge-error">Don't</span>
+        <h4>Behind body copy</h4>
+        <p class="muted">Gradients never sit under paragraphs or lists — contrast and readability suffer.</p>
+        <div style="background:var(--gradient-cta);border-radius:var(--radius-small);padding:12px 16px;color:#fff;font-size:0.875rem">Hard to read, never do this.</div>
+      </div>
+      <div class="card">
+        <span class="verdict badge badge-error">Don't</span>
+        <h4>Multiple gradients in one view</h4>
+        <p class="muted">One gradient element per screen region. A pink CTA plus blue icon chips is fine; competing gradient panels are not.</p>
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;height:40px;border-radius:var(--radius-small);background:var(--gradient-cta)"></div>
+          <div style="flex:1;height:40px;border-radius:var(--radius-small);background:var(--gradient-blue)"></div>
+          <div style="flex:1;height:40px;border-radius:var(--radius-small);background:linear-gradient(90deg,#A459FF,#FF2F70)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tinted">
+  <div class="wrap">
+    <h2>Components</h2>
+    <p class="muted">Buttons lift on hover. Badges are pills. Cards are white, rounded, and blue-shadowed.</p>
+
+    <div class="group-label">Buttons</div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#">Get started</a>
+      <a class="btn btn-secondary" href="#">Learn more</a>
+      <a class="btn btn-ghost" href="#">View all →</a>
+    </div>
+
+    <div class="group-label">Badges</div>
+    <div class="btn-row">
+      <span class="badge badge-success">Done</span>
+      <span class="badge badge-warning">Due soon</span>
+      <span class="badge badge-error">Overdue</span>
+      <span class="badge badge-info">Today</span>
+      <span class="badge badge-neutral">Birthday</span>
+    </div>
+
+    <div class="group-label">Cards</div>
+    <div class="card-grid">
+      <div class="card"><div class="icon"></div><h4>Weather</h4><p class="muted" style="margin:0">Current conditions and feels-like temperature for the day.</p></div>
+      <div class="card"><div class="icon"></div><h4>Calendar</h4><p class="muted" style="margin:0">The next family events, filtered to what matters.</p></div>
+      <div class="card"><div class="icon"></div><h4>Tasks</h4><p class="muted" style="margin:0">The shared list, due items floated to the top.</p></div>
+    </div>
+
+    <div class="group-label">Form elements</div>
+    <div class="demo-row" style="align-items:flex-start">
+      <div class="field">
+        <label class="label" for="demo-name">Name</label>
+        <input class="input" id="demo-name" type="text" placeholder="e.g. Lisa">
+      </div>
+      <div class="field">
+        <label class="label" for="demo-cal">Calendar</label>
+        <select class="select" id="demo-cal"><option>Family</option><option>Work</option><option>School</option></select>
+      </div>
+      <div class="field">
+        <span class="label">Show weather</span>
+        <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+      </div>
+      <div class="field">
+        <label class="label" for="demo-disabled">Disabled</label>
+        <input class="input" id="demo-disabled" type="text" placeholder="Not editable" disabled>
+      </div>
+    </div>
+    <p class="muted" style="margin:16px 0 0">Inputs use <span class="token">radius.small</span> (8px), a 2px border, and a blue focus ring. The toggle uses the CTA gradient for its on-state — the one exception to "gradient = primary action".</p>
+
+    <div class="group-label">Navigation</div>
+    <div class="nav" style="margin-bottom:24px">
+      <span class="brand">trmnl-home</span>
+      <nav class="links"><a href="#" class="active">Dashboard</a><a href="#">Calendar</a><a href="#">Tasks</a></nav>
+    </div>
+    <div class="tabs">
+      <button class="tab active" type="button">Today</button>
+      <button class="tab" type="button">This week</button>
+      <button class="tab" type="button">All</button>
+    </div>
+    <p class="muted" style="margin:16px 0 0">Nav lives in a raised card; the active link takes the interactive color. Tabs are a segmented pill control — the active tab pops out as a card.</p>
+
+    <div class="group-label">Lists</div>
+    <div class="list">
+      <div class="list-row"><span class="dot" style="background:var(--color-blue)"></span><span class="grow">Soccer practice — Sam<br><span class="meta">Family calendar</span></span><span class="time">16:00</span></div>
+      <div class="list-row"><span class="dot" style="background:var(--color-purple)"></span><span class="grow">Dinner at Grandma's<br><span class="meta">Family calendar</span></span><span class="time">18:30</span></div>
+      <div class="list-row"><span class="dot" style="background:var(--color-success)"></span><span class="grow">Water the plants<br><span class="meta">TickTick · due today</span></span><span class="badge badge-info">Today</span></div>
+    </div>
+    <p class="muted" style="margin:16px 0 0">List rows are the workhorse for events and tasks: a colored source dot, title + metadata, and a right-aligned time or badge. Rows highlight on hover.</p>
+
+    <div class="group-label">Alerts &amp; toasts</div>
+    <div class="demo-row" style="flex-direction:column;align-items:flex-start;gap:16px">
+      <div class="alert alert-error"><div><div class="title">(!) Calendar not loaded</div><p>Check <span class="token">GOOGLE_SERVICE_ACCOUNT_JSON</span> — showing cached data.</p></div></div>
+      <div class="alert alert-warning"><div><div class="title">2 tasks due today</div><p>Both are on the shared Family list.</p></div></div>
+      <div class="alert alert-success"><div><div class="title">All sources refreshed</div><p>Weather, calendar, and tasks updated 2 minutes ago.</p></div></div>
+      <div><span class="toast"><span class="dot" style="background:var(--color-success-bright)"></span>Dashboard uploaded to R2</span></div>
+    </div>
+    <p class="muted" style="margin:16px 0 0">Alerts are cards with a 6px semantic left border — use them for the explicit error states this project favors over silent fake data. Toasts are navy pills for transient confirmations.</p>
+
+    <div class="group-label">Modal</div>
+    <div class="modal-backdrop">
+      <div class="modal">
+        <h4>Lisa's birthday</h4>
+        <p class="muted" style="margin:0">All day · in 3 days · Family calendar</p>
+        <div class="actions"><a class="btn btn-primary" href="#">Add reminder</a><a class="btn btn-ghost" href="#">Dismiss</a></div>
+      </div>
+    </div>
+    <p class="muted" style="margin:16px 0 0">Modals sit on a 45% navy backdrop, use <span class="token">radius.large</span>, and keep one primary action. Use for event/task detail.</p>
+
+    <div class="group-label">Empty state</div>
+    <div class="empty">
+      <div class="icon"></div>
+      <div class="title">No upcoming events</div>
+      <p>Nothing on the family calendar for the next 7 days. Enjoy the quiet.</p>
+    </div>
+    <p class="muted" style="margin:16px 0 0">Empty states use a dashed border, a dimmed icon chip, and one friendly sentence — never a blank gap.</p>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <h2>Dark sections</h2>
+    <p class="muted">Navy bands break up long pages and carry heroes/footers. Body text on dark drops to the muted blue-gray; buttons invert.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#">Primary stays pink</a>
+      <a class="btn btn-on-dark" href="#">Secondary inverts</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Sample view — family dashboard</h2>
+    <p class="muted">The design language applied to the dashboard data model (<span class="token">dashboard-v2.json</span>). This is the reference lofi for future non-TRMNL views.</p>
+    <div class="dash">
+      <div class="dash-date">Friday, 31 July</div>
+      <div class="dash-city">Amsterdam</div>
+      <div class="dash-temp">21°</div>
+      <p class="muted" style="margin:0 0 24px">Feels like 19° · Partly cloudy</p>
+      <div class="dash-section">
+        <h4>Today</h4>
+        <div class="dash-item"><span>Soccer practice — Sam</span><span class="time">16:00</span></div>
+        <div class="dash-item"><span>Dinner at Grandma's</span><span class="time">18:30</span></div>
+      </div>
+      <div class="dash-section">
+        <h4>Tasks <span class="badge badge-warning" style="margin-left:8px">2 due</span></h4>
+        <div class="dash-item"><span>Buy birthday candles</span><span class="badge badge-error">Overdue</span></div>
+        <div class="dash-item"><span>Water the plants</span><span class="badge badge-info">Today</span></div>
+      </div>
+      <div class="dash-section" style="border-bottom:none">
+        <h4>Anniversaries</h4>
+        <div class="dash-item"><span>Lisa's birthday</span><span class="badge badge-neutral">in 3 days</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    trmnl-home design system · tokens in <span class="token">design/tokens.json</span> · style based on heimdalsecurity.com · TRMNL device views keep their own 1-bit Liquid templates and are out of scope.
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    function apply(theme) {
+      root.setAttribute('data-theme', theme);
+      btn.textContent = theme === 'dark' ? '☀ Light' : '☾ Dark';
+      try { localStorage.setItem('trmnl-design-theme', theme); } catch (e) {}
+    }
+    var saved = null;
+    try { saved = localStorage.getItem('trmnl-design-theme'); } catch (e) {}
+    apply(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    btn.addEventListener('click', function () {
+      apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+  })();
+</script>
+
+</body>
+</html>

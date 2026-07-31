@@ -40,6 +40,10 @@ The project supports three operational modes, all built on the same collect → 
 ├── .github/workflows/generate-dashboard.yml   # Scheduled CI workflow — collects data, publishes JSON
 ├── .venv/                                     # Python virtual environment
 ├── assets/*.ttf                               # TRMNL bitmap fonts, used by templates' @font-face rules
+├── design/
+│   ├── tokens.json                            # Design tokens (W3C DTCG format) for all non-TRMNL views — style based on heimdalsecurity.com
+│   ├── index.html                             # Static style guide webpage rendering the tokens (open in a browser)
+│   └── README.md                              # Design system docs: principles, consumption, sync rules
 ├── output/dashboard-v2.json                      # Latest collected data (local runs)
 ├── plan/
 │   ├── PLAN.md                                # Current architecture plan (JSON + TRMNL Liquid plugin)
@@ -60,6 +64,7 @@ The project supports three operational modes, all built on the same collect → 
 │   ├── pipeline.py                            # Shared collect → JSON → [upload] cycle
 │   ├── serialization.py                       # JSON serialisation helpers
 │   ├── terminal_fetcher.py                    # Multi-source fetcher (used by unified_fetcher)
+│   ├── terminal_theme.py                      # Terminal color palette loaded from design/tokens.json (Rich truecolor hex styles)
 │   ├── terminal_dashboard.py                  # Terminal rendering + tab state
 │   ├── unified_fetcher.py                     # Fetches all sources once, returns UnifiedData
 │   ├── upload.py                              # Cloudflare R2 upload helper (JSON only)
@@ -100,7 +105,7 @@ The project supports three operational modes, all built on the same collect → 
 - `src/serialization.py` — `serialise()` recursively converts dataclasses/dates to JSON-safe types; `build_dashboard_payload()` builds the full JSON payload — the single source of truth for both the Liquid templates and the terminal dashboard.
 - `src/fetcher.py` — Legacy `fetch_all()` aggregator, still used by older tests. New code should use `src/unified_fetcher.py`.
 - `src/terminal_fetcher.py` — Defines `CalendarSource`, `TaskListSource`, and `TerminalData`; used by `unified_fetcher`. `fetch_terminal_data()` fetches directly from APIs (legacy path).
-- `src/terminal_dashboard.py` — Renders the terminal UI with `rich` and tracks the currently selected calendar / task-list indices. `render()` accepts a `last_refreshed` datetime that is shown in the header. Pressing Tab advances both indices independently.
+- `src/terminal_dashboard.py` — Renders the terminal UI with `rich` and tracks the currently selected calendar / task-list indices. `render()` accepts a `last_refreshed` datetime that is shown in the header. Pressing Tab advances both indices independently. All colors come from `src/terminal_theme.py` (`THEME`), never ad-hoc Rich color names.
 - `src/weather.py` — Fetches current weather from Open-Meteo and maps WMO weather codes to short descriptions/icons.
 - `src/calendar.py` — Fetches upcoming events from Google Calendar using a service account. All datetimes are normalized to timezone-aware UTC to avoid naive/aware comparison errors. All-day events whose title contains a birthday keyword (`birthday`, `verjaardag`) or anniversary keyword (`anniversary`, `trouwdag`, `jubileum`) are treated as anniversaries: they are excluded from the main event list and shown only in the Anniversaries section. Timed events with one of these keywords in the title are treated as celebration parties and remain in the main event list. Celebrations are fetched with a wider 90-day lookahead and larger page size so they are not dropped behind busy calendars. The main event list can be filtered by attendee email (`CALENDAR_ATTENDEE_EMAILS`) and/or main calendar (`CALENDAR_MAIN_CALENDAR_ID`); when no filter is configured, all non-celebration events are shown. Anniversaries themselves are scoped by which calendar IDs are passed in (`GOOGLE_CALENDAR_IDS`/`TERMINAL_CALENDAR_IDS`), not by event creator/organizer — this lets shared calendars (e.g. a family calendar) hold events created by either household member.
 - `src/ticktick.py` — Fetches tasks from a TickTick shared list using the TickTick Developer API. Due tasks are moved to the top while preserving the user's custom sort order within each group.
@@ -310,6 +315,7 @@ python -m src.upload output/dashboard-v2.json
 - `plan/PLAN.md` is the authoritative architecture record; `plan/TASKS.md` tracks phase-by-phase progress and notes any deviations from the original plan (e.g. tasks completed earlier/later than originally scheduled, or skipped with a reason). Check both before assuming an "Open item" listed there has been resolved.
 - The codebase intentionally supports running without credentials by rendering explicit error states for unconfigured sources. If you add a new data source, follow the `fetch_*_or_dummy` fallback pattern for low-level fetchers, but surface missing credentials / failures through the `errors` object in `src/unified_fetcher.py`.
 - Rendering (device-specific layout, grayscale dithering) happens in `templates/*.liquid`, not in Python. If you add a new device profile in `src/config.py`, it needs a corresponding `templates/devices/<name>.liquid` template before `src/liquid_render.py`/`export_preview.py` can render it — profiles without a template (`template_filename=None`, see `STUB_PROFILE`) are valid and are skipped by both.
+- When creating or styling any **non-TRMNL** view (web, widget, desktop, AI surface), apply the design system in `design/`: read `design/tokens.json` (W3C DTCG format) as the source of truth and `design/index.html` as the human-viewable style guide. Keep the two in sync when tokens change.
 - This project uses Backlog.md for task management. At the start of each task-focused session, run `backlog instructions overview`. Prefer `backlog task create`, `backlog task edit`, and `backlog board` over hand-editing files in `backlog/`.
 
 <!-- BACKLOG.MD GUIDELINES START -->

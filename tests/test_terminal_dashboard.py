@@ -305,8 +305,9 @@ def test_event_when_converts_timed_event_to_local_timezone(monkeypatch):
     assert "10:00–11:00" in text.plain
 
 
-def test_footer_uses_red_for_days_within_7():
+def test_footer_uses_error_color_for_days_within_7():
     from src.terminal_dashboard import _build_footer
+    from src.terminal_theme import THEME
 
     today = get_reference_date()
     bday = Birthday(name="Soon", date=today + timedelta(days=3), kind="anniversary")
@@ -320,7 +321,7 @@ def test_footer_uses_red_for_days_within_7():
         for span in text.spans
         if span.start <= start < span.end
     ]
-    assert any("red" in str(style) for style in span_styles)
+    assert any(THEME.error in str(style) for style in span_styles)
 
 
 def test_footer_uses_dim_for_days_beyond_7():
