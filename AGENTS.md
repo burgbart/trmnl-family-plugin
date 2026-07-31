@@ -43,7 +43,7 @@ The project supports three operational modes, all built on the same collect → 
 ├── design/
 │   ├── tokens.json                            # Design tokens (W3C DTCG format) for all non-TRMNL views — style based on heimdalsecurity.com
 │   ├── index.html                             # Static style guide webpage rendering the tokens (open in a browser)
-│   └── README.md                              # Design system docs: principles, consumption, sync rules
+│   └── README.md                              # Design system docs: principles, accessibility rules, consumption, changelog
 ├── output/dashboard-v2.json                      # Latest collected data (local runs)
 ├── plan/
 │   ├── PLAN.md                                # Current architecture plan (JSON + TRMNL Liquid plugin)
@@ -315,7 +315,7 @@ python -m src.upload output/dashboard-v2.json
 - `plan/PLAN.md` is the authoritative architecture record; `plan/TASKS.md` tracks phase-by-phase progress and notes any deviations from the original plan (e.g. tasks completed earlier/later than originally scheduled, or skipped with a reason). Check both before assuming an "Open item" listed there has been resolved.
 - The codebase intentionally supports running without credentials by rendering explicit error states for unconfigured sources. If you add a new data source, follow the `fetch_*_or_dummy` fallback pattern for low-level fetchers, but surface missing credentials / failures through the `errors` object in `src/unified_fetcher.py`.
 - Rendering (device-specific layout, grayscale dithering) happens in `templates/*.liquid`, not in Python. If you add a new device profile in `src/config.py`, it needs a corresponding `templates/devices/<name>.liquid` template before `src/liquid_render.py`/`export_preview.py` can render it — profiles without a template (`template_filename=None`, see `STUB_PROFILE`) are valid and are skipped by both.
-- When creating or styling any **non-TRMNL** view (web, widget, desktop, AI surface), apply the design system in `design/`: read `design/tokens.json` (W3C DTCG format) as the source of truth and `design/index.html` as the human-viewable style guide. Keep the two in sync when tokens change.
+- When creating or styling any **non-TRMNL** view (web, widget, desktop, AI surface), apply the design system in `design/`: read `design/tokens.json` (W3C DTCG format) as the source of truth and `design/index.html` as the human-viewable style guide. `design/README.md` states the non-negotiable rules — most importantly that `color.text.muted` is the muted color on light surfaces and `color.text.secondary` is dark-surfaces-only (2.07:1 on white), and that state colors are used as `-surface` / `-text` pairs rather than solid fills under white text. `tests/test_design_tokens.py` enforces the token/style-guide mirror and every prescribed contrast pair, so `tokens.json` and `index.html` must change together.
 - This project uses Backlog.md for task management. At the start of each task-focused session, run `backlog instructions overview`. Prefer `backlog task create`, `backlog task edit`, and `backlog board` over hand-editing files in `backlog/`.
 
 <!-- BACKLOG.MD GUIDELINES START -->

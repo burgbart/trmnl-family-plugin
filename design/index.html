@@ -3,17 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>trmnl-home Design System — Style Guide</title>
+<meta name="color-scheme" content="light dark">
+<title>trmnl-home Design System — Style Guide v1.3</title>
+<meta name="description" content="Design language for every non-TRMNL view of the family dashboard: tokens, components, motion and accessibility rules.">
 <!--
   Style guide for all non-TRMNL views (web, widgets, desktop, AI surfaces).
   Style based on heimdalsecurity.com. Single source of truth: design/tokens.json.
-  The CSS custom properties below mirror that file 1:1 — keep them in sync.
+
+  The custom properties in the two blocks below mirror that file 1:1.
+  tests/test_design_tokens.py FAILS if they drift — do not edit one without the other.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ===== Design tokens (mirror of design/tokens.json) ===== */
+  /* ===== Design tokens — light (mirror of design/tokens.json) ===== */
   :root {
     --color-pink: #FF2F70;
     --color-pink-deep: #FF2626;
@@ -22,85 +26,229 @@
     --color-blue-light: #8EBEFF;
     --color-purple: #A459FF;
     --color-purple-dark: #351E66;
+
     --color-surface: #FFFFFF;
     --color-surface-tinted: #E8EAFD;
+    --color-card: #FFFFFF;
+
     --color-text-primary: #0A1A65;
+    --color-text-muted: #4B5791;
     --color-text-secondary: #ACB3D3;
     --color-text-inverse: #FFFFFF;
+
+    --color-border: #E8EAFD;
+    --color-border-strong: #7B85B2;
+    --color-focus: #0065FE;
+    --color-interactive: #0065FE;
+
     --color-success: #6DCE43;
+    --color-success-surface: #EBF8E5;
+    --color-success-text: #3C7125;
     --color-success-bright: #83E31E;
-    --color-error: #FF2626;
     --color-warning: #FF5F00;
+    --color-warning-surface: #FFE9DB;
+    --color-warning-text: #A63E00;
+    --color-error: #FF2626;
+    --color-error-surface: #FFE1E1;
+    --color-error-text: #BF1C1C;
+    --color-info: #0065FE;
+    --color-info-surface: #DBE9FF;
+    --color-info-text: #004CBE;
+    --color-accent-surface: #FFE2EB;
+    --color-accent-text: #BF2354;
+    --color-purple-surface: #F2E8FF;
+    --color-purple-text: #7B43BF;
+
     --gradient-cta: linear-gradient(90deg, #FF2F70 0%, #FF2626 100%);
     --gradient-blue: linear-gradient(180deg, #8EBEFF 0%, #0065FE 100%);
-    --color-card: #FFFFFF;
-    --color-interactive: #0065FE;
-    --color-border: #E8EAFD;
+
     --font-display: 'Nunito Sans', sans-serif;
     --font-body: 'Inter', sans-serif;
+
     --radius-small: 8px;
     --radius-card: 18px;
     --radius-large: 28px;
     --radius-pill: 30px;
+
     --shadow-card: 0px 6px 12px rgba(0, 56, 255, 0.15);
     --shadow-raised: 0 12px 20px rgba(1, 22, 55, 0.25);
     --shadow-glow: 0 0 40px 5px rgba(72, 171, 224, 0.5);
+
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 400ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-entrance: cubic-bezier(0, 0, 0.2, 1);
+    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+    /* Derived from tokens, not tokens themselves. */
+    --section-pad: 96px;
+    --header-h: 64px;
   }
 
-  /* ===== Dark theme overrides (mirror of tokens.json theme.dark) ===== */
+  /* ===== Design tokens — dark (mirror of tokens.json theme.dark) ===== */
   [data-theme="dark"] {
     --color-surface: #060C30;
     --color-surface-tinted: #0D1648;
     --color-card: #121E5C;
+
     --color-text-primary: #FFFFFF;
-    --color-interactive: #8EBEFF;
+    --color-text-muted: #ACB3D3;
+
     --color-border: rgba(172, 179, 211, 0.25);
+    --color-border-strong: rgba(172, 179, 211, 0.55);
+    --color-focus: #8EBEFF;
+    --color-interactive: #8EBEFF;
+
+    --color-success-surface: #192F33;
+    --color-success-text: #A7E28E;
+    --color-warning-surface: #331B27;
+    --color-warning-text: #FF9F66;
+    --color-error-surface: #33112E;
+    --color-error-text: #FF7D7D;
+    --color-info-surface: #051C55;
+    --color-info-text: #66A3FE;
+    --color-accent-surface: #33123C;
+    --color-accent-text: #FF82A9;
+    --color-purple-surface: #221A55;
+    --color-purple-text: #C89BFF;
+
+    /* Derived: shadows lose their blue tint on dark, where it reads as haze. */
     --shadow-card: 0px 6px 12px rgba(0, 0, 0, 0.4);
     --shadow-raised: 0 12px 20px rgba(0, 0, 0, 0.5);
   }
 
+  /* ===== Base ===== */
   * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
   body {
     font-family: var(--font-body);
     font-size: 1.125rem;
     line-height: 1.6;
     color: var(--color-text-primary);
     background: var(--color-surface);
-    transition: background .25s ease, color .25s ease;
+    -webkit-font-smoothing: antialiased;
+    transition: background var(--duration-normal) var(--ease-standard), color var(--duration-normal) var(--ease-standard);
   }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-  section { padding: 64px 0; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  section { padding: var(--section-pad) 0; scroll-margin-top: calc(var(--header-h) + 24px); }
   section.tinted { background: var(--color-surface-tinted); }
   section.dark { background: var(--color-navy); color: var(--color-text-inverse); }
-  section.dark p.muted { color: var(--color-text-secondary); }
+  section.dark .muted { color: var(--color-text-secondary); }
 
   h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; font-weight: 800; }
-  h1 { font-size: 3rem; }
-  h2 { font-size: 2.5rem; margin-bottom: 8px; }
-  h3 { font-size: 2rem; }
+  h1 { font-size: clamp(2rem, 4.5vw, 3rem); }
+  h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); letter-spacing: -0.01em; }
+  h3 { font-size: clamp(1.5rem, 2.75vw, 2rem); }
   h4 { font-size: 1.5rem; }
-  p.muted { color: var(--color-text-secondary); max-width: 640px; margin-bottom: 32px; }
-  .token { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.875rem; color: var(--color-interactive); }
-
-  /* ===== Theme toggle ===== */
-  .theme-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 10;
-    font-family: var(--font-display); font-weight: 700; font-size: 0.875rem;
-    padding: 10px 20px; border-radius: var(--radius-pill); border: 2px solid var(--color-border);
-    background: var(--color-card); color: var(--color-text-primary);
-    cursor: pointer; box-shadow: var(--shadow-card);
+  p { max-width: 68ch; }
+  a { color: var(--color-interactive); }
+  .muted { color: var(--color-text-muted); }
+  .lead { font-size: 1.25rem; color: var(--color-text-muted); max-width: 62ch; margin-bottom: 40px; }
+  .token {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em;
+    color: var(--color-info-text); background: var(--color-info-surface);
+    padding: 1px 6px; border-radius: 6px; white-space: nowrap;
   }
+  section.dark .token { color: var(--color-blue-light); background: rgba(142, 190, 255, 0.14); }
+  .rule { height: 1px; background: var(--color-border); border: 0; margin: 48px 0; }
 
-  /* ===== Page hero ===== */
-  .hero { padding: 96px 0 64px; background: var(--color-navy); color: var(--color-text-inverse); }
-  .hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 16px; }
-  .hero p { color: var(--color-text-secondary); font-size: 1.375rem; max-width: 640px; margin-bottom: 32px; }
+  /* ===== Focus: one visible ring everywhere, keyboard only ===== */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .skip-link {
+    position: absolute; left: 24px; top: -100px; z-index: 100;
+    background: var(--color-card); color: var(--color-text-primary);
+    font-family: var(--font-display); font-weight: 700;
+    padding: 12px 24px; border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-raised); text-decoration: none;
+    transition: top var(--duration-fast) var(--ease-standard);
+  }
+  .skip-link:focus-visible { top: 12px; }
+
+  /* ===== Sticky header + section nav ===== */
+  .siteheader {
+    position: sticky; top: 0; z-index: 20;
+    height: var(--header-h);
+    display: flex; align-items: center; gap: 24px;
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  @supports not (backdrop-filter: blur(1px)) { .siteheader { background: var(--color-surface); } }
+  .siteheader .wrap { display: flex; align-items: center; gap: 24px; width: 100%; }
+  .siteheader .brand {
+    font-family: var(--font-display); font-weight: 900; font-size: 1rem;
+    white-space: nowrap; letter-spacing: -0.01em;
+  }
+  .siteheader .brand .ver {
+    font-size: 0.75rem; font-weight: 700; color: var(--color-accent-text);
+    background: var(--color-accent-surface); padding: 2px 8px;
+    border-radius: var(--radius-pill); margin-left: 8px; vertical-align: 2px;
+  }
+  /* min-width:0 is load-bearing: without it the flex item refuses to shrink
+     below its content width and the whole page scrolls sideways on a phone. */
+  .secnav { flex: 1 1 auto; min-width: 0; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+  .secnav::-webkit-scrollbar { display: none; }
+  .secnav a {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.8125rem;
+    color: var(--color-text-muted); text-decoration: none; white-space: nowrap;
+    padding: 6px 12px; border-radius: var(--radius-pill);
+    transition: color var(--duration-fast) var(--ease-standard), background var(--duration-fast) var(--ease-standard);
+  }
+  .secnav a:hover { color: var(--color-text-primary); background: var(--color-surface-tinted); }
+  .secnav a[aria-current="true"] { color: var(--color-text-inverse); background: var(--color-navy); }
+  [data-theme="dark"] .secnav a[aria-current="true"] { color: var(--color-navy); background: var(--color-blue-light); }
+
+  .theme-toggle {
+    flex: none;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.8125rem;
+    padding: 8px 16px; border-radius: var(--radius-pill);
+    border: 2px solid var(--color-border-strong);
+    background: transparent; color: var(--color-text-primary);
+    cursor: pointer;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
+  .theme-toggle:hover { border-color: var(--color-interactive); }
+
+  /* ===== Hero ===== */
+  .hero { padding: 96px 0 80px; background: var(--color-navy); color: var(--color-text-inverse); }
+  .hero .eyebrow { color: var(--color-blue-light); }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; margin: 8px 0 16px; letter-spacing: -0.02em; }
+  .hero p { color: var(--color-text-secondary); font-size: clamp(1.125rem, 2vw, 1.375rem); max-width: 58ch; margin-bottom: 32px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(172, 179, 211, 0.25); }
+  .hero-meta div { min-width: 120px; }
+  .hero-meta .k { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; }
+  .hero-meta .v { color: var(--color-text-secondary); font-size: 0.875rem; }
+
+  /* ===== Section headers ===== */
+  .eyebrow {
+    font-family: var(--font-display); font-weight: 800; font-size: 0.8125rem;
+    text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-text-muted);
+  }
+  section.dark .eyebrow { color: var(--color-blue-light); }
+  .sechead { margin-bottom: 8px; }
+  .sechead h2 .anchor {
+    color: var(--color-border-strong); text-decoration: none; font-weight: 700;
+    opacity: 0; margin-left: 12px; transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+  .sechead h2:hover .anchor, .sechead h2 .anchor:focus-visible { opacity: 1; }
+  .group-label {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.125rem;
+    margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border);
+  }
+  .group-label .hint { font-weight: 400; font-size: 0.875rem; color: var(--color-text-muted); margin-left: 8px; }
 
   /* ===== Buttons ===== */
   .btn {
     display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 1rem;
     padding: 14px 32px; border-radius: var(--radius-pill); border: 2px solid transparent;
-    cursor: pointer; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease;
+    cursor: pointer; text-decoration: none;
+    transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
   }
   .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-raised); }
   .btn-primary { background: var(--gradient-cta); color: var(--color-text-inverse); }
@@ -110,213 +258,472 @@
   .btn-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
 
   /* ===== Swatches ===== */
-  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-  .swatch { border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); background: var(--color-card); }
-  .swatch .chip { height: 88px; }
-  .swatch .meta { padding: 12px 16px; }
-  .swatch .name { font-weight: 600; font-size: 1rem; }
-  .swatch .hex { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.875rem; color: var(--color-text-secondary); }
-  .group-label { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; margin: 32px 0 16px; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; }
+  .swatch {
+    display: flex; flex-direction: column;
+    border-radius: var(--radius-card); overflow: hidden; text-align: left;
+    background: var(--color-card); border: 1px solid var(--color-border-strong);
+    box-shadow: var(--shadow-card); padding: 0; cursor: copy; font: inherit;
+    color: var(--color-text-primary);
+    transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  }
+  .swatch:hover { transform: translateY(-3px); box-shadow: var(--shadow-raised); }
+  .swatch .chip { height: 84px; flex: none; display: block; border-bottom: 1px solid var(--color-border); }
+  .swatch .meta { flex: 1; padding: 12px 16px 14px; }
+  .swatch .name { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+  .swatch .path,
+  .swatch .hex { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8125rem; color: var(--color-text-muted); }
+  .swatch .path { display: block; margin-top: 2px; }
+  .swatch .ratio {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 8px;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.75rem;
+    padding: 2px 10px; border-radius: var(--radius-pill);
+  }
+  .ratio-pass { background: var(--color-success-surface); color: var(--color-success-text); }
+  .ratio-large { background: var(--color-warning-surface); color: var(--color-warning-text); }
+  .ratio-fail { background: var(--color-error-surface); color: var(--color-error-text); }
+  .ratio-scope { border: 1px solid var(--color-border-strong); color: var(--color-text-muted); text-transform: capitalize; }
+
+  /* ===== Accessibility table ===== */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.contrast { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 1rem; }
+  table.contrast th, table.contrast td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--color-border); }
+  table.contrast th { font-family: var(--font-display); font-weight: 800; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
+  table.contrast td.sample { font-weight: 600; border-radius: 0; }
+  table.contrast tbody tr:hover { background: var(--color-surface-tinted); }
+  table.contrast .num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+  .rulecard { background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-card); padding: 24px 28px; box-shadow: var(--shadow-card); }
+  .rulecard ul { margin: 0; padding-left: 20px; }
+  .rulecard li { margin-bottom: 10px; }
+  .rulecard li:last-child { margin-bottom: 0; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
 
   /* ===== Type specimens ===== */
   .specimen { border-bottom: 1px solid var(--color-border); padding: 20px 0; display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap; }
-  .specimen .label { min-width: 180px; font-size: 0.875rem; color: var(--color-text-secondary); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .specimen .label { width: 260px; flex: none; font-size: 0.8125rem; color: var(--color-text-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .specimen .sample { flex: 1; min-width: 0; }
 
-  /* ===== Spacing / radius / shadow demos ===== */
+  /* ===== Shape / spacing demos ===== */
   .demo-row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end; }
   .space-block { background: var(--gradient-blue); border-radius: var(--radius-small); }
-  .demo-box { background: var(--color-card); border: 2px solid var(--color-border); width: 140px; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: var(--color-text-secondary); }
-  .demo-caption { font-size: 0.875rem; color: var(--color-text-secondary); margin-top: 8px; text-align: center; }
+  .demo-box { background: var(--color-card); border: 2px solid var(--color-border-strong); width: 140px; height: 100px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: var(--color-text-muted); }
+  .demo-caption { font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 8px; text-align: center; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
   /* ===== Badges ===== */
-  .badge { display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; padding: 6px 16px; border-radius: var(--radius-pill); }
-  .badge-success { background: var(--color-success); color: var(--color-text-inverse); }
-  .badge-warning { background: var(--color-warning); color: var(--color-text-inverse); }
-  .badge-error { background: var(--color-error); color: var(--color-text-inverse); }
-  .badge-info { background: var(--color-interactive); color: var(--color-text-inverse); }
-  .badge-neutral { background: var(--color-surface-tinted); color: var(--color-text-primary); }
+  .badge {
+    display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 0.875rem;
+    padding: 5px 14px; border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+  }
+  .badge-success { background: var(--color-success-surface); color: var(--color-success-text); }
+  .badge-warning { background: var(--color-warning-surface); color: var(--color-warning-text); }
+  .badge-error   { background: var(--color-error-surface);   color: var(--color-error-text); }
+  .badge-info    { background: var(--color-info-surface);    color: var(--color-info-text); }
+  .badge-accent  { background: var(--color-accent-surface);  color: var(--color-accent-text); }
+  .badge-purple  { background: var(--color-purple-surface);  color: var(--color-purple-text); }
+  .badge-neutral { background: transparent; color: var(--color-text-muted); border-color: var(--color-border-strong); }
 
   /* ===== Cards ===== */
   .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-  .card { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 32px; }
+  /* border-strong, not the decorative border.subtle: a card's own boundary
+     must read on any background, including a plain (untinted) section where
+     --color-card and the page are otherwise the same white. */
+  .card { background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 32px; }
   .card:hover { box-shadow: var(--shadow-raised); }
   .card h4 { margin-bottom: 8px; }
   .card .icon { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-blue); margin-bottom: 16px; }
 
   /* ===== Sample view: family dashboard card ===== */
-  .dash { max-width: 560px; background: var(--color-card); border-radius: var(--radius-large); box-shadow: var(--shadow-raised); padding: 40px; color: var(--color-text-primary); }
+  .dash { max-width: 560px; background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-large); box-shadow: var(--shadow-raised); padding: 40px; }
   .dash .dash-date { font-family: var(--font-display); font-weight: 800; font-size: 2rem; }
-  .dash .dash-city { color: var(--color-text-secondary); margin-bottom: 24px; }
-  .dash .dash-temp { font-family: var(--font-display); font-weight: 900; font-size: 3rem; }
-  .dash .dash-section { border-top: 2px solid var(--color-border); padding: 16px 0; }
-  .dash .dash-section h4 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-secondary); margin-bottom: 8px; }
-  .dash .dash-item { display: flex; justify-content: space-between; padding: 6px 0; font-size: 1.125rem; }
+  .dash .dash-city { color: var(--color-text-muted); margin-bottom: 24px; }
+  .dash .dash-temp { font-family: var(--font-display); font-weight: 900; font-size: 3rem; font-variant-numeric: tabular-nums; }
+  .dash .dash-section { border-top: 1px solid var(--color-border); padding: 16px 0; }
+  .dash .dash-section h4 { font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-muted); margin-bottom: 8px; font-weight: 800; }
+  .dash .dash-item { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 6px 0; font-size: 1.125rem; }
   .dash .dash-item .time { color: var(--color-interactive); font-weight: 600; font-variant-numeric: tabular-nums; }
 
-  footer { padding: 48px 0; background: var(--color-navy); color: var(--color-text-secondary); font-size: 0.875rem; }
+  footer { padding: 56px 0; background: var(--color-navy); color: var(--color-text-secondary); font-size: 0.9375rem; }
+  footer a { color: var(--color-blue-light); }
+  footer .foot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+  footer .foot-title { font-family: var(--font-display); font-weight: 800; color: var(--color-text-inverse); margin-bottom: 8px; font-size: 1rem; }
 
   /* ===== Forms ===== */
   .field { display: flex; flex-direction: column; gap: 8px; max-width: 340px; }
   .field .label { font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; }
+  .field .help { font-size: 0.8125rem; color: var(--color-text-muted); }
   .input, .select {
     font-family: var(--font-body); font-size: 1rem; padding: 12px 16px;
-    border-radius: var(--radius-small); border: 2px solid var(--color-border);
+    border-radius: var(--radius-small); border: 2px solid var(--color-border-strong);
     background: var(--color-card); color: var(--color-text-primary);
-    transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
   }
-  .input:focus, .select:focus { outline: none; border-color: var(--color-interactive); box-shadow: 0 0 0 3px rgba(0, 101, 254, 0.18); }
-  .input::placeholder { color: var(--color-text-secondary); }
-  .input:disabled { opacity: 0.5; cursor: not-allowed; }
+  .input:focus-visible, .select:focus-visible { outline: none; border-color: var(--color-focus); box-shadow: 0 0 0 3px var(--color-info-surface); }
+  .input::placeholder { color: var(--color-text-muted); opacity: 1; }
+  .input:disabled { opacity: 0.55; cursor: not-allowed; }
   .switch { position: relative; width: 52px; height: 30px; display: inline-block; flex: none; }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .switch .track { position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--color-text-secondary); cursor: pointer; transition: background 250ms cubic-bezier(0.4, 0, 0.2, 1); }
-  .switch .track::before { content: ""; position: absolute; width: 22px; height: 22px; left: 4px; top: 4px; border-radius: 50%; background: #fff; transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .switch input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--color-border-strong); pointer-events: none; transition: background var(--duration-normal) var(--ease-standard); }
+  .switch .track::before { content: ""; position: absolute; width: 22px; height: 22px; left: 4px; top: 4px; border-radius: 50%; background: #fff; transition: transform var(--duration-normal) var(--ease-standard); }
   .switch input:checked + .track { background: var(--gradient-cta); }
   .switch input:checked + .track::before { transform: translateX(22px); }
+  .switch input:focus-visible + .track { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 
-  /* ===== Navigation ===== */
-  .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 16px 24px; }
+  /* ===== Navigation components ===== */
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 16px 24px; }
   .nav .brand { font-family: var(--font-display); font-weight: 900; font-size: 1.25rem; }
   .nav .links { display: flex; gap: 24px; }
   .nav .links a { color: var(--color-text-primary); text-decoration: none; font-weight: 600; font-size: 1rem; }
   .nav .links a.active { color: var(--color-interactive); border-bottom: 2px solid var(--color-interactive); }
   .tabs { display: inline-flex; background: var(--color-surface-tinted); border-radius: var(--radius-pill); padding: 4px; gap: 4px; }
-  .tabs .tab { font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; padding: 8px 20px; border-radius: var(--radius-pill); color: var(--color-text-secondary); border: none; background: transparent; cursor: pointer; transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-  .tabs .tab.active { background: var(--color-card); color: var(--color-text-primary); box-shadow: var(--shadow-card); }
+  [data-theme="dark"] .tabs { background: var(--color-surface); }
+  .tabs .tab { font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; padding: 8px 20px; border-radius: var(--radius-pill); color: var(--color-text-muted); border: none; background: transparent; cursor: pointer; transition: color var(--duration-fast) var(--ease-standard); }
+  .tabs .tab[aria-selected="true"] { background: var(--color-card); color: var(--color-text-primary); box-shadow: var(--shadow-card); }
 
   /* ===== Lists ===== */
-  .list { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; max-width: 560px; }
-  .list-row { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--color-border); transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .list { background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; max-width: 560px; }
+  .list-row { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--color-border); transition: background var(--duration-fast) var(--ease-standard); }
   .list-row:last-child { border-bottom: none; }
   .list-row:hover { background: var(--color-surface-tinted); }
   .list-row .dot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
-  .list-row .grow { flex: 1; }
-  .list-row .meta { color: var(--color-text-secondary); font-size: 0.875rem; }
+  .list-row .grow { flex: 1; min-width: 0; }
+  .list-row .meta { color: var(--color-text-muted); font-size: 0.875rem; }
   .list-row .time { color: var(--color-interactive); font-weight: 600; font-variant-numeric: tabular-nums; }
 
   /* ===== Alerts & toasts ===== */
-  .alert { display: flex; gap: 12px; align-items: flex-start; border-radius: var(--radius-card); padding: 16px 20px; max-width: 560px; background: var(--color-card); border-left: 6px solid; box-shadow: var(--shadow-card); }
-  .alert-info { border-color: var(--color-blue); }
-  .alert-success { border-color: var(--color-success); }
-  .alert-warning { border-color: var(--color-warning); }
-  .alert-error { border-color: var(--color-error); }
+  .alert { display: flex; gap: 12px; align-items: flex-start; border-radius: var(--radius-card); padding: 16px 20px; max-width: 560px; background: var(--color-card); border: 1px solid var(--color-border-strong); border-left: 6px solid; box-shadow: var(--shadow-card); }
+  .alert-info    { border-left-color: var(--color-info-text); }
+  .alert-success { border-left-color: var(--color-success-text); }
+  .alert-warning { border-left-color: var(--color-warning-text); }
+  .alert-error   { border-left-color: var(--color-error-text); }
   .alert .title { font-family: var(--font-display); font-weight: 700; }
-  .alert p { margin: 0; font-size: 1rem; color: var(--color-text-secondary); }
+  .alert-info .title    { color: var(--color-info-text); }
+  .alert-success .title { color: var(--color-success-text); }
+  .alert-warning .title { color: var(--color-warning-text); }
+  .alert-error .title   { color: var(--color-error-text); }
+  .alert p { margin: 0; font-size: 1rem; color: var(--color-text-muted); }
   .toast { display: inline-flex; align-items: center; gap: 12px; background: var(--color-navy); color: var(--color-text-inverse); border-radius: var(--radius-pill); padding: 12px 24px; box-shadow: var(--shadow-raised); font-size: 1rem; }
-  [data-theme="dark"] .toast { border: 2px solid var(--color-border); }
-  .toast .dot { width: 10px; height: 10px; border-radius: 50%; }
+  [data-theme="dark"] .toast { border: 1px solid var(--color-border); }
+  .toast .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+  /* Live copy toast */
+  #copy-toast {
+    position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(16px);
+    opacity: 0; pointer-events: none; z-index: 50;
+    transition: opacity var(--duration-normal) var(--ease-standard), transform var(--duration-normal) var(--ease-standard);
+  }
+  #copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   /* ===== Modal ===== */
   .modal-backdrop { background: rgba(10, 26, 101, 0.45); border-radius: var(--radius-card); padding: 48px 24px; display: flex; justify-content: center; }
   .modal { background: var(--color-card); border-radius: var(--radius-large); box-shadow: var(--shadow-raised); padding: 32px; max-width: 420px; width: 100%; }
   .modal h4 { margin-bottom: 8px; }
-  .modal .actions { display: flex; gap: 12px; margin-top: 24px; }
+  .modal .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
 
   /* ===== Empty state ===== */
-  .empty { text-align: center; padding: 48px 32px; border: 2px dashed var(--color-border); border-radius: var(--radius-card); max-width: 560px; }
+  .empty { text-align: center; padding: 48px 32px; border: 2px dashed var(--color-border-strong); border-radius: var(--radius-card); max-width: 560px; }
   .empty .icon { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-blue); margin: 0 auto 16px; opacity: 0.6; }
   .empty .title { font-family: var(--font-display); font-weight: 700; margin-bottom: 4px; }
-  .empty p { margin: 0; color: var(--color-text-secondary); }
+  .empty p { margin: 0 auto; color: var(--color-text-muted); }
 
   /* ===== Motion demos ===== */
   @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
   .motion-demo { display: flex; gap: 24px; flex-wrap: wrap; }
-  .motion-card { background: var(--color-card); border-radius: var(--radius-card); box-shadow: var(--shadow-card); width: 200px; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: var(--color-text-secondary); text-align: center; padding: 8px; }
-  .motion-card.enter { animation: fade-up 400ms cubic-bezier(0, 0, 0.2, 1) both; }
-  .motion-card.lift { transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .motion-card { background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-card); width: 210px; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 0.875rem; color: var(--color-text-muted); text-align: center; padding: 16px; }
+  .motion-card strong { font-family: var(--font-display); font-weight: 700; color: var(--color-text-primary); }
+  .motion-card.enter { animation: fade-up var(--duration-slow) var(--ease-entrance) both; }
+  .motion-card.lift { transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard); }
   .motion-card.lift:hover { transform: translateY(-8px); box-shadow: var(--shadow-raised); }
-  .motion-card.slow-lift { transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .motion-card.slow-lift { transition: transform var(--duration-slow) var(--ease-standard), box-shadow var(--duration-slow) var(--ease-standard); }
   .motion-card.slow-lift:hover { transform: translateY(-8px); box-shadow: var(--shadow-raised); }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
 
   /* ===== Gradient do / don't ===== */
   .dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-  .dodont .card { position: relative; padding-top: 48px; }
-  .dodont .verdict { position: absolute; top: 16px; left: 32px; }
+  .dodont .card { position: relative; padding-top: 56px; }
+  .dodont .card p { margin-bottom: 20px; }
+  .dodont .verdict { position: absolute; top: 20px; left: 32px; }
+
+  /* ===== Iconography =====
+     Icons carry no fill and no hardcoded stroke — they inherit currentColor,
+     so one icon recolors by setting `color` on itself or an ancestor. */
+  .icon-glyph { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-scale { display: flex; gap: 40px; flex-wrap: wrap; align-items: flex-end; }
+  .icon-scale .tile { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .icon-scale .icon-sm { width: 16px; height: 16px; }
+  .icon-scale .icon-md { width: 20px; height: 20px; }
+  .icon-scale .icon-lg { width: 24px; height: 24px; }
+  .icon-scale .icon-xl { width: 32px; height: 32px; }
+  .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
+  .icon-card { background: var(--color-card); border: 1px solid var(--color-border-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 20px 12px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+  .icon-color-row { display: flex; gap: 32px; flex-wrap: wrap; align-items: center; }
+  .icon-color-row .tile { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .icon-color-row .swab { width: 56px; height: 56px; border-radius: var(--radius-card); display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-border-strong); background: var(--color-card); }
+  .icon-color-row .swab.on-dark { background: var(--color-navy); border-color: transparent; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    :root { --section-pad: 64px; }
+    .wrap { padding: 0 20px; }
+    .hero { padding: 64px 0 56px; }
+    .specimen .label { width: 100%; }
+  }
+  @media (max-width: 600px) {
+    :root { --section-pad: 48px; }
+    body { font-size: 1.0625rem; }
+    .wrap { padding: 0 16px; }
+    .siteheader .brand span.full { display: none; }
+    .card, .rulecard { padding: 24px 20px; }
+    .dash { padding: 28px 20px; }
+    .swatch-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    .demo-box { width: 116px; }
+    .btn { padding: 12px 24px; }
+    .modal-backdrop { padding: 24px 12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body>
 
-<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">☾ Dark</button>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<header class="hero">
+<!-- Icon sprite: one definition per glyph, referenced everywhere with <use>.
+     Each path is hand-drawn on the 24x24 grid described in the Iconography
+     section — no external icon set is loaded. -->
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <symbol id="icon-calendar" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="16" rx="2"/>
+      <path d="M3 9.5h18"/>
+      <path d="M8 3v4"/>
+      <path d="M16 3v4"/>
+    </symbol>
+    <symbol id="icon-checklist" viewBox="0 0 24 24">
+      <path d="M3.5 6l1.5 1.5L7.5 4.5"/>
+      <path d="M10.5 6h10"/>
+      <path d="M3.5 12l1.5 1.5L7.5 10.5"/>
+      <path d="M10.5 12h10"/>
+      <path d="M3.5 18l1.5 1.5L7.5 16.5"/>
+      <path d="M10.5 18h10"/>
+    </symbol>
+    <symbol id="icon-cake" viewBox="0 0 24 24">
+      <path d="M4 21v-6.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2V21"/>
+      <path d="M4 21h16"/>
+      <path d="M4 16.5c1-1 2-1 3 0s2 1 3 0 2-1 3 0 2 1 3 0 2-1 3 0"/>
+      <path d="M12 8.5v4"/>
+      <circle cx="12" cy="6" r="1.4" fill="currentColor" stroke="none"/>
+    </symbol>
+    <!-- Weather states: symbol id is "icon-weather-" + the weather.icon value
+         from src/weather.py, so a view can map data straight to a glyph. -->
+    <symbol id="icon-weather-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M18.5 5.5l-1.4 1.4M6.9 17.1l-1.4 1.4"/>
+    </symbol>
+    <symbol id="icon-weather-partly-cloudy" viewBox="0 0 24 24">
+      <circle cx="8" cy="7.5" r="3"/>
+      <path d="M8 2.3v1.4M3.3 7.5h1.4M4.6 3.8l1 1M11.4 3.8l-1 1"/>
+      <path d="M8.5 20.5a4 4 0 0 1 .3-8 5.5 5.5 0 0 1 10.6 1.6 3.3 3.3 0 0 1-.4 6.4h-10.5z"/>
+    </symbol>
+    <symbol id="icon-weather-cloud" viewBox="0 0 24 24">
+      <path d="M8.5 17.5a4 4 0 0 1 .3-8 5.5 5.5 0 0 1 10.6 1.6 3.3 3.3 0 0 1-.4 6.4h-10.5z"/>
+    </symbol>
+    <symbol id="icon-weather-rain-light" viewBox="0 0 24 24">
+      <path d="M8.5 17.5a4 4 0 0 1 .3-8 5.5 5.5 0 0 1 10.6 1.6 3.3 3.3 0 0 1-.4 6.4h-10.5z"/>
+      <path d="M12 18.5l-1.2 3.2"/>
+    </symbol>
+    <symbol id="icon-weather-rain" viewBox="0 0 24 24">
+      <path d="M8.5 17.5a4 4 0 0 1 .3-8 5.5 5.5 0 0 1 10.6 1.6 3.3 3.3 0 0 1-.4 6.4h-10.5z"/>
+      <path d="M9 18.5l-1.2 3.2M15 18.5l-1.2 3.2"/>
+    </symbol>
+    <symbol id="icon-weather-rain-heavy" viewBox="0 0 24 24">
+      <path d="M8.5 17.5a4 4 0 0 1 .3-8 5.5 5.5 0 0 1 10.6 1.6 3.3 3.3 0 0 1-.4 6.4h-10.5z"/>
+      <path d="M7 18.5l-1.2 3.2M12 18.5l-1.2 3.2M17 18.5l-1.2 3.2"/>
+    </symbol>
+    <symbol id="icon-weather-thunder" viewBox="0 0 24 24">
+      <path d="M8.5 17.5a4 4 0 0 1 .3-8 5.5 5.5 0 0 1 10.6 1.6 3.3 3.3 0 0 1-.4 6.4h-10.5z"/>
+      <path d="M13.6 17.5l-3.8 4.6h2.8l-2 3.9 4.9-5h-2.6z" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="icon-weather-snow" viewBox="0 0 24 24">
+      <path d="M8.5 17.5a4 4 0 0 1 .3-8 5.5 5.5 0 0 1 10.6 1.6 3.3 3.3 0 0 1-.4 6.4h-10.5z"/>
+      <circle cx="8" cy="19.5" r="0.9" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="21" r="0.9" fill="currentColor" stroke="none"/>
+      <circle cx="16" cy="19.5" r="0.9" fill="currentColor" stroke="none"/>
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24">
+      <path d="M12 3.5a5 5 0 0 0-5 5v3.3c0 .8-.3 1.5-.8 2.1L5 15.5h14l-1.2-1.6a3.3 3.3 0 0 1-.8-2.1V8.5a5 5 0 0 0-5-5z"/>
+      <path d="M9.6 18.5a2.4 2.4 0 0 0 4.8 0"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="siteheader">
   <div class="wrap">
-    <h1>trmnl-home Design System</h1>
-    <p>Design language for every non-TRMNL view — web pages, widgets, desktop and AI surfaces. Based on the friendly, modern SaaS look of heimdalsecurity.com: deep navy, vivid pink CTAs, blue gradients, generous rounding.</p>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="tokens.json">View tokens.json</a>
-      <a class="btn btn-on-dark" href="README.md">Read the docs</a>
-    </div>
+    <span class="brand">trmnl-home<span class="full"> Design System</span><span class="ver">v1.3</span></span>
+    <nav class="secnav" aria-label="Sections">
+      <a href="#colors">Colors</a>
+      <a href="#accessibility">Accessibility</a>
+      <a href="#typography">Typography</a>
+      <a href="#shape">Shape</a>
+      <a href="#motion">Motion</a>
+      <a href="#gradients">Gradients</a>
+      <a href="#icons">Icons</a>
+      <a href="#components">Components</a>
+      <a href="#sample">Sample view</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">☾ Dark</button>
   </div>
 </header>
 
-<section>
+<div class="hero">
   <div class="wrap">
-    <h2>Colors</h2>
-    <p class="muted">Navy leads, pink acts, blue informs. Lavender tints separate sections; purple is reserved for differentiation (tags, charts).</p>
+    <div class="eyebrow">Design system · v1.3</div>
+    <h1>One language for every family-dashboard view</h1>
+    <p>Tokens, components, motion and accessibility rules for every non-TRMNL surface — web pages, widgets, desktop and AI views. Based on the friendly, modern SaaS look of heimdalsecurity.com: deep navy, vivid pink CTAs, blue gradients, generous rounding.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="tokens.json">Open tokens.json</a>
+      <a class="btn btn-on-dark" href="README.md">Read the docs</a>
+    </div>
+    <div class="hero-meta">
+      <div><div class="k" id="stat-tokens" data-fallback="116">116</div><div class="v">design tokens</div></div>
+      <div><div class="k">2</div><div class="v">themes, light and dark</div></div>
+      <div><div class="k">AA</div><div class="v">every prescribed pair</div></div>
+      <div><div class="k">375px</div><div class="v">minimum supported width</div></div>
+    </div>
+  </div>
+</div>
 
-    <div class="group-label">Brand</div>
+<main id="main">
+
+<section id="colors">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="eyebrow">01 · Foundations</div>
+      <h2>Colors<a class="anchor" href="#colors" aria-label="Link to Colors">#</a></h2>
+    </div>
+    <p class="lead">Navy leads, pink acts, blue informs. Lavender tints separate sections; purple is reserved for differentiation. Every swatch below shows its measured contrast against the current page background — click one to copy its value.</p>
+
+    <div class="group-label">Brand <span class="hint">fills, accents and dark surfaces</span></div>
     <div class="swatch-grid">
-      <div class="swatch"><div class="chip" style="background:#FF2F70"></div><div class="meta"><div class="name">Pink</div><div class="hex">#FF2F70 · brand.pink</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#FF2626"></div><div class="meta"><div class="name">Pink Deep</div><div class="hex">#FF2626 · brand.pink-deep</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#0A1A65"></div><div class="meta"><div class="name">Navy</div><div class="hex">#0A1A65 · brand.navy</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#0065FE"></div><div class="meta"><div class="name">Blue</div><div class="hex">#0065FE · brand.blue</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#8EBEFF"></div><div class="meta"><div class="name">Blue Light</div><div class="hex">#8EBEFF · brand.blue-light</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#A459FF"></div><div class="meta"><div class="name">Purple</div><div class="hex">#A459FF · brand.purple</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#351E66"></div><div class="meta"><div class="name">Purple Dark</div><div class="hex">#351E66 · brand.purple-dark</div></div></div>
+      <button class="swatch" data-var="--color-pink"        data-path="color.brand.pink"></button>
+      <button class="swatch" data-var="--color-pink-deep"   data-path="color.brand.pink-deep"></button>
+      <button class="swatch" data-var="--color-navy"        data-path="color.brand.navy"        data-contrast="light"></button>
+      <button class="swatch" data-var="--color-blue"        data-path="color.brand.blue"        data-contrast="light"></button>
+      <button class="swatch" data-var="--color-blue-light"  data-path="color.brand.blue-light"></button>
+      <button class="swatch" data-var="--color-purple"      data-path="color.brand.purple"></button>
+      <button class="swatch" data-var="--color-purple-dark" data-path="color.brand.purple-dark"></button>
     </div>
 
-    <div class="group-label">Surface &amp; text</div>
+    <div class="group-label">Surface &amp; text <span class="hint">contrast measured against the page background</span></div>
     <div class="swatch-grid">
-      <div class="swatch"><div class="chip" style="background:#FFFFFF;border:1px solid #E8EAFD"></div><div class="meta"><div class="name">Base</div><div class="hex">#FFFFFF · surface.base</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#E8EAFD"></div><div class="meta"><div class="name">Tinted</div><div class="hex">#E8EAFD · surface.tinted</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#ACB3D3"></div><div class="meta"><div class="name">Text Secondary</div><div class="hex">#ACB3D3 · text.secondary</div></div></div>
+      <button class="swatch" data-var="--color-surface"        data-path="surface.base"></button>
+      <button class="swatch" data-var="--color-surface-tinted" data-path="surface.tinted"></button>
+      <button class="swatch" data-var="--color-text-primary"   data-path="text.primary"   data-contrast="both"></button>
+      <button class="swatch" data-var="--color-text-muted"     data-path="text.muted"     data-contrast="both"></button>
+      <button class="swatch" data-var="--color-text-secondary" data-path="text.secondary" data-contrast="dark"></button>
+      <button class="swatch" data-var="--color-border"         data-path="border.subtle"></button>
+      <button class="swatch" data-var="--color-border-strong"  data-path="border.strong"></button>
     </div>
 
-    <div class="group-label">Semantic</div>
+    <div class="group-label">Semantic <span class="hint">each state is a trio: indicator · surface · accessible text</span></div>
     <div class="swatch-grid">
-      <div class="swatch"><div class="chip" style="background:#6DCE43"></div><div class="meta"><div class="name">Success</div><div class="hex">#6DCE43 · semantic.success</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#83E31E"></div><div class="meta"><div class="name">Success Bright</div><div class="hex">#83E31E · semantic.success-bright</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#FF2626"></div><div class="meta"><div class="name">Error</div><div class="hex">#FF2626 · semantic.error</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#FF5F00"></div><div class="meta"><div class="name">Warning</div><div class="hex">#FF5F00 · semantic.warning</div></div></div>
+      <button class="swatch" data-var="--color-success"         data-path="semantic.success"></button>
+      <button class="swatch" data-var="--color-success-surface" data-path="semantic.success-surface"></button>
+      <button class="swatch" data-var="--color-success-text"    data-path="semantic.success-text" data-contrast="both"></button>
+      <button class="swatch" data-var="--color-warning"         data-path="semantic.warning"></button>
+      <button class="swatch" data-var="--color-warning-surface" data-path="semantic.warning-surface"></button>
+      <button class="swatch" data-var="--color-warning-text"    data-path="semantic.warning-text" data-contrast="both"></button>
+      <button class="swatch" data-var="--color-error"           data-path="semantic.error"></button>
+      <button class="swatch" data-var="--color-error-surface"   data-path="semantic.error-surface"></button>
+      <button class="swatch" data-var="--color-error-text"      data-path="semantic.error-text" data-contrast="both"></button>
+      <button class="swatch" data-var="--color-info"            data-path="semantic.info"></button>
+      <button class="swatch" data-var="--color-info-surface"    data-path="semantic.info-surface"></button>
+      <button class="swatch" data-var="--color-info-text"       data-path="semantic.info-text" data-contrast="both"></button>
+      <button class="swatch" data-var="--color-accent-surface"  data-path="semantic.accent-surface"></button>
+      <button class="swatch" data-var="--color-accent-text"     data-path="semantic.accent-text" data-contrast="both"></button>
+      <button class="swatch" data-var="--color-purple-surface"  data-path="semantic.purple-surface"></button>
+      <button class="swatch" data-var="--color-purple-text"     data-path="semantic.purple-text" data-contrast="both"></button>
     </div>
 
-    <div class="group-label">Gradients</div>
+    <div class="group-label">Gradients <span class="hint">strict jobs — see section 06</span></div>
     <div class="swatch-grid">
-      <div class="swatch"><div class="chip" style="background:var(--gradient-cta)"></div><div class="meta"><div class="name">CTA</div><div class="hex">pink → pink-deep · gradient.cta</div></div></div>
-      <div class="swatch"><div class="chip" style="background:var(--gradient-blue)"></div><div class="meta"><div class="name">Blue</div><div class="hex">blue-light → blue · gradient.blue</div></div></div>
-    </div>
-
-    <div class="group-label">Dark theme surfaces <span style="font-weight:400;font-size:0.875rem;color:var(--color-text-secondary)">— use the toggle (top right) to see the whole page in dark mode</span></div>
-    <div class="swatch-grid">
-      <div class="swatch"><div class="chip" style="background:#060C30"></div><div class="meta"><div class="name">Dark Base</div><div class="hex">#060C30 · theme.dark.surface.base</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#121E5C"></div><div class="meta"><div class="name">Dark Raised</div><div class="hex">#121E5C · theme.dark.surface.raised</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#0D1648"></div><div class="meta"><div class="name">Dark Tinted</div><div class="hex">#0D1648 · theme.dark.surface.tinted</div></div></div>
-      <div class="swatch"><div class="chip" style="background:#8EBEFF"></div><div class="meta"><div class="name">Dark Interactive</div><div class="hex">#8EBEFF · theme.dark.interactive</div></div></div>
+      <button class="swatch" data-var="--gradient-cta"  data-path="gradient.cta"  data-label="CTA"></button>
+      <button class="swatch" data-var="--gradient-blue" data-path="gradient.blue" data-label="Blue"></button>
     </div>
   </div>
 </section>
 
-<section class="tinted">
+<section class="tinted" id="accessibility">
   <div class="wrap">
-    <h2>Typography</h2>
-    <p class="muted">Nunito Sans for display — rounded and friendly. Inter for body — crisp and readable. Headings are extrabold with tight leading.</p>
-    <div class="specimen"><span class="label">hero · Nunito 900 · 4rem</span><span style="font-family:var(--font-display);font-weight:900;font-size:4rem;line-height:1.15">Family first</span></div>
-    <div class="specimen"><span class="label">h1 · Nunito 800 · 3rem</span><span style="font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:1.15">What's next</span></div>
-    <div class="specimen"><span class="label">h2 · Nunito 800 · 2.5rem</span><span style="font-family:var(--font-display);font-weight:800;font-size:2.5rem;line-height:1.15">Upcoming events</span></div>
-    <div class="specimen"><span class="label">h3 · Nunito 800 · 2rem</span><span style="font-family:var(--font-display);font-weight:800;font-size:2rem;line-height:1.15">Tasks</span></div>
-    <div class="specimen"><span class="label">lead · Inter 400 · 1.375rem</span><span style="font-size:1.375rem">Everything the family needs to know, anywhere.</span></div>
-    <div class="specimen"><span class="label">body · Inter 400 · 1.125rem</span><span>Pick up groceries before the party on Saturday afternoon.</span></div>
-    <div class="specimen"><span class="label">caption · Inter 400 · 0.875rem</span><span style="font-size:0.875rem;color:var(--color-text-secondary)">Last refreshed 2 minutes ago</span></div>
+    <div class="sechead">
+      <div class="eyebrow">02 · Foundations</div>
+      <h2>Accessibility<a class="anchor" href="#accessibility" aria-label="Link to Accessibility">#</a></h2>
+    </div>
+    <p class="lead">A palette is only a design system if it is usable. Every pair the system prescribes is measured, not eyeballed, and <span class="token">tests/test_design_tokens.py</span> fails the build when one drops below its threshold.</p>
+
+    <div class="grid-2">
+      <div class="rulecard">
+        <div class="eyebrow" style="margin-bottom:12px">Rules</div>
+        <ul>
+          <li><strong>4.5:1 for text</strong>, 3:1 for text ≥24px or ≥18.66px bold, 3:1 for control boundaries and meaningful icons (WCAG 2.1 AA, 1.4.3 and 1.4.11).</li>
+          <li><strong>Muted text is <span class="token">text.muted</span> on light and <span class="token">text.secondary</span> on dark.</strong> They are not interchangeable: <span class="token">text.secondary</span> is 2.07:1 on white.</li>
+          <li><strong>State colors never carry white text.</strong> Use the <span class="token">-surface</span> / <span class="token">-text</span> pair; the solid value is for dots, bars and fills only.</li>
+          <li><strong>Never color alone.</strong> Every state also carries a word — "Overdue", "Due soon", "Done".</li>
+          <li><strong>Borders that matter use <span class="token">border.strong</span>.</strong> <span class="token">border.subtle</span> is decorative and does not meet 3:1.</li>
+          <li><strong>14px is the type floor</strong>, and 375px is the layout floor.</li>
+        </ul>
+      </div>
+      <div class="rulecard">
+        <div class="eyebrow" style="margin-bottom:12px">Interaction</div>
+        <ul>
+          <li><strong>Focus is always visible.</strong> A 3px <span class="token">color.focus.ring</span> outline at 2px offset on <span class="token">:focus-visible</span> — never <span class="token">outline: none</span> without a replacement. Tab through this page to see it.</li>
+          <li><strong>Every view starts with a skip link</strong> to the main landmark.</li>
+          <li><strong>Motion respects <span class="token">prefers-reduced-motion</span></strong>, including smooth scrolling.</li>
+          <li><strong>Controls are labelled</strong>: real <span class="token">&lt;label&gt;</span> elements, <span class="token">aria-pressed</span> on toggles, <span class="token">aria-current</span> on active navigation.</li>
+          <li><strong>Hit targets are ≥44px</strong> in any view that ships to a phone.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="group-label">Measured pairs <span class="hint">computed live from the CSS variables — toggle the theme to re-measure</span></div>
+    <div class="table-scroll">
+      <table class="contrast">
+        <thead>
+          <tr><th scope="col">Foreground</th><th scope="col">Background</th><th scope="col">Ratio</th><th scope="col">Verdict</th><th scope="col">Sample</th></tr>
+        </thead>
+        <tbody id="contrast-rows"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
-<section>
+<section id="typography">
   <div class="wrap">
-    <h2>Shape &amp; depth</h2>
-    <p class="muted">Friendly rounding everywhere: pill buttons, 18px cards, 28px hero panels. Shadows are tinted navy/blue, never plain gray.</p>
+    <div class="sechead">
+      <div class="eyebrow">03 · Foundations</div>
+      <h2>Typography<a class="anchor" href="#typography" aria-label="Link to Typography">#</a></h2>
+    </div>
+    <p class="lead">Nunito Sans for display — rounded and friendly. Inter for body — crisp and readable. Headings are extrabold with tight leading and scale fluidly, so the hero that reads at 64px on a desktop reads at 40px on a phone without a breakpoint.</p>
+    <div class="specimen"><span class="label">hero · Nunito 900 · clamp(2.5–4rem)</span><span class="sample" style="font-family:var(--font-display);font-weight:900;font-size:clamp(2.5rem,6vw,4rem);line-height:1.15;letter-spacing:-0.02em">Family first</span></div>
+    <div class="specimen"><span class="label">h1 · Nunito 800 · clamp(2–3rem)</span><span class="sample" style="font-family:var(--font-display);font-weight:800;font-size:clamp(2rem,4.5vw,3rem);line-height:1.15">What's next</span></div>
+    <div class="specimen"><span class="label">h2 · Nunito 800 · clamp(1.75–2.5rem)</span><span class="sample" style="font-family:var(--font-display);font-weight:800;font-size:clamp(1.75rem,3.5vw,2.5rem);line-height:1.15">Upcoming events</span></div>
+    <div class="specimen"><span class="label">h3 · Nunito 800 · clamp(1.5–2rem)</span><span class="sample" style="font-family:var(--font-display);font-weight:800;font-size:clamp(1.5rem,2.75vw,2rem);line-height:1.15">Tasks</span></div>
+    <div class="specimen"><span class="label">lead · Inter 400 · 1.375rem</span><span class="sample" style="font-size:1.375rem">Everything the family needs to know, anywhere.</span></div>
+    <div class="specimen"><span class="label">body · Inter 400 · 1.125rem</span><span class="sample">Pick up groceries before the party on Saturday afternoon.</span></div>
+    <div class="specimen"><span class="label">caption · Inter 400 · 0.875rem</span><span class="sample muted" style="font-size:0.875rem">Last refreshed 2 minutes ago</span></div>
+    <p class="muted" style="margin-top:24px">Measure is capped at 68 characters, numbers use <span class="token">font-variant-numeric: tabular-nums</span> so times and temperatures do not jitter between refreshes, and 14px is the smallest size the system allows.</p>
+  </div>
+</section>
+
+<section class="tinted" id="shape">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="eyebrow">04 · Foundations</div>
+      <h2>Shape &amp; depth<a class="anchor" href="#shape" aria-label="Link to Shape and depth">#</a></h2>
+    </div>
+    <p class="lead">Friendly rounding everywhere: pill buttons, 18px cards, 28px hero panels. Shadows are tinted navy/blue on light surfaces and neutral black on dark, where a blue tint reads as haze.</p>
 
     <div class="group-label">Radius</div>
     <div class="demo-row">
@@ -326,67 +733,77 @@
       <div><div class="demo-box" style="border-radius:var(--radius-pill)">pill</div><div class="demo-caption">radius.pill</div></div>
     </div>
 
-    <div class="group-label">Shadow</div>
+    <div class="group-label">Elevation</div>
     <div class="demo-row">
       <div><div class="demo-box" style="border:none;border-radius:var(--radius-card);box-shadow:var(--shadow-card)">card</div><div class="demo-caption">shadow.card</div></div>
       <div><div class="demo-box" style="border:none;border-radius:var(--radius-card);box-shadow:var(--shadow-raised)">raised</div><div class="demo-caption">shadow.raised</div></div>
       <div><div class="demo-box" style="border:none;border-radius:var(--radius-card);box-shadow:var(--shadow-glow)">glow</div><div class="demo-caption">shadow.glow</div></div>
     </div>
+    <p class="muted" style="margin-top:16px">Three levels only. Cards sit at <span class="token">shadow.card</span>, anything lifted or floating (hover, modal, toast) at <span class="token">shadow.raised</span>, and <span class="token">shadow.glow</span> is for one hero element per page at most. A shadow never replaces a border where the border carries meaning.</p>
 
-    <div class="group-label">Spacing scale</div>
+    <div class="group-label">Spacing scale <span class="hint">4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96</span></div>
     <div class="demo-row">
-      <div><div class="space-block" style="width:4px;height:24px"></div><div class="demo-caption">3xs · 4</div></div>
-      <div><div class="space-block" style="width:8px;height:24px"></div><div class="demo-caption">2xs · 8</div></div>
-      <div><div class="space-block" style="width:12px;height:24px"></div><div class="demo-caption">xs · 12</div></div>
-      <div><div class="space-block" style="width:16px;height:24px"></div><div class="demo-caption">sm · 16</div></div>
-      <div><div class="space-block" style="width:24px;height:24px"></div><div class="demo-caption">md · 24</div></div>
-      <div><div class="space-block" style="width:32px;height:24px"></div><div class="demo-caption">lg · 32</div></div>
-      <div><div class="space-block" style="width:48px;height:24px"></div><div class="demo-caption">xl · 48</div></div>
-      <div><div class="space-block" style="width:64px;height:24px"></div><div class="demo-caption">2xl · 64</div></div>
+      <div><div class="space-block" style="width:4px;height:24px"></div><div class="demo-caption">3xs</div></div>
+      <div><div class="space-block" style="width:8px;height:24px"></div><div class="demo-caption">2xs</div></div>
+      <div><div class="space-block" style="width:12px;height:24px"></div><div class="demo-caption">xs</div></div>
+      <div><div class="space-block" style="width:16px;height:24px"></div><div class="demo-caption">sm</div></div>
+      <div><div class="space-block" style="width:24px;height:24px"></div><div class="demo-caption">md</div></div>
+      <div><div class="space-block" style="width:32px;height:24px"></div><div class="demo-caption">lg</div></div>
+      <div><div class="space-block" style="width:48px;height:24px"></div><div class="demo-caption">xl</div></div>
+      <div><div class="space-block" style="width:64px;height:24px"></div><div class="demo-caption">2xl</div></div>
     </div>
+
+    <div class="group-label">Breakpoints</div>
+    <p class="muted">Two only: <span class="token">tablet</span> at 900px and <span class="token">mobile</span> at 600px. Section padding steps 96 → 64 → 48px, display type scales fluidly in between, and every layout must survive 375px with no horizontal scroll. Resize this page to watch it happen.</p>
   </div>
 </section>
 
-<section class="tinted">
+<section id="motion">
   <div class="wrap">
-    <h2>Motion &amp; animation</h2>
-    <p class="muted">Motion is subtle and functional — short, ease-out, never decorative on data views. Three durations (150/250/400ms), three easings (standard, entrance, exit), one default entrance (<span class="token">fade-up</span>). Always honor <span class="token">prefers-reduced-motion</span> — this page disables all animation when the OS asks for it.</p>
+    <div class="sechead">
+      <div class="eyebrow">05 · Foundations</div>
+      <h2>Motion<a class="anchor" href="#motion" aria-label="Link to Motion">#</a></h2>
+    </div>
+    <p class="lead">Motion is subtle and functional — short, ease-out, never decorative on data views. Three durations (150/250/400ms), three easings, one default entrance (<span class="token">fade-up</span>).</p>
     <div class="motion-demo">
-      <div class="motion-card enter">fade-up entrance<br>400ms · easing.entrance<br>(replay by reloading)</div>
-      <div class="motion-card lift">hover lift<br>150ms · easing.standard<br>buttons, cards</div>
-      <div class="motion-card slow-lift">slow hover lift<br>400ms · too heavy for<br>small elements — compare</div>
+      <div class="motion-card enter"><strong>fade-up entrance</strong><span>400ms · easing.entrance</span><span class="muted">(replay by reloading)</span></div>
+      <div class="motion-card lift"><strong>hover lift</strong><span>150ms · easing.standard</span><span class="muted">buttons, cards</span></div>
+      <div class="motion-card slow-lift"><strong>the same lift at 400ms</strong><span class="muted">too heavy for a small element — hover both and compare</span></div>
     </div>
-    <p class="muted" style="margin:24px 0 0">Rule of thumb: micro-interactions (hover, color) use <span class="token">duration.fast</span>; state changes (toggles, tabs) use <span class="token">duration.normal</span>; entrances and modals use <span class="token">duration.slow</span> with <span class="token">easing.entrance</span>. Nothing loops, nothing bounces.</p>
+    <p class="muted" style="margin-top:24px">Micro-interactions (hover, color) use <span class="token">duration.fast</span>; state changes (toggles, tabs) use <span class="token">duration.normal</span>; entrances and modals use <span class="token">duration.slow</span> with <span class="token">easing.entrance</span>. Nothing loops, nothing bounces, and <span class="token">prefers-reduced-motion</span> disables every animation and transition on this page — including smooth scrolling.</p>
   </div>
 </section>
 
-<section>
+<section class="tinted" id="gradients">
   <div class="wrap">
-    <h2>Gradient usage</h2>
-    <p class="muted">Two gradients exist — <span class="token">gradient.cta</span> (pink) and <span class="token">gradient.blue</span> — and they have strict jobs. Pink means "act", blue means "decorate".</p>
+    <div class="sechead">
+      <div class="eyebrow">06 · Foundations</div>
+      <h2>Gradient usage<a class="anchor" href="#gradients" aria-label="Link to Gradient usage">#</a></h2>
+    </div>
+    <p class="lead">Two gradients exist — <span class="token">gradient.cta</span> (pink) and <span class="token">gradient.blue</span> — and they have strict jobs. Pink means "act", blue means "decorate".</p>
     <div class="dodont">
       <div class="card">
         <span class="verdict badge badge-success">Do</span>
         <h4>Primary CTA</h4>
-        <p class="muted">The pink gradient is reserved for the one primary action per view.</p>
-        <a class="btn btn-primary" href="#">Get started</a>
+        <p class="muted">Reserved for the one primary action per view. Button text is 16px bold, which clears AA-large on the 3.56:1 pink.</p>
+        <a class="btn btn-primary" href="#gradients">Get started</a>
       </div>
       <div class="card">
         <span class="verdict badge badge-success">Do</span>
         <h4>Icon chips &amp; decorative art</h4>
-        <p class="muted">The blue gradient fills circular icon chips, hero illustrations, and chart accents.</p>
-        <div class="icon" style="width:48px;height:48px;border-radius:50%;background:var(--gradient-blue)"></div>
+        <p class="muted">The blue gradient fills circular icon chips, hero illustrations and chart accents — never anything that must be read.</p>
+        <div class="icon" style="width:48px;height:48px;border-radius:50%;background:var(--gradient-blue);margin:0"></div>
       </div>
       <div class="card">
         <span class="verdict badge badge-error">Don't</span>
         <h4>Behind body copy</h4>
-        <p class="muted">Gradients never sit under paragraphs or lists — contrast and readability suffer.</p>
+        <p class="muted">Contrast changes across the sweep, so no single text color is safe along its whole length.</p>
         <div style="background:var(--gradient-cta);border-radius:var(--radius-small);padding:12px 16px;color:#fff;font-size:0.875rem">Hard to read, never do this.</div>
       </div>
       <div class="card">
         <span class="verdict badge badge-error">Don't</span>
         <h4>Multiple gradients in one view</h4>
-        <p class="muted">One gradient element per screen region. A pink CTA plus blue icon chips is fine; competing gradient panels are not.</p>
+        <p class="muted">One gradient element per screen region. A pink CTA plus blue icon chips is fine; competing gradient panels are not — and an invented third gradient is never fine.</p>
         <div style="display:flex;gap:8px">
           <div style="flex:1;height:40px;border-radius:var(--radius-small);background:var(--gradient-cta)"></div>
           <div style="flex:1;height:40px;border-radius:var(--radius-small);background:var(--gradient-blue)"></div>
@@ -397,26 +814,82 @@
   </div>
 </section>
 
-<section class="tinted">
+<section id="icons">
   <div class="wrap">
-    <h2>Components</h2>
-    <p class="muted">Buttons lift on hover. Badges are pills. Cards are white, rounded, and blue-shadowed.</p>
+    <div class="sechead">
+      <div class="eyebrow">07 · Library</div>
+      <h2>Iconography<a class="anchor" href="#icons" aria-label="Link to Iconography">#</a></h2>
+    </div>
+    <p class="lead">A small set of hand-drawn line icons on a 24x24 grid, rounded to match the brand's geometry. No icon carries its own color — every one inherits <span class="token">currentColor</span>, so recoloring an icon is exactly as simple as recoloring text.</p>
+
+    <div class="group-label">Size scale <span class="hint">shown at actual size — icon.size.sm through icon.size.xl</span></div>
+    <div class="icon-scale">
+      <div class="tile"><svg class="icon-glyph icon-sm"><use href="#icon-bell"/></svg><div class="demo-caption">sm · 16px<br>captions, dense lists</div></div>
+      <div class="tile"><svg class="icon-glyph icon-md"><use href="#icon-bell"/></svg><div class="demo-caption">md · 20px<br>body text, buttons, fields</div></div>
+      <div class="tile"><svg class="icon-glyph icon-lg"><use href="#icon-bell"/></svg><div class="demo-caption">lg · 24px<br>nav, headers, chips</div></div>
+      <div class="tile"><svg class="icon-glyph icon-xl"><use href="#icon-bell"/></svg><div class="demo-caption">xl · 32px<br>empty states, weather</div></div>
+    </div>
+
+    <div class="group-label">Set <span class="hint">the icons this dashboard actually uses</span></div>
+    <div class="icon-grid">
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-partly-cloudy"/></svg><div class="name">Weather</div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-calendar"/></svg><div class="name">Calendar</div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-checklist"/></svg><div class="name">Tasks</div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-cake"/></svg><div class="name">Birthday</div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-bell"/></svg><div class="name">Alert</div></div>
+    </div>
+
+    <div class="group-label">Weather states <span class="hint">icon.weather.states — symbol id is icon-weather- plus the weather.icon value from src/weather.py</span></div>
+    <div class="icon-grid">
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-sun"/></svg><div class="name"><span class="token">sun</span></div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-partly-cloudy"/></svg><div class="name"><span class="token">partly-cloudy</span></div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-cloud"/></svg><div class="name"><span class="token">cloud</span></div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-rain-light"/></svg><div class="name"><span class="token">rain-light</span></div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-rain"/></svg><div class="name"><span class="token">rain</span></div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-rain-heavy"/></svg><div class="name"><span class="token">rain-heavy</span></div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-thunder"/></svg><div class="name"><span class="token">thunder</span></div></div>
+      <div class="icon-card"><svg class="icon-glyph"><use href="#icon-weather-snow"/></svg><div class="name"><span class="token">snow</span></div></div>
+    </div>
+    <p class="muted" style="margin-top:16px">These 8 states are the complete set produced by <span class="token">src/weather.py</span> and rendered as 1-bit glyphs in the TRMNL templates; this set is the colorable equivalent for any non-TRMNL weather view. Map a <span class="token">weather.icon</span> value straight to a symbol: <span class="token">"#icon-weather-" + weather.icon</span>.</p>
+
+    <div class="group-label">Color <span class="hint">the same icon, recolored by its context</span></div>
+    <div class="icon-color-row">
+      <div class="tile"><span class="swab"><svg class="icon-glyph"><use href="#icon-bell"/></svg></span><div class="demo-caption">default<br>text.primary</div></div>
+      <div class="tile"><span class="swab" style="color:var(--color-text-muted)"><svg class="icon-glyph"><use href="#icon-bell"/></svg></span><div class="demo-caption">muted<br>text.muted</div></div>
+      <div class="tile"><span class="swab" style="color:var(--color-interactive)"><svg class="icon-glyph"><use href="#icon-bell"/></svg></span><div class="demo-caption">interactive<br>brand.blue</div></div>
+      <div class="tile"><span class="swab on-dark" style="color:var(--color-blue-light)"><svg class="icon-glyph"><use href="#icon-bell"/></svg></span><div class="demo-caption">on dark<br>blue-light, fixed navy chip</div></div>
+    </div>
+    <p class="muted" style="margin-top:24px">Stroke width (<span class="token">icon.strokeWidth</span>, 1.75) is fixed across every size — icons get bigger, never heavier. A meaningful icon shown with no adjacent label (a status glyph, an alert bell with nothing else marking it) still needs 3:1 contrast against its background, the same non-text floor as a border or a focus ring.</p>
+  </div>
+</section>
+
+<section id="components">
+  <div class="wrap">
+    <div class="sechead">
+      <div class="eyebrow">08 · Library</div>
+      <h2>Components<a class="anchor" href="#components" aria-label="Link to Components">#</a></h2>
+    </div>
+    <p class="lead">Canonical markup for every recurring pattern. Copy these instead of inventing new ones — each renders correctly in both themes and meets the contrast rules in section 02.</p>
 
     <div class="group-label">Buttons</div>
     <div class="btn-row">
-      <a class="btn btn-primary" href="#">Get started</a>
-      <a class="btn btn-secondary" href="#">Learn more</a>
-      <a class="btn btn-ghost" href="#">View all →</a>
+      <a class="btn btn-primary" href="#components">Get started</a>
+      <a class="btn btn-secondary" href="#components">Learn more</a>
+      <a class="btn btn-ghost" href="#components">View all →</a>
     </div>
+    <p class="muted" style="margin-top:16px">One primary per view. Secondary and ghost take the interactive color, which flips to blue-light in the dark theme. All three lift 2px on hover and show the shared focus ring.</p>
 
-    <div class="group-label">Badges</div>
+    <div class="group-label">Badges <span class="hint">tinted surface + accessible text, never a solid state fill</span></div>
     <div class="btn-row">
       <span class="badge badge-success">Done</span>
       <span class="badge badge-warning">Due soon</span>
       <span class="badge badge-error">Overdue</span>
       <span class="badge badge-info">Today</span>
+      <span class="badge badge-purple">Anniversary</span>
+      <span class="badge badge-accent">New</span>
       <span class="badge badge-neutral">Birthday</span>
     </div>
+    <p class="muted" style="margin-top:16px">Solid state colors under white text fail AA at badge size — success is 1.99:1 — so badges use the <span class="token">-surface</span> / <span class="token">-text</span> pair. Every badge also states its meaning in words, so color is never the only signal.</p>
 
     <div class="group-label">Cards</div>
     <div class="card-grid">
@@ -429,61 +902,62 @@
     <div class="demo-row" style="align-items:flex-start">
       <div class="field">
         <label class="label" for="demo-name">Name</label>
-        <input class="input" id="demo-name" type="text" placeholder="e.g. Lisa">
+        <input class="input" id="demo-name" type="text" placeholder="e.g. Lisa" aria-describedby="demo-name-help">
+        <span class="help" id="demo-name-help">Shown on the dashboard header.</span>
       </div>
       <div class="field">
         <label class="label" for="demo-cal">Calendar</label>
         <select class="select" id="demo-cal"><option>Family</option><option>Work</option><option>School</option></select>
       </div>
       <div class="field">
-        <span class="label">Show weather</span>
-        <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+        <label class="label" for="demo-weather">Show weather</label>
+        <label class="switch"><input type="checkbox" id="demo-weather" checked><span class="track"></span></label>
       </div>
       <div class="field">
         <label class="label" for="demo-disabled">Disabled</label>
         <input class="input" id="demo-disabled" type="text" placeholder="Not editable" disabled>
       </div>
     </div>
-    <p class="muted" style="margin:16px 0 0">Inputs use <span class="token">radius.small</span> (8px), a 2px border, and a blue focus ring. The toggle uses the CTA gradient for its on-state — the one exception to "gradient = primary action".</p>
+    <p class="muted" style="margin-top:16px">Inputs use <span class="token">radius.small</span> and a 2px <span class="token">border.strong</span> outline — 3.6:1, so the field boundary is perceivable, which <span class="token">border.subtle</span> would not be. Placeholders use <span class="token">text.muted</span>, never <span class="token">text.secondary</span>. The toggle uses the CTA gradient for its on-state, the one exception to "gradient = primary action".</p>
 
     <div class="group-label">Navigation</div>
     <div class="nav" style="margin-bottom:24px">
       <span class="brand">trmnl-home</span>
-      <nav class="links"><a href="#" class="active">Dashboard</a><a href="#">Calendar</a><a href="#">Tasks</a></nav>
+      <nav class="links" aria-label="Example"><a href="#components" class="active" aria-current="page">Dashboard</a><a href="#components">Calendar</a><a href="#components">Tasks</a></nav>
     </div>
-    <div class="tabs">
-      <button class="tab active" type="button">Today</button>
-      <button class="tab" type="button">This week</button>
-      <button class="tab" type="button">All</button>
+    <div class="tabs" role="tablist" aria-label="Example range">
+      <button class="tab" type="button" role="tab" aria-selected="true">Today</button>
+      <button class="tab" type="button" role="tab" aria-selected="false">This week</button>
+      <button class="tab" type="button" role="tab" aria-selected="false">All</button>
     </div>
-    <p class="muted" style="margin:16px 0 0">Nav lives in a raised card; the active link takes the interactive color. Tabs are a segmented pill control — the active tab pops out as a card.</p>
+    <p class="muted" style="margin-top:16px">Nav lives in a raised card; the active link takes the interactive color <em>and</em> <span class="token">aria-current</span>. Tabs are a segmented pill control driven by <span class="token">aria-selected</span>, so the active state is exposed to assistive tech rather than implied by a class.</p>
 
-    <div class="group-label">Lists</div>
+    <div class="group-label">Lists <span class="hint">the workhorse for events and tasks</span></div>
     <div class="list">
       <div class="list-row"><span class="dot" style="background:var(--color-blue)"></span><span class="grow">Soccer practice — Sam<br><span class="meta">Family calendar</span></span><span class="time">16:00</span></div>
       <div class="list-row"><span class="dot" style="background:var(--color-purple)"></span><span class="grow">Dinner at Grandma's<br><span class="meta">Family calendar</span></span><span class="time">18:30</span></div>
       <div class="list-row"><span class="dot" style="background:var(--color-success)"></span><span class="grow">Water the plants<br><span class="meta">TickTick · due today</span></span><span class="badge badge-info">Today</span></div>
     </div>
-    <p class="muted" style="margin:16px 0 0">List rows are the workhorse for events and tasks: a colored source dot, title + metadata, and a right-aligned time or badge. Rows highlight on hover.</p>
+    <p class="muted" style="margin-top:16px">A colored source dot, title plus metadata, and a right-aligned time or badge. The dot is decoration — the source is always named in the metadata line too.</p>
 
     <div class="group-label">Alerts &amp; toasts</div>
     <div class="demo-row" style="flex-direction:column;align-items:flex-start;gap:16px">
-      <div class="alert alert-error"><div><div class="title">(!) Calendar not loaded</div><p>Check <span class="token">GOOGLE_SERVICE_ACCOUNT_JSON</span> — showing cached data.</p></div></div>
+      <div class="alert alert-error"><div><div class="title">Calendar not loaded</div><p>Check <span class="token">GOOGLE_SERVICE_ACCOUNT_JSON</span> — showing cached data from 08:15.</p></div></div>
       <div class="alert alert-warning"><div><div class="title">2 tasks due today</div><p>Both are on the shared Family list.</p></div></div>
-      <div class="alert alert-success"><div><div class="title">All sources refreshed</div><p>Weather, calendar, and tasks updated 2 minutes ago.</p></div></div>
+      <div class="alert alert-success"><div><div class="title">All sources refreshed</div><p>Weather, calendar and tasks updated 2 minutes ago.</p></div></div>
       <div><span class="toast"><span class="dot" style="background:var(--color-success-bright)"></span>Dashboard uploaded to R2</span></div>
     </div>
-    <p class="muted" style="margin:16px 0 0">Alerts are cards with a 6px semantic left border — use them for the explicit error states this project favors over silent fake data. Toasts are navy pills for transient confirmations.</p>
+    <p class="muted" style="margin-top:16px">Alerts are cards with a 6px semantic left border and a matching semantic title color — use them for the explicit error states this project favors over silent fake data. Toasts are navy pills for transient confirmations.</p>
 
     <div class="group-label">Modal</div>
     <div class="modal-backdrop">
-      <div class="modal">
+      <div class="modal" role="dialog" aria-label="Event detail example">
         <h4>Lisa's birthday</h4>
         <p class="muted" style="margin:0">All day · in 3 days · Family calendar</p>
-        <div class="actions"><a class="btn btn-primary" href="#">Add reminder</a><a class="btn btn-ghost" href="#">Dismiss</a></div>
+        <div class="actions"><a class="btn btn-primary" href="#components">Add reminder</a><a class="btn btn-ghost" href="#components">Dismiss</a></div>
       </div>
     </div>
-    <p class="muted" style="margin:16px 0 0">Modals sit on a 45% navy backdrop, use <span class="token">radius.large</span>, and keep one primary action. Use for event/task detail.</p>
+    <p class="muted" style="margin-top:16px">Modals sit on a 45% navy backdrop, use <span class="token">radius.large</span>, and keep one primary action. Real implementations trap focus and close on Escape.</p>
 
     <div class="group-label">Empty state</div>
     <div class="empty">
@@ -491,25 +965,31 @@
       <div class="title">No upcoming events</div>
       <p>Nothing on the family calendar for the next 7 days. Enjoy the quiet.</p>
     </div>
-    <p class="muted" style="margin:16px 0 0">Empty states use a dashed border, a dimmed icon chip, and one friendly sentence — never a blank gap.</p>
+    <p class="muted" style="margin-top:16px">A dashed <span class="token">border.strong</span> outline, a dimmed icon chip and one friendly sentence — never a blank gap, and never confusable with an error.</p>
   </div>
 </section>
 
 <section class="dark">
   <div class="wrap">
-    <h2>Dark sections</h2>
-    <p class="muted">Navy bands break up long pages and carry heroes/footers. Body text on dark drops to the muted blue-gray; buttons invert.</p>
+    <div class="sechead">
+      <div class="eyebrow">09 · Library</div>
+      <h2>Dark bands</h2>
+    </div>
+    <p class="muted" style="max-width:62ch;margin-bottom:32px">Navy bands break up long pages and carry heroes and footers. Body text on them drops to <span class="token">text.secondary</span> (7.52:1 on navy), the primary button stays pink, and the secondary inverts to white. This band keeps its navy in both themes — it is a deliberate surface, not a theme.</p>
     <div class="btn-row">
-      <a class="btn btn-primary" href="#">Primary stays pink</a>
-      <a class="btn btn-on-dark" href="#">Secondary inverts</a>
+      <a class="btn btn-primary" href="#components">Primary stays pink</a>
+      <a class="btn btn-on-dark" href="#components">Secondary inverts</a>
     </div>
   </div>
 </section>
 
-<section>
+<section id="sample">
   <div class="wrap">
-    <h2>Sample view — family dashboard</h2>
-    <p class="muted">The design language applied to the dashboard data model (<span class="token">dashboard-v2.json</span>). This is the reference lofi for future non-TRMNL views.</p>
+    <div class="sechead">
+      <div class="eyebrow">10 · Reference</div>
+      <h2>Sample view — family dashboard<a class="anchor" href="#sample" aria-label="Link to Sample view">#</a></h2>
+    </div>
+    <p class="lead">The design language applied to the dashboard data model (<span class="token">dashboard-v2.json</span>). This is the reference lofi for future non-TRMNL views: tabular numbers, worded states, muted metadata, one accent per region.</p>
     <div class="dash">
       <div class="dash-date">Friday, 31 July</div>
       <div class="dash-city">Amsterdam</div>
@@ -527,34 +1007,259 @@
       </div>
       <div class="dash-section" style="border-bottom:none">
         <h4>Anniversaries</h4>
-        <div class="dash-item"><span>Lisa's birthday</span><span class="badge badge-neutral">in 3 days</span></div>
+        <div class="dash-item"><span>Lisa's birthday</span><span class="badge badge-purple">in 3 days</span></div>
       </div>
     </div>
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
-    trmnl-home design system · tokens in <span class="token">design/tokens.json</span> · style based on heimdalsecurity.com · TRMNL device views keep their own 1-bit Liquid templates and are out of scope.
+    <div class="foot-grid">
+      <div>
+        <div class="foot-title">trmnl-home design system</div>
+        Version 1.1.0 · updated 2026-07-31
+      </div>
+      <div>
+        <div class="foot-title">Source of truth</div>
+        <a href="tokens.json">design/tokens.json</a> — W3C DTCG tokens.<br>
+        This page mirrors it; <a href="README.md">README.md</a> explains the rules.
+      </div>
+      <div>
+        <div class="foot-title">Guard</div>
+        <span class="token">tests/test_design_tokens.py</span> fails when the mirror drifts, a reference dangles, or a prescribed pair falls below AA.
+      </div>
+      <div>
+        <div class="foot-title">Out of scope</div>
+        TRMNL device views keep their own 1-bit Liquid templates in <span class="token">templates/devices/</span>.
+      </div>
+    </div>
   </div>
 </footer>
 
+<span class="toast" id="copy-toast" role="status" aria-live="polite"></span>
+
 <script>
-  (function () {
-    var root = document.documentElement;
-    var btn = document.getElementById('theme-toggle');
-    function apply(theme) {
-      root.setAttribute('data-theme', theme);
-      btn.textContent = theme === 'dark' ? '☀ Light' : '☾ Dark';
-      try { localStorage.setItem('trmnl-design-theme', theme); } catch (e) {}
+(function () {
+  'use strict';
+  var root = document.documentElement;
+
+  /* ---------- Theme ---------- */
+  var btn = document.getElementById('theme-toggle');
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    btn.textContent = theme === 'dark' ? '☀ Light' : '☾ Dark';
+    btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    try { localStorage.setItem('trmnl-design-theme', theme); } catch (e) {}
+    renderSwatches();
+    renderContrastTable();
+  }
+  /* ?theme=light|dark wins, so a screenshot or a shared link is reproducible. */
+  var requested = null;
+  try {
+    var q = new URLSearchParams(window.location.search).get('theme');
+    if (q === 'light' || q === 'dark') requested = q;
+  } catch (e) {}
+  var saved = requested;
+  if (!saved) { try { saved = localStorage.getItem('trmnl-design-theme'); } catch (e) {} }
+  btn.addEventListener('click', function () {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ---------- Color math (WCAG 2.1) ---------- */
+  function parseColor(str) {
+    str = (str || '').trim();
+    var m = str.match(/^#([0-9a-f]{3,8})$/i);
+    if (m) {
+      var h = m[1];
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16),
+              h.length >= 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1];
     }
-    var saved = null;
-    try { saved = localStorage.getItem('trmnl-design-theme'); } catch (e) {}
-    apply(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-    btn.addEventListener('click', function () {
-      apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    m = str.match(/rgba?\(([^)]+)\)/i);
+    if (m) {
+      var p = m[1].split(/[,\s\/]+/).filter(Boolean).map(parseFloat);
+      return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];
+    }
+    return null;
+  }
+  function over(fg, bg) {
+    if (fg[3] >= 1) return fg;
+    return [fg[0] * fg[3] + bg[0] * (1 - fg[3]),
+            fg[1] * fg[3] + bg[1] * (1 - fg[3]),
+            fg[2] * fg[3] + bg[2] * (1 - fg[3]), 1];
+  }
+  function luminance(c) {
+    var v = [c[0], c[1], c[2]].map(function (x) {
+      x = x / 255;
+      return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
     });
-  })();
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  function ratio(fgStr, bgStr) {
+    var bg = parseColor(bgStr);
+    var fg = parseColor(fgStr);
+    if (!fg || !bg) return null;
+    fg = over(fg, bg);
+    var a = luminance(fg), b = luminance(bg);
+    var hi = Math.max(a, b), lo = Math.min(a, b);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function cssVar(name) {
+    return getComputedStyle(root).getPropertyValue(name).trim();
+  }
+  function verdict(r, kind) {
+    if (kind === 'ui') return r >= 3 ? ['ratio-pass', 'AA non-text'] : ['ratio-fail', 'below 3:1'];
+    if (r >= 7) return ['ratio-pass', 'AAA'];
+    if (r >= 4.5) return ['ratio-pass', 'AA'];
+    if (r >= 3) return ['ratio-large', 'AA large only'];
+    return ['ratio-fail', 'fail'];
+  }
+
+  /* ---------- Swatches ---------- */
+  var swatches = Array.prototype.slice.call(document.querySelectorAll('.swatch'));
+  function renderSwatches() {
+    var pageBg = cssVar('--color-surface');
+    swatches.forEach(function (el) {
+      var name = el.getAttribute('data-var');
+      var value = cssVar(name);
+      var path = el.getAttribute('data-path');
+      var label = el.getAttribute('data-label') ||
+        path.split('.').pop().replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+      var isGradient = value.indexOf('gradient') !== -1;
+      var html = '<span class="chip" style="background:' + value + '"></span>' +
+        '<span class="meta"><span class="name">' + label + '</span>' +
+        '<span class="path">' + path + '</span>' +
+        '<span class="hex">' + (isGradient ? 'gradient' : value.toUpperCase()) + '</span>';
+      var scope = el.getAttribute('data-contrast');
+      if (scope) {
+        var theme = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        if (scope === 'both' || scope === theme) {
+          var r = ratio(value, pageBg);
+          if (r) {
+            var v = verdict(r, 'text');
+            html += '<br><span class="ratio ' + v[0] + '">' + r.toFixed(2) + ':1 · ' + v[1] + '</span>';
+          }
+        } else {
+          /* Prescribed for the other theme — measuring it here would report a
+             failure the system never asks anyone to ship. */
+          html += '<br><span class="ratio ratio-scope">' + scope + ' surfaces only</span>';
+        }
+      }
+      html += '</span>';
+      el.innerHTML = html;
+      el.setAttribute('aria-label', 'Copy ' + path + ', ' + value);
+      el.setAttribute('data-copy', value);
+    });
+  }
+
+  var toast = document.getElementById('copy-toast');
+  var toastTimer = null;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2000);
+  }
+  swatches.forEach(function (el) {
+    el.addEventListener('click', function () {
+      var value = el.getAttribute('data-copy');
+      var done = function () { showToast('Copied ' + value); };
+      /* file:// and permission-denied contexts have no clipboard — still show
+         the value so it can be copied by hand rather than failing silently. */
+      var manual = function () { showToast('Clipboard unavailable — ' + value); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(done, manual);
+      } else {
+        manual();
+      }
+    });
+  });
+
+  /* ---------- Contrast table ---------- */
+  var PAIRS = [
+    ['Text primary', '--color-text-primary', 'Surface base', '--color-surface', 'text'],
+    ['Text muted', '--color-text-muted', 'Surface base', '--color-surface', 'text'],
+    ['Text muted', '--color-text-muted', 'Surface tinted', '--color-surface-tinted', 'text'],
+    ['Text primary', '--color-text-primary', 'Surface tinted', '--color-surface-tinted', 'text'],
+    ['Interactive', '--color-interactive', 'Surface base', '--color-surface', 'text'],
+    ['Success text', '--color-success-text', 'Success surface', '--color-success-surface', 'text'],
+    ['Warning text', '--color-warning-text', 'Warning surface', '--color-warning-surface', 'text'],
+    ['Error text', '--color-error-text', 'Error surface', '--color-error-surface', 'text'],
+    ['Info text', '--color-info-text', 'Info surface', '--color-info-surface', 'text'],
+    ['Accent text', '--color-accent-text', 'Accent surface', '--color-accent-surface', 'text'],
+    ['Purple text', '--color-purple-text', 'Purple surface', '--color-purple-surface', 'text'],
+    ['Border strong', '--color-border-strong', 'Surface base', '--color-surface', 'ui'],
+    ['Focus ring', '--color-focus', 'Surface base', '--color-surface', 'ui']
+  ];
+  var tbody = document.getElementById('contrast-rows');
+  function renderContrastTable() {
+    var rows = PAIRS.map(function (p) {
+      var fg = cssVar(p[1]), bg = cssVar(p[3]);
+      var r = ratio(fg, bg);
+      if (!r) return '';
+      var v = verdict(r, p[4]);
+      return '<tr>' +
+        '<td>' + p[0] + ' <span class="hex muted">' + fg.toUpperCase() + '</span></td>' +
+        '<td>' + p[2] + '</td>' +
+        '<td class="num">' + r.toFixed(2) + ':1</td>' +
+        '<td><span class="ratio ' + v[0] + '">' + v[1] + '</span></td>' +
+        '<td class="sample" style="background:' + bg + ';color:' + fg + '">' +
+          (p[4] === 'ui' ? '▬▬▬' : 'Water the plants') + '</td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = rows.join('');
+  }
+
+  /* ---------- Scroll spy ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.secnav a'));
+  var targets = navLinks.map(function (a) { return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  if ('IntersectionObserver' in window && targets.length) {
+    var visible = {};
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0; });
+      var best = null, bestRatio = 0;
+      targets.forEach(function (t) {
+        if ((visible[t.id] || 0) > bestRatio) { bestRatio = visible[t.id]; best = t.id; }
+      });
+      navLinks.forEach(function (a) {
+        if (best && a.getAttribute('href') === '#' + best) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-80px 0px -55% 0px', threshold: [0, 0.15, 0.4, 0.75, 1] });
+    targets.forEach(function (t) { obs.observe(t); });
+  }
+
+  /* ---------- Tabs demo ---------- */
+  Array.prototype.slice.call(document.querySelectorAll('.tabs')).forEach(function (group) {
+    group.addEventListener('click', function (e) {
+      var tab = e.target.closest('.tab');
+      if (!tab) return;
+      Array.prototype.slice.call(group.querySelectorAll('.tab')).forEach(function (t) {
+        t.setAttribute('aria-selected', String(t === tab));
+      });
+    });
+  });
+
+  /* ---------- Token count in hero ----------
+     Counted live from tokens.json when the page is served; the data-fallback
+     value covers file:// (where fetch is blocked) and is itself asserted
+     against the real count by tests/test_design_tokens.py. */
+  fetch('tokens.json').then(function (r) { return r.json(); }).then(function (tokens) {
+    var n = 0;
+    (function walk(node) {
+      if (node && typeof node === 'object') {
+        if (Object.prototype.hasOwnProperty.call(node, '$value')) { n++; return; }
+        Object.keys(node).forEach(function (k) { if (k.charAt(0) !== '$') walk(node[k]); });
+      }
+    })(tokens);
+    document.getElementById('stat-tokens').textContent = n;
+  }).catch(function () { /* keep data-fallback */ });
+
+  applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+})();
 </script>
 
 </body>
