@@ -49,6 +49,7 @@ The project supports three operational modes, all built on the same collect → 
 │   ├── PLAN.md                                # Current architecture plan (JSON + TRMNL Liquid plugin)
 │   ├── TASKS.md                                # Phase/task checklist
 │   ├── TRMNL_SETUP.md                          # Stranger-friendly TRMNL account/plugin setup guide
+│   ├── VIEW_PIPELINE.md                        # Six-stage prompt pipeline every new dashboard view goes through
 │   └── DESIGN_REFERENCE.md                    # Visual design notes carried over from the PNG era
 ├── templates/
 │   ├── devices/og.liquid                      # TRMNL OG (800×480) full template
@@ -316,6 +317,7 @@ python -m src.upload output/dashboard-v2.json
 - The codebase intentionally supports running without credentials by rendering explicit error states for unconfigured sources. If you add a new data source, follow the `fetch_*_or_dummy` fallback pattern for low-level fetchers, but surface missing credentials / failures through the `errors` object in `src/unified_fetcher.py`.
 - Rendering (device-specific layout, grayscale dithering) happens in `templates/*.liquid`, not in Python. If you add a new device profile in `src/config.py`, it needs a corresponding `templates/devices/<name>.liquid` template before `src/liquid_render.py`/`export_preview.py` can render it — profiles without a template (`template_filename=None`, see `STUB_PROFILE`) are valid and are skipped by both.
 - When creating or styling any **non-TRMNL** view (web, widget, desktop, AI surface), apply the design system in `design/`: read `design/tokens.json` (W3C DTCG format) as the source of truth and `design/index.html` as the human-viewable style guide. `design/README.md` states the non-negotiable rules — most importantly that `color.text.muted` is the muted color on light surfaces and `color.text.secondary` is dark-surfaces-only (2.07:1 on white), and that state colors are used as `-surface` / `-text` pairs rather than solid fills under white text. `tests/test_design_tokens.py` enforces the token/style-guide mirror and every prescribed contrast pair, so `tokens.json` and `index.html` must change together.
+- Every **new view** of the dashboard data (widget, desktop app, terminal variant, AI surface, …) goes through the six-stage prompt pipeline in `plan/VIEW_PIPELINE.md`: Propose (with lofi design) → Approve/reject → Refine requirements → Design (UX + technical) → Implementation → Improve. Each view starts as one `View: <name> — Proposal` ticket (label `view`); on approval, separate Requirements/Design/Implementation tickets are created, linked with `--depends-on`.
 - This project uses Backlog.md for task management. At the start of each task-focused session, run `backlog instructions overview`. Prefer `backlog task create`, `backlog task edit`, and `backlog board` over hand-editing files in `backlog/`.
 
 <!-- BACKLOG.MD GUIDELINES START -->
